@@ -352,6 +352,22 @@ button,.go{min-height:44px}
 .tpanel[hidden]{display:none}
 @keyframes tpIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.tpanel{animation:none}}
+
+/* ---- League logo sizes (final override) ---- */
+.ltw td.tm .team{gap:16px;align-items:center}
+.ltw td.tm .team>div{padding-left:2px}
+.ltw td.tm .team .cr.lg{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;padding:6px;overflow:visible;border-radius:50%}
+.ltw td.tm .team .cr.lg img{width:100%;height:100%;object-fit:contain}
+@media (max-width:767px){
+.ltw td.tm .team{gap:10px}
+.ltw td.tm .team .cr.lg{width:120px;height:120px;flex:0 0 120px}
+}
+@media (min-width:768px) and (max-width:1279px){
+.ltw td.tm .team .cr.lg{width:150px;height:150px;flex:0 0 150px}
+}
+@media (min-width:1280px){
+.ltw td.tm .team .cr.lg{width:160px;height:160px;flex:0 0 160px}
+}
 </style>
 </head>
 <body>
