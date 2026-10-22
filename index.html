@@ -357,7 +357,8 @@ button,.go{min-height:44px}
 .ltw td.tm .team{gap:16px;align-items:center}
 .ltw td.tm .team>div{padding-left:2px}
 .ltw td.tm .team .cr.lg{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;padding:6px;overflow:visible;border-radius:50%}
-.ltw td.tm .team .cr.lg img{width:100%;height:100%;object-fit:contain}
+.ltw td.tm .team .cr.lg{padding:0;overflow:visible}
+.ltw td.tm .team .cr.lg img{width:100%;height:100%;object-fit:contain;transform:scale(1.3);transform-origin:center}
 @media (max-width:767px){
 .ltw td.tm .team{gap:10px}
 .ltw td.tm .team .cr.lg{width:120px;height:120px;flex:0 0 120px}
@@ -367,6 +368,21 @@ button,.go{min-height:44px}
 }
 @media (min-width:1280px){
 .ltw td.tm .team .cr.lg{width:160px;height:160px;flex:0 0 160px}
+}
+/* ---- Phone: whole league table fits the screen (no scroll) ---- */
+@media (max-width:767px){
+.ltw:not(.gt){overflow:hidden}
+.ltw:not(.gt) table{width:100%;min-width:0;table-layout:fixed}
+.ltw table{font-size:10px}
+.ltw th{font-size:8px;padding:8px 0;letter-spacing:0}
+.ltw td{padding:8px 0}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) td.ps{width:5%;position:static;box-shadow:none;padding-left:6px;padding-right:0;font-size:12px}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:30%;position:static;box-shadow:none;padding-left:4px;padding-right:2px}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:7.2%}
+.ltw td.tm .team{gap:4px}
+.ltw:not(.gt) .tn{font-size:11px;line-height:1.1;white-space:normal;overflow-wrap:anywhere}
+.ltw td.tm .team .cr.lg{width:40px;height:40px;flex:0 0 40px;padding:0}
+.ltw td.tm .team .cr.lg img{transform:none}
 }
 </style>
 </head>
