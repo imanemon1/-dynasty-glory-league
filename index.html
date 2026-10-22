@@ -151,13 +151,27 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .awr em{margin-inline-start:auto;font-style:normal;background:#F3F4F6;border-radius:8px;padding:2px 10px}
 .awe{color:#6B7280;padding:8px 0}
 .tn,.step b,.who,.awr span{text-transform:uppercase}
-@media (min-width:768px) and (max-width:1279px){.ltw .team .cr.lg{width:162px;height:162px;flex:0 0 162px}}
-@media (max-width:767px){
-.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:40%}
-.ltw:not(.gt) .team{flex-direction:row;align-items:center;gap:6px}
-.ltw:not(.gt) .team .cr.lg{width:79px;height:79px;flex:0 0 79px}
+@media (max-width:1279px){
+.ltw:not(.gt){overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ltw:not(.gt) table{table-layout:fixed;width:854px;min-width:0}
+.ltw:not(.gt) th,.ltw:not(.gt) td{box-sizing:border-box}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:62px}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) td.ps{width:34px;padding-left:6px;padding-right:0;position:sticky;left:0;z-index:2;background:#fff}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:200px;position:sticky;left:34px;z-index:2;background:#fff;box-shadow:4px 0 6px -4px rgba(11,18,32,.18)}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) th.tm{background:#F3F5F9}
+.ltw:not(.gt) .team{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;gap:6px}
 .ltw:not(.gt) .team>div{min-width:0;flex:1}
-.ltw:not(.gt) .tn{white-space:normal;line-height:1.15;font-size:10px}
+.ltw:not(.gt) .tn{white-space:normal;line-height:1.15}
+}
+@media (max-width:767px){
+.ltw:not(.gt) .tn{font-size:10px}
+.ltw:not(.gt) .team .cr.lg{width:111px;height:111px;flex:0 0 111px}
+}
+@media (min-width:768px) and (max-width:1279px){
+.ltw:not(.gt) table{width:974px}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:320px}
+.ltw:not(.gt) .tn{font-size:13px}
+.ltw .team .cr.lg{width:227px;height:227px;flex:0 0 227px}
 }
 .st .tt{display:block;font-size:13px;font-weight:800}
 .st .ds{display:block;font-size:11px;color:var(--mu)}
@@ -306,8 +320,8 @@ button,.go{min-height:44px}
 .ltw .tn{font-size:17px}
 .ltw .team{gap:12px}
 .ltw .team .cr{width:36px;height:36px;flex:0 0 36px;font-size:9px;border-width:2px}
-.ltw .team .cr.lg{width:80px;height:80px;flex:0 0 80px;background:#fff;border:0;border-radius:50%;padding:5px;box-sizing:border-box}
 }
+@media (min-width:1280px){.ltw .team .cr.lg{width:80px;height:80px;flex:0 0 80px;background:#fff;border:0;border-radius:50%;padding:5px;box-sizing:border-box}}
 .gt th{background:#3B3F46;color:#fff}
 .gt td{background:#fff;color:#1F2937}
 .gt tbody tr td:first-child{box-shadow:none}
