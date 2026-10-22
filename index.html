@@ -177,6 +177,11 @@ th.ps,th.tm,th.pt{z-index:2}
 .empty b{display:block;font-size:34px}
 .stage .nm{font-size:11px;opacity:.85}
 .step .cr{margin:0 auto 4px;width:34px;height:34px;font-size:10px}
+.cr.lg{background:none;border:0;border-radius:0;width:36px;height:36px}
+.cr.lg img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
+.cr.lg.sm{width:26px;height:26px}
+.step .cr.lg{width:56px;height:56px}
+.ltw .team .cr.lg{width:28px;height:28px;flex:0 0 28px;background:none;border:0}
 
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:nowrap}
 .brand{display:flex;align-items:center;gap:8px;min-width:0}
@@ -196,9 +201,7 @@ th.ps,th.tm,th.pt{z-index:2}
 .bar{background:var(--ln);margin-top:32px}
 .fill{background:var(--info)}.mk.on{color:var(--info)}
 button,.go{min-height:44px}
-.allb{display:block;width:100%;margin-top:12px;background:var(--card);border:1px solid var(--info);color:var(--info);font-weight:700}
-.allb:hover,.wc:hover,.st:hover{background:var(--hov)}
-.lad .lst{display:none}.lad.all .lst{display:flex}
+.wc:hover,.st:hover{background:var(--hov)}
 .lad .lst .lr:not(.cur):not(.nxt){opacity:.85}
 .lad,.wal{background:var(--card);border:1px solid var(--ln);box-shadow:none;color:var(--tx)}
 .lad .hd,.lad .bk,.lad .tip,.lad .lst,.lad .lr{background:var(--bg);box-shadow:none;border:1px solid var(--ln)}
@@ -209,6 +212,22 @@ button,.go{min-height:44px}
 .lad .lr.nxt{border:2px solid var(--info);box-shadow:none;background:var(--hov)}
 .lad .lr .bd.g{background:var(--gold);box-shadow:none}.lad .lr .bd{background:var(--info);color:#06101f;box-shadow:none}
 .lad .lr .no{box-shadow:none!important}
+.lad .lst{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:16px;border:1px solid var(--ln);background:var(--bg);box-shadow:none}
+.lad .lsh{font-size:13px;font-weight:700;color:var(--mu);padding:4px 4px 0}
+.lad .lr{display:grid;grid-template-columns:34px minmax(0,1fr) 40px;align-items:center;gap:10px;height:auto;min-height:60px;padding:8px 10px;border-radius:12px;background:var(--card);border:1px solid var(--ln)}
+.lad .lr .no{width:34px;height:34px;font-size:14px;color:var(--mu);border-color:var(--ln);background:var(--bg)}
+.lad .lr .lb{min-width:0;display:flex;flex-direction:column;gap:4px}
+.lad .lr .l1{display:flex;align-items:center;gap:8px;min-width:0}
+.lad .lr .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;color:var(--tx)}
+.lad .lr .bd{margin-inline-start:auto}
+.lad .lr .l2{font-size:12px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lad .lr .ic,.lad .lr .ic img{width:40px;height:40px}
+.lad .lr.done .no{color:var(--pos);border-color:var(--pos)}
+.lad .lr.cur{border-color:var(--gold)}
+.lad .lr.cur .no{color:var(--gold);border-color:var(--gold)}
+.lad .lr.nxt{border-color:var(--info)}
+.lad .lr.nxt .no{background:var(--info);color:#06101f;border-color:var(--info)}
+.lad .lr.lk .nm{color:var(--mu)}
 .wal .big{background:none;color:var(--gold);-webkit-text-fill-color:var(--gold);filter:none}
 .wal .tl{color:var(--mu)}
 .wc{background:var(--bg)!important;border-color:var(--c);box-shadow:none}
@@ -234,6 +253,8 @@ button,.go{min-height:44px}
 .ltt{direction:ltr;text-align:center;margin:26px 0 14px;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif}
 .ltt h2{margin:0;font-size:18px;font-weight:600;letter-spacing:.32em;color:#fff}
 .ltt p{margin:6px 0 0;font-size:12px;color:#B9C6FF}
+.ltt .ltl{display:block;margin:0 auto 14px;height:132px;width:auto}
+.ltt p{letter-spacing:.32em}
 .ltw{direction:ltr;background:#061351;border:1px solid #2A44B0;border-radius:12px;overflow:hidden;padding:0}
 .ltw table{font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0;margin:0;min-width:0;font-size:10px;color:#fff;text-align:center}
 .ltw th{background:#07104A;color:#A9BEFF;font-size:8px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:10px 0;line-height:1.2;border-bottom:1px solid #2A44B0;vertical-align:middle}
@@ -265,6 +286,7 @@ button,.go{min-height:44px}
 .ltw .tn{font-size:17px}
 .ltw .team{gap:12px}
 .ltw .team .cr{width:36px;height:36px;flex:0 0 36px;font-size:9px;border-width:2px}
+.ltw .team .cr.lg{width:44px;height:44px;flex:0 0 44px;border:0}
 }
 .gt th{background:#2A2008;color:#D6B56D}
 .gt tbody tr td:first-child{box-shadow:none}
@@ -275,6 +297,18 @@ button,.go{min-height:44px}
 .gt th.tm,.gt td.tm{text-align:left}
 .gt td.pt{color:#D6B56D}
 .cupt th:not(.ps):not(.tm),.cupt td:not(.ps):not(.tm){width:16%}
+
+.tabs{display:flex;gap:8px;overflow-x:auto;direction:rtl;margin:16px 0 0;padding:4px 2px 8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;min-height:44px;padding:0 16px;border-radius:999px;background:var(--card);color:var(--mu);border:1px solid var(--ln);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:background .2s,border-color .2s,color .2s}
+.tab:hover{background:var(--hov);color:var(--tx)}
+.tab[aria-selected=true]{background:var(--hov);color:var(--tx);border-color:var(--info);box-shadow:inset 0 -2px 0 var(--info)}
+.tpanel{margin-top:12px;animation:tpIn .3s ease}
+.tpanel .sec,.tpanel .ltt,.tpanel .stage{margin-top:0}
+.tpanel>section+section{margin-top:16px}
+.tpanel[hidden]{display:none}
+@keyframes tpIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tpanel{animation:none}}
 </style>
 </head>
 <body>
@@ -294,25 +328,33 @@ button,.go{min-height:44px}
 <div class="hst"><span id="ldr" class="chip"></span><span id="lgi" class="chip"></span></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
-<section><div class="sec">🏟 سه تیم برتر</div>
+<nav class="tabs" role="tablist" aria-label="بخش‌ها">
+<button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین</button>
+</nav>
+<div id="p-lg" class="tpanel" data-p="lg"><section><div class="sec">🏟 سه تیم برتر</div>
 <div id="podium"><div class="stage" id="stage"></div></div></section>
-<section><div class="ltt"><h2>LEAGUE TABLE</h2></div>
+<section><div class="ltt"><img class="ltl" src="assets/league/logo-2026.png" alt="Dynasty Glory League" width="400" height="430" loading="lazy"><h2>DYNASTY GLORY LEAGUE</h2><p>LEAGUE STANDINGS</p></div>
 <div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
-<div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section>
-<section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
-<div class="wal" id="wal"></div></section>
-<section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
+<div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
+<div class="stats" id="stats"></div></section>
+</div>
+<div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
+<div class="wal" id="wal"></div></section></div>
+<div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
 <div class="lad" id="lad"></div>
-<button class="allb" id="allb" aria-expanded="false">مشاهده همه پله‌ها</button></section>
-<section><div class="sec">🏅 افتخارات باشگاه</div>
-<div class="stats" id="stats"></div>
+</section></div>
+<div id="p-hn" class="tpanel" data-p="hn" hidden><section><div class="sec">🏅 افتخارات باشگاه</div>
 <div class="sec">🏆 جدول کاپ‌ها</div>
 <div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
 <div class="sec">🏅 دستاوردهای باشگاه</div>
-<div class="ltw gt"><table class="hon"><thead><tr><th class="ps">#</th><th class="tm">باشگاه</th><th>🏆 کاپ</th><th>🥇 توپ</th><th>👟 کفش</th><th>🧤 دستکش</th><th>🎁 ریوارد</th><th class="pt">کل</th></tr></thead><tbody id="hon"></tbody></table></div></section>
-<section><div class="sec">📜 قوانین و توضیحات</div>
+<div class="ltw gt"><table class="hon"><thead><tr><th class="ps">#</th><th class="tm">باشگاه</th><th>🏆 کاپ</th><th>🥇 توپ</th><th>👟 کفش</th><th>🧤 دستکش</th><th>🎁 ریوارد</th><th class="pt">کل</th></tr></thead><tbody id="hon"></tbody></table></div></section></div>
+<div id="p-ru" class="tpanel" data-p="ru" hidden><section><div class="sec">📜 قوانین و توضیحات</div>
 <p class="note">POINT = PIPS + (TP × 5) + (CLOSE × 2) − SL. دلار در امتیاز نیست و فقط ارزش تیم را نشان می‌دهد.</p>
-<p class="note">پله‌ی بعد وقتی باز می‌شود که حساب پشتیبان و حساب تریدینگ هر دو به حد پله برسند.</p></section>
+<p class="note">پله‌ی بعد وقتی باز می‌شود که حساب پشتیبان و حساب تریدینگ هر دو به حد پله برسند.</p></section></div>
 </div>
 
 <script>
@@ -326,8 +368,9 @@ var RULES=[["do","فقط ستاپ، نه حس","بدون ستاپ کامل ور�
 ["dont","نکنه وسط معامله نظرت عوض شه","پلن که چیدی تا پایان همون پلنه. دست‌کاری SL/TP از ترس یا طمع ممنوع."],
 ["dont","نکنه تو بازار بی‌تصمیم ترید کنی","رنج، خبر، کندل‌های درهم = صبر."],
 ["dont","نکنه با بقیه مقایسه کنی","مسیر تو، پلکان تو، لیگ تو."]];
-var NAMES=["HDM","HDR","A1","LK-A1","LK"];
+var NAMES=[],COL={},LOGO={};
 var teams=zero();
+fetch("data/teams.json?v="+Date.now()).then(function(r){return r.ok?r.json():0}).then(function(j){if(!j||!j.length)return;NAMES=[];j.forEach(function(t){if(!t||!t.name)return;NAMES.push(t.name);COL[t.name]=t.color||"#888";if(t.logo)LOGO[t.name]=t.logo});teams=zero();render()}).catch(function(){});
 function zero(){return NAMES.map(function(n){return{n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}})}
 function calc(t){var play=t.sl+t.risk+t.close+t.tp,pips=t.pp-t.pn;
 return{n:t.n,sl:t.sl,risk:t.risk,close:t.close,tp:t.tp,play:play,win:play?t.tp/play*100:0,rr:t.pn?t.pp/t.pn:0,pips:pips,usd:t.qp-t.qn,pt:pips+t.tp*5+t.close*2-t.sl}}
@@ -356,9 +399,9 @@ h+='<div class="hd"><div class="ht"><h3>🎯 پله‌ی بعدی: '+nx.name+'</
 +(nx.trade==null?'<div class="bk tr"><img src="'+A+'chart.webp" alt=""><div class="bt"><div class="blb"><img src="'+A+'trend.webp" alt="">حساب تریدینگ: هنوز تعیین نشده</div></div></div>':card(" tr","chart","حساب تریدینگ","trend",trade,nx.trade))
 +'<div class="tip"><p>'+tip+'</p><img src="'+A+'bulb.webp" alt=""></div>'}
 else h+='<div class="hd"><div class="ht"><h3>👑 به قله رسیدی</h3><div class="hs">آخرین پله‌ی لیگ</div></div></div>';
-h+='<div class="lst">'+LD.slice().reverse().map(function(st){var i=st.n-1,c=i<ci?"done":i==ci?"cur":i==ci+1?"nxt":"lk";
+h+='<div class="lsh">همه‌ی پله‌ها از بالا به پایین</div><div class="lst">'+LD.slice().reverse().map(function(st){var i=st.n-1,c=i<ci?"done":i==ci?"cur":i==ci+1?"nxt":"lk";
 var badge=c=="cur"?'<span class="bd g">الان اینجایی</span>':c=="nxt"?'<span class="bd">بعدی</span>':'';
-return'<div class="lr '+c+'"><span class="no">'+pdg(st.n)+'</span><span class="nm">'+st.name+'</span>'+badge+'<span class="gap"></span><span class="vl" dir="ltr">$'+st.bank+' • '+(st.trade==null?"؟":"$"+st.trade)+' • '+st.lot.toFixed(2)+'</span><span class="ic"><img src="'+A+LIMG[st.n]+'.webp" alt=""></span></div>'}).join("")+'</div>';
+return'<div class="lr '+c+'"><span class="no">'+pdg(st.n)+'</span><div class="lb"><div class="l1"><span class="nm">'+st.name+'</span>'+badge+'</div><div class="l2">پشتیبان $'+st.bank+' · تریدینگ '+(st.trade==null?"؟":"$"+st.trade)+' · لات '+st.lot.toFixed(2)+'</div></div><span class="ic"><img src="'+A+LIMG[st.n]+'.webp" alt=""></span></div>'}).join("")+'</div>';
 h+='<div class="ft"><img class="tg" src="'+A+'target.webp" alt=""><span class="fsep"></span><span class="ftt"><small>پله‌ی فعلی'+(cur?' · '+pdg(cur.n):'')+'</small>'+(cur?cur.name:'هنوز شروع نشده')+'</span></div>';
 document.getElementById("lad").innerHTML=h;
 }
@@ -389,8 +432,10 @@ document.getElementById("fill").style.width=pc+"%";
 var bar=document.getElementById("bar");bar.querySelectorAll(".mk").forEach(function(e){e.remove()});
 CUPS.forEach(function(c){var e=document.createElement("div");e.className="mk"+(T.day>=c.d?" on":"");e.style.right=(c.d/T.total*100)+"%";e.textContent=c.d;bar.appendChild(e)});
 document.getElementById("lgi").innerHTML=T.msg;document.getElementById("ldr").textContent=tot>0?"👑 پیشتاز: "+r[0].n:"پیشتاز: هنوز مشخص نیست";
-var COL={"HDM":"#d9a21b","HDR":"#2f7de1","A1":"#e0453a","LK-A1":"#9b5de5","LK":"#17a673"};
-var cr=function(n,c){return'<span class="cr'+(c?" "+c:"")+'" style="--c:'+(COL[n]||"#888")+'">'+n.replace("-","")+'</span>'};
+var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+n+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+n.replace("-","")+'</span>'};
+try{document.getElementById("rows").innerHTML=r.map(function(x,i){
+var z=!tot?"":i==0?"z1":i==1?"z2":"";
+return'<tr class="'+z+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+x.n+'</div></div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
 var lead=tot>0?r[0].n:"—";
 document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d;return'<tr class="'+(on&&tot>0?"z1":"")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="tn">'+c.n+'</div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(on&&tot>0?'<div class="team">'+cr(lead)+'<div><div class="tn">'+lead+'</div></div></div>':'<span class="mu">·</span>')+'</td><td>'+(on?"قهرمان":"قفل")+'</td></tr>'}).join("");
 var by=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]>b[k]))b=x});return b};
@@ -406,10 +451,8 @@ document.getElementById("hon").innerHTML=hr.map(function(h,i){var z=function(v){
 var ic=["🥇","🥈","🥉"],o=[1,0,2];
 document.getElementById("podium").innerHTML=tot?'<div class="stage" id="stage">'+o.map(function(i){var x=r[i];return'<div class="step s'+(i+1)+'"><i>'+ic[i]+'</i>'+cr(x.n)+'<b>'+x.n+'</b><small>'+f(x.pt)+' امتیاز</small></div>'}).join("")+'</div>':'<div class="empty"><b>⚽</b>فصل هنوز شروع نشده؛ منتظر اولین ترید.</div>';
 wallet(r.reduce(function(a,x){return a+(+x.usd||0)},0));
-document.getElementById("rows").innerHTML=r.map(function(x,i){
-var z=!tot?"":i==0?"z1":i==1?"z2":"";
-return'<tr class="'+z+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+x.n+'</div></div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}
-var allb=document.getElementById("allb");allb.onclick=function(){var l=document.getElementById("lad"),o=l.classList.toggle("all");allb.setAttribute("aria-expanded",o);allb.textContent=o?"بستن پله‌ها":"مشاهده همه پله‌ها"};
+}
+
 var gate=document.getElementById("gate"),go=document.getElementById("go");
 document.getElementById("rules").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<label><input type="checkbox"><span><b>'+r[1]+'</b><br>'+r[2]+'</span></label>'}).join("");
 function chk(){go.disabled=!!gate.querySelector("input:not(:checked)")}
@@ -420,6 +463,17 @@ document.getElementById("rvl").innerHTML=RULES.map(function(r,i){return(i==0?'<h
 window.openRules=function(){rv.classList.add("on");rv.scrollTop=0};
 document.getElementById("rvc").onclick=function(){rv.classList.remove("on")};
 render();
+</script>
+<script>
+(function(){
+var tabs=[].slice.call(document.querySelectorAll('.tab'));
+tabs.forEach(function(b){b.addEventListener('click',function(){
+var k=b.getAttribute('data-t'),p=document.querySelector('.tpanel[data-p="'+k+'"]');
+document.querySelectorAll('.tpanel').forEach(function(x){x.hidden=true});
+tabs.forEach(function(t){t.setAttribute('aria-selected','false')});
+p.hidden=false;b.setAttribute('aria-selected','true');
+});});
+})();
 </script>
 </body>
 </html>
