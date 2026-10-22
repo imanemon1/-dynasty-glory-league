@@ -150,6 +150,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .awr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E5E7EB;font-weight:700;min-height:44px}
 .awr em{margin-inline-start:auto;font-style:normal;background:#F3F4F6;border-radius:8px;padding:2px 10px}
 .awe{color:#6B7280;padding:8px 0}
+.tn,.step b,.who,.awr span{text-transform:uppercase}
 .st .tt{display:block;font-size:13px;font-weight:800}
 .st .ds{display:block;font-size:11px;color:var(--mu)}
 .st b{display:block;font-size:22px;color:var(--ac,var(--gold));direction:ltr;margin:2px 0}
@@ -192,7 +193,7 @@ th.ps,th.tm,th.pt{z-index:2}
 .cr.lg img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
 .cr.lg.sm{width:26px;height:26px}
 .step .cr.lg{width:56px;height:56px}
-.ltw .team .cr.lg{width:46px;height:46px;flex:0 0 46px;background:#fff;border:0;border-radius:50%;padding:4px;box-sizing:border-box}
+.ltw .team .cr.lg{width:54px;height:54px;flex:0 0 54px;background:#fff;border:0;border-radius:50%;padding:4px;box-sizing:border-box}
 
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:nowrap}
 .brand{display:flex;align-items:center;gap:8px;min-width:0}
@@ -276,7 +277,7 @@ button,.go{min-height:44px}
 .ltw tbody tr:hover td{background:#F7F9FC}
 .ltw tbody tr td:first-child{box-shadow:inset 4px 0 0 var(--c,#888)}
 .ltw th.ps,.ltw td.ps{width:5%;font-weight:700;padding-left:6px;padding-right:0}
-.ltw th.tm,.ltw td.tm{width:23%;text-align:left;padding-left:6px;padding-right:0}
+.ltw th.tm,.ltw td.tm{width:28%;text-align:left;padding-left:6px;padding-right:0}
 .ltw th:not(.ps):not(.tm),.ltw td:not(.ps):not(.tm){width:7.2%;padding-left:0;padding-right:0}
 .ltw th.pt,.ltw td.pt{border-left:1px solid #E3E8F0;color:#8A6A2A;font-weight:700}
 .ltw .team{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:4px;min-width:0}
@@ -297,7 +298,7 @@ button,.go{min-height:44px}
 .ltw .tn{font-size:17px}
 .ltw .team{gap:12px}
 .ltw .team .cr{width:36px;height:36px;flex:0 0 36px;font-size:9px;border-width:2px}
-.ltw .team .cr.lg{width:62px;height:62px;flex:0 0 62px;background:#fff;border:0;border-radius:50%;padding:5px;box-sizing:border-box}
+.ltw .team .cr.lg{width:80px;height:80px;flex:0 0 80px;background:#fff;border:0;border-radius:50%;padding:5px;box-sizing:border-box}
 }
 .gt th{background:#3B3F46;color:#fff}
 .gt td{background:#fff;color:#1F2937}
@@ -359,6 +360,9 @@ button,.go{min-height:44px}
 <div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
 <div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
 <div class="stats" id="stats"></div><div class="awp" id="awp"></div></section>
+<section><div class="sec">🏆 جدول کاپ‌ها</div>
+<div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
+</section>
 </div>
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
@@ -366,8 +370,6 @@ button,.go{min-height:44px}
 <div class="lad" id="lad"></div>
 </section></div>
 <div id="p-hn" class="tpanel" data-p="hn" hidden><section><div class="sec">🏅 افتخارات باشگاه</div>
-<div class="sec">🏆 جدول کاپ‌ها</div>
-<div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
 <div class="sec">🏅 دستاوردهای باشگاه</div>
 <div class="ltw gt"><table class="hon"><thead><tr><th class="ps">#</th><th class="tm">باشگاه</th><th>🏆 کاپ</th><th>🥇 توپ</th><th>👟 کفش</th><th>🧤 دستکش</th><th>🎁 ریوارد</th><th class="pt">کل</th></tr></thead><tbody id="hon"></tbody></table></div></section></div>
 <div id="p-ru" class="tpanel" data-p="ru" hidden><section><div class="sec">📜 قوانین و توضیحات</div>
