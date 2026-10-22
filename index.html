@@ -139,7 +139,17 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .st{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px 12px 10px;text-align:center}
 .st:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ac,var(--gold))}
 .st .ic{font-size:26px;line-height:1.2}
-.st .ic img{width:38px;height:38px;object-fit:contain;display:block}
+.st{background:#fff!important;border-color:#E5E7EB!important;cursor:pointer}
+.st .tt,.st b,.st .who{color:#111827!important}
+.st .ds{color:#6B7280!important}
+.st .ic img{width:68px;height:68px;object-fit:contain;display:block}
+.st .hint{display:block;margin-top:8px;font-size:12px;color:#6B7280;font-weight:700}
+.awp{background:#fff;color:#111827;border-radius:14px;padding:12px;margin-top:12px}
+.awp:empty{display:none}
+.awh{font-weight:800;margin-bottom:6px}
+.awr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E5E7EB;font-weight:700;min-height:44px}
+.awr em{margin-inline-start:auto;font-style:normal;background:#F3F4F6;border-radius:8px;padding:2px 10px}
+.awe{color:#6B7280;padding:8px 0}
 .st .tt{display:block;font-size:13px;font-weight:800}
 .st .ds{display:block;font-size:11px;color:var(--mu)}
 .st b{display:block;font-size:22px;color:var(--ac,var(--gold));direction:ltr;margin:2px 0}
@@ -348,7 +358,7 @@ button,.go{min-height:44px}
 <section><div class="ltt"><img class="ltl" src="assets/league/logo-2026.png" alt="Dynasty Glory League" width="400" height="430" loading="lazy"><h2>DYNASTY GLORY LEAGUE</h2><p>LEAGUE STANDINGS</p></div>
 <div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
 <div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
-<div class="stats" id="stats"></div></section>
+<div class="stats" id="stats"></div><div class="awp" id="awp"></div></section>
 </div>
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
@@ -450,7 +460,8 @@ var by=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]>b[k]))b
 var lo=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]<b[k]))b=x});return b};
 var w=by("win"),q=by("rr"),p=tot?r[0]:null,sl=lo("sl");
 var A=[["🥇","توپ طلا","بیشترین امتیاز",p?f(p.pt):"—",p,"#f6c744"],["<img src=\"assets/awards/golden-boot.webp\" alt=\"کفش طلا\">","کفش طلا","بهترین وین‌ریت",w?f(w.win,1)+"%":"—",w,"#3fbf7a"],["<img src=\"assets/awards/golden-glove.webp\" alt=\"دستکش طلا\">","دستکش طلا","کمترین SL",sl?f(sl.sl):"—",sl,"#4aa3ff"],["<img src=\"assets/awards/reward-cup.webp\" alt=\"جایزه‌ی ریوارد\">","جایزه‌ی ریوارد","بهترین R/R",q?f(q.rr,2):"—",q,"#c77dff"]];
-document.getElementById("stats").innerHTML=A.map(function(a){return'<div class="st" style="--ac:'+a[5]+'"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+a[4].n+'</div>':"")+'</div>'}).join("");
+document.getElementById("stats").innerHTML=A.map(function(a,i){return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+a[4].n+'</div>':"")+'<span class="hint">نمایش برندگان ▾</span></div>'}).join("");
+var AWI=-1;function awOpen(i){var p=document.getElementById("awp");if(AWI===i){AWI=-1;p.innerHTML="";return}AWI=i;var L=hr.filter(function(h){return h.a[i]>0});var a=A[i];p.innerHTML='<div class="awh">'+a[0]+' '+a[1]+' — '+a[2]+'</div>'+(L.length?L.map(function(h){return'<div class="awr">'+cr(h.n,"sm")+'<span>'+h.n+'</span><em>'+h.a[i]+'</em></div>'}).join(""):'<div class="awe">هنوز تیمی این جایزه را نگرفته</div>')}
 var H={};r.forEach(function(x){H[x.n]={c:0,a:[0,0,0,0]}});
 CUPS.forEach(function(c){if(T.day>=c.d&&tot)H[lead].c++});
 A.forEach(function(a,i){if(a[4])H[a[4].n].a[i]++});
