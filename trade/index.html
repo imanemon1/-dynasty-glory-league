@@ -399,13 +399,13 @@ $('gl').addEventListener('click',async e=>{
 (function(){
   const wrap=document.querySelector('.wrap');
   const css=document.createElement('style');
-  css.textContent='.box,.gh,.wrap>h1,.wrap>.sub,.wrap>.back,[data-load]{display:none!important}.hm{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 10px;background:var(--bg);border-top:1px solid var(--ln)}#rvb{position:fixed;top:8px;left:8px;z-index:21;background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:20px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}.wrap{padding-bottom:90px}.hm button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-size:16px;font-weight:800;cursor:pointer}.hm button.on{outline:2px solid var(--gold)}.hm button small{font-size:13px;color:var(--mu);font-weight:500}.hm button.e{background:var(--gold);color:#1a1205;border:0}.hm button.e small{color:#1a1205}.vb{background:none;border:0;color:var(--mu);font:inherit;cursor:pointer;padding:6px 0}#vEntry{max-width:520px;margin:0 auto}#vEntry .f{display:grid;gap:12px}#vEntry label{display:block;font-size:13px;color:var(--mu)}#vEntry input,#vEntry textarea{width:100%;box-sizing:border-box;margin-top:4px;padding:10px;font:inherit;font-size:16px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}.sl{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px;border:1px dashed var(--ln);border-radius:16px;background:var(--card);cursor:pointer;color:var(--tx);font:inherit;width:100%}.sl img{width:120px;height:120px;object-fit:contain}.sl b{font-size:20px}.sl .ph{width:120px;height:120px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--mu)}.seg{display:flex;gap:6px}.seg button{flex:1;padding:11px 4px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.seg button.on{background:var(--gold);color:#1a1205;border-color:var(--gold)}.seg.tf button{font-size:13px}.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}';
+  css.textContent='.box,.gh,.wrap>h1,.wrap>.sub,.wrap>.back,[data-load]{display:none!important}.hm{display:grid;gap:12px;max-width:520px;margin:18px auto}#rvb{position:fixed;top:8px;left:8px;z-index:21;background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:20px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}.hm button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:26px 12px;border-radius:16px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-size:20px;font-weight:800;cursor:pointer}.hm button small{font-size:13px;color:var(--mu);font-weight:500}.hm button.e{background:var(--gold);color:#1a1205;border:0}.hm button.e small{color:#1a1205}.vb{background:none;border:0;color:var(--mu);font:inherit;cursor:pointer;padding:6px 0}#vEntry{max-width:520px;margin:0 auto}#vEntry .f{display:grid;gap:12px}#vEntry label{display:block;font-size:13px;color:var(--mu)}#vEntry input,#vEntry textarea{width:100%;box-sizing:border-box;margin-top:4px;padding:10px;font:inherit;font-size:16px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}.sl{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px;border:1px dashed var(--ln);border-radius:16px;background:var(--card);cursor:pointer;color:var(--tx);font:inherit;width:100%}.sl img{width:120px;height:120px;object-fit:contain}.sl b{font-size:20px}.sl .ph{width:120px;height:120px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--mu)}.seg{display:flex;gap:6px}.seg button{flex:1;padding:11px 4px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.seg button.on{background:var(--gold);color:#1a1205;border-color:var(--gold)}.seg.tf button{font-size:13px}.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}';
   document.head.append(css);
   const home=document.createElement('div');home.className='hm';home.id='vHome';
-  home.innerHTML='<button type="button" class="e" data-v="e">➕ ترید جدید</button><button type="button" data-v="l">📋 فهرست ترید<small id="hcn"></small></button>';
+  home.innerHTML='<button type="button" class="e" data-v="e">➕ ترید جدید</button><button type="button" data-v="l">📋 فهرست تریدهای گرفته‌شده<small id="hcn"></small></button>';
   const entry=document.createElement('div');entry.id='vEntry';entry.hidden=true;
   const list=document.createElement('div');list.id='vList';list.hidden=true;
-  list.innerHTML='<h3>📋 تریدهای ثبت‌شده</h3>';
+  list.innerHTML='<button class="vb" data-v="h">← بازگشت</button><h3>📋 تریدهای ثبت‌شده</h3>';
   list.append($('glist'),$('gl'));$('glist').style.display='none';
   wrap.append(home,$('gs'),entry,list);
   let T;
@@ -413,7 +413,7 @@ $('gl').addEventListener('click',async e=>{
   const seg=(id,o,cur,cls)=>`<div class="seg ${cls||''}" id="${id}">`+o.map(k=>`<button type="button" data-v="${k}" class="${cur===k?'on':''}">${k}</button>`).join('')+'</div>';
   function form(){
     const lg=T.s&&TL[T.s]?`<img src="../${esc(TL[T.s])}" alt="">`:`<div class="ph">${T.s?esc(T.s[0]):'؟'}</div>`;
-    entry.innerHTML=`<div class="f">
+    entry.innerHTML=`<button class="vb" data-v="h">← بازگشت</button><div class="f">
 <button type="button" class="sl" id="fs">${lg}<b>${T.s?esc(T.s):'انتخاب استراتژی'}</b></button>
 <div class="r2"><label>تاریخ<input type="date" id="fdt" value="${T.date}"></label><label>ساعت<input type="time" id="fh" value="${esc(T.h)}"></label></div>
 <label>جهت${seg('fd',['BUY','SELL'],T.d)}</label>
@@ -427,7 +427,7 @@ $('gl').addEventListener('click',async e=>{
   const sync=()=>{if(!$('fp2'))return;T.date=$('fdt').value||T.date;T.h=$('fh').value;T.p=clean($('fp2').value);T.u=clean($('fu2').value);T.n=$('fn').value};
   entry.addEventListener('click',async e=>{
     const b=e.target.closest('button');if(!b)return;
-    if(b.classList.contains('vb')){show('e');return}
+    if(b.classList.contains('vb')){show('h');return}
     sync();
     const sg=b.closest('.seg');
     if(sg){
@@ -457,13 +457,13 @@ $('gl').addEventListener('click',async e=>{
   const cnt=n=>{$('hcn').textContent=n+' ترید'};
   async function loadCnt(){if(!G.token||!G.owner||!G.repo){$('hcn').textContent='';return}try{cnt((await gread()).rows.length)}catch(e){$('hcn').textContent=''}}
   function show(v){
-    home.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));entry.hidden=v!=='e';list.hidden=v!=='l';gsay('');
+    home.hidden=v!=='h';entry.hidden=v!=='e';list.hidden=v!=='l';gsay('');
     if(v==='e'){T=T||newT();form();scrollTo(0,0)}
     if(v==='l')glist();
-    if(v==='h')loadCnt();
+    if(v==='h'){loadCnt();scrollTo(0,0)}
   }
   document.addEventListener('click',e=>{const b=e.target.closest('#vHome button,#vList .vb');if(b)show(b.dataset.v)});
-  loadCnt();show(location.hash==='#list'?'l':'e');
+  loadCnt();show(location.hash==='#list'?'l':'h');
 })();
 const ctUrl=p=>`https://api.github.com/repos/${encodeURIComponent(G.owner)}/${encodeURIComponent(G.repo)}/contents/${p.split('/').map(encodeURIComponent).join('/')}`;
 const TEAMS_PATH='data/teams.json';
