@@ -1,1 +1,16 @@
-{"base":{"trade":17,"back":160,"save":0,"cash":100},"log":[]}
+{
+ "base": {
+  "trade": 17,
+  "back": 160,
+  "save": 0,
+  "cash": 100
+ },
+ "log": [
+  {
+   "d": "2026-10-23",
+   "from": "trade",
+   "to": "back",
+   "amt": 5
+  }
+ ]
+}
