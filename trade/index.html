@@ -74,7 +74,7 @@ pre{white-space:pre-wrap;direction:ltr;text-align:left;background:var(--bg);bord
 </head>
 <body>
 <style>#rgate{position:fixed;inset:0;background:#fff;color:#111;overflow-y:auto;z-index:50;padding:16px}#rgate[hidden]{display:none}#rgate h2{text-align:center;margin:0 0 6px}#rgate h3{font-size:14px;color:#666;margin:14px 0 4px}#rgate label{display:flex;gap:10px;align-items:flex-start;border:1px solid #ddd;border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px;cursor:pointer}#rgate input{margin-top:6px;width:18px;height:18px;flex:none}#rgate .go{display:block;width:100%;margin-top:14px;padding:12px;font-weight:700;border:0;border-radius:10px;background:#f6c23e;color:#1a1205}#rgate .go:disabled{opacity:.45}</style>
-<div id="rgate" hidden><h2>قوانین لیگ</h2><p style="text-align:center;color:#666;font-size:14px">هر قانون را بخوان و تیک بزن تا ثبت ترید باز شود.</p><div id="rules"></div><p style="text-align:center;font-size:13px">«کار من اجرای درست است، نه پول درآوردن.»</p><button class="go" id="rgo" disabled>شروع ثبت ترید</button></div>
+<div id="rgate" hidden><h2>قوانین لیگ</h2><div id="rules"></div><p style="text-align:center;font-size:13px">«کار من اجرای درست است، نه پول درآوردن.»</p><button class="go" id="rgo" type="button">بستن</button></div><button type="button" id="rvb">📜 مرور قوانین</button>
 <script>
 var RULES=[["do","فقط ستاپ، نه حس","بدون ستاپ کامل ورود ممنوع؛ هیچ تریدی از روی حوصله، ترس یا هیجان."],
 ["do","صبر تا ناحیه","دنبال قیمت ندو. یا میاد به ناحیه‌ات، یا اصلاً تریدی نیست."],
@@ -87,10 +87,9 @@ var RULES=[["do","فقط ستاپ، نه حس","بدون ستاپ کامل ور�
 ["dont","نکنه تو بازار بی‌تصمیم ترید کنی","رنج، خبر، کندل‌های درهم = صبر."],
 ["dont","نکنه با بقیه مقایسه کنی","مسیر تو، پلکان تو، لیگ تو."]];
 var rg=document.getElementById("rgate"),rgo=document.getElementById("rgo");
-document.getElementById("rules").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<label><input type="checkbox"><span><b>'+r[1]+'</b><br>'+r[2]+'</span></label>'}).join("");
-rg.hidden=false;
-rg.addEventListener("change",function(){rgo.disabled=!!rg.querySelector("input:not(:checked)")});
-rgo.onclick=function(){rg.hidden=true;window.scrollTo(0,0)};
+document.getElementById("rules").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<label><span><b>'+r[1]+'</b><br>'+r[2]+'</span></label>'}).join("");
+document.getElementById('rvb').onclick=function(){rg.hidden=false;rg.scrollTop=0};
+rgo.onclick=function(){rg.hidden=true};
 </script>
 <div class="wrap">
 <a class="back" href="../">← صفحه‌ی اصلی</a>
@@ -400,13 +399,13 @@ $('gl').addEventListener('click',async e=>{
 (function(){
   const wrap=document.querySelector('.wrap');
   const css=document.createElement('style');
-  css.textContent='.box,.gh,.wrap>h1,.wrap>.sub,[data-load]{display:none!important}.hm{display:grid;gap:12px;max-width:520px;margin:18px auto}.hm button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:26px 12px;border-radius:16px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-size:20px;font-weight:800;cursor:pointer}.hm button small{font-size:13px;color:var(--mu);font-weight:500}.hm button.e{background:var(--gold);color:#1a1205;border:0}.hm button.e small{color:#1a1205}.vb{background:none;border:0;color:var(--mu);font:inherit;cursor:pointer;padding:6px 0}#vEntry{max-width:520px;margin:0 auto}#vEntry .f{display:grid;gap:12px}#vEntry label{display:block;font-size:13px;color:var(--mu)}#vEntry input,#vEntry textarea{width:100%;box-sizing:border-box;margin-top:4px;padding:10px;font:inherit;font-size:16px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}.sl{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px;border:1px dashed var(--ln);border-radius:16px;background:var(--card);cursor:pointer;color:var(--tx);font:inherit;width:100%}.sl img{width:120px;height:120px;object-fit:contain}.sl b{font-size:20px}.sl .ph{width:120px;height:120px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--mu)}.seg{display:flex;gap:6px}.seg button{flex:1;padding:11px 4px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.seg button.on{background:var(--gold);color:#1a1205;border-color:var(--gold)}.seg.tf button{font-size:13px}.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}';
+  css.textContent='.box,.gh,.wrap>h1,.wrap>.sub,.wrap>.back,[data-load]{display:none!important}.hm{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 10px;background:var(--bg);border-top:1px solid var(--ln)}#rvb{position:fixed;top:8px;left:8px;z-index:21;background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:20px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}.wrap{padding-bottom:90px}.hm button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-size:16px;font-weight:800;cursor:pointer}.hm button.on{outline:2px solid var(--gold)}.hm button small{font-size:13px;color:var(--mu);font-weight:500}.hm button.e{background:var(--gold);color:#1a1205;border:0}.hm button.e small{color:#1a1205}.vb{background:none;border:0;color:var(--mu);font:inherit;cursor:pointer;padding:6px 0}#vEntry{max-width:520px;margin:0 auto}#vEntry .f{display:grid;gap:12px}#vEntry label{display:block;font-size:13px;color:var(--mu)}#vEntry input,#vEntry textarea{width:100%;box-sizing:border-box;margin-top:4px;padding:10px;font:inherit;font-size:16px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}.sl{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px;border:1px dashed var(--ln);border-radius:16px;background:var(--card);cursor:pointer;color:var(--tx);font:inherit;width:100%}.sl img{width:120px;height:120px;object-fit:contain}.sl b{font-size:20px}.sl .ph{width:120px;height:120px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--mu)}.seg{display:flex;gap:6px}.seg button{flex:1;padding:11px 4px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.seg button.on{background:var(--gold);color:#1a1205;border-color:var(--gold)}.seg.tf button{font-size:13px}.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}';
   document.head.append(css);
   const home=document.createElement('div');home.className='hm';home.id='vHome';
-  home.innerHTML='<button type="button" class="e" data-v="e">➕ ثبت ترید<small>یک ترید در هر بار</small></button><button type="button" data-v="l">📋 تریدهای ثبت‌شده<small id="hcn">…</small></button>';
+  home.innerHTML='<button type="button" class="e" data-v="e">➕ ترید جدید</button><button type="button" data-v="l">📋 فهرست ترید<small id="hcn"></small></button>';
   const entry=document.createElement('div');entry.id='vEntry';entry.hidden=true;
   const list=document.createElement('div');list.id='vList';list.hidden=true;
-  list.innerHTML='<button class="vb" data-v="h">← بازگشت</button><h3>📋 تریدهای ثبت‌شده</h3>';
+  list.innerHTML='<h3>📋 تریدهای ثبت‌شده</h3>';
   list.append($('glist'),$('gl'));$('glist').style.display='none';
   wrap.append(home,$('gs'),entry,list);
   let T;
@@ -414,7 +413,7 @@ $('gl').addEventListener('click',async e=>{
   const seg=(id,o,cur,cls)=>`<div class="seg ${cls||''}" id="${id}">`+o.map(k=>`<button type="button" data-v="${k}" class="${cur===k?'on':''}">${k}</button>`).join('')+'</div>';
   function form(){
     const lg=T.s&&TL[T.s]?`<img src="../${esc(TL[T.s])}" alt="">`:`<div class="ph">${T.s?esc(T.s[0]):'؟'}</div>`;
-    entry.innerHTML=`<button class="vb" data-v="h">← بازگشت</button><div class="f">
+    entry.innerHTML=`<div class="f">
 <button type="button" class="sl" id="fs">${lg}<b>${T.s?esc(T.s):'انتخاب استراتژی'}</b></button>
 <div class="r2"><label>تاریخ<input type="date" id="fdt" value="${T.date}"></label><label>ساعت<input type="time" id="fh" value="${esc(T.h)}"></label></div>
 <label>جهت${seg('fd',['BUY','SELL'],T.d)}</label>
@@ -428,7 +427,7 @@ $('gl').addEventListener('click',async e=>{
   const sync=()=>{if(!$('fp2'))return;T.date=$('fdt').value||T.date;T.h=$('fh').value;T.p=clean($('fp2').value);T.u=clean($('fu2').value);T.n=$('fn').value};
   entry.addEventListener('click',async e=>{
     const b=e.target.closest('button');if(!b)return;
-    if(b.dataset.v==='h'&&b.classList.contains('vb')){show('h');return}
+    if(b.classList.contains('vb')){show('e');return}
     sync();
     const sg=b.closest('.seg');
     if(sg){
@@ -458,14 +457,113 @@ $('gl').addEventListener('click',async e=>{
   const cnt=n=>{$('hcn').textContent=n+' ترید'};
   async function loadCnt(){if(!G.token||!G.owner||!G.repo){$('hcn').textContent='';return}try{cnt((await gread()).rows.length)}catch(e){$('hcn').textContent=''}}
   function show(v){
-    home.hidden=v!=='h';entry.hidden=v!=='e';list.hidden=v!=='l';gsay('');
-    if(v==='e'){T=T||newT();form()}
+    home.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));entry.hidden=v!=='e';list.hidden=v!=='l';gsay('');
+    if(v==='e'){T=T||newT();form();scrollTo(0,0)}
     if(v==='l')glist();
     if(v==='h')loadCnt();
   }
   document.addEventListener('click',e=>{const b=e.target.closest('#vHome button,#vList .vb');if(b)show(b.dataset.v)});
-  if(location.hash==='#list')show('l');else loadCnt();
+  loadCnt();show(location.hash==='#list'?'l':'e');
 })();
+const ctUrl=p=>`https://api.github.com/repos/${encodeURIComponent(G.owner)}/${encodeURIComponent(G.repo)}/contents/${p.split('/').map(encodeURIComponent).join('/')}`;
+const TEAMS_PATH='data/teams.json';
+function openPick(i){
+  let ov=$('pick');if(!ov){ov=document.createElement('div');ov.id='pick';document.body.append(ov)}
+  ov.innerHTML='<div class="pb"><h3>بازی تیم‌ها</h3><p class="hint">برای ویرایش یا حذف، روی تیم نگه دار.</p><div class="pg"></div>'+
+    '<div class="pnew"><input id="pnn" placeholder="نام تیم جدید"><input id="pnl" type="file" accept="image/*"><button type="button" id="pns" class="go">ثبت تیم جدید در سایت</button></div>'+
+    '<div id="pms" class="hint"></div><button type="button" id="pcl" class="alt">بستن</button></div>';
+  ov.hidden=false;
+  paintGrid(i,ov);
+  $('pcl').onclick=()=>ov.hidden=true;
+  $('pns').onclick=()=>pickAdd(i,ov);
+}
+function paintGrid(i,ov){
+  const g=ov.querySelector('.pg');
+  g.innerHTML=TEAMS.map(n=>`<button type="button" class="pt" data-n="${esc(n)}">${TL[n]?`<img src="../${esc(TL[n])}" alt="">`:''}<span>${esc(n)}</span></button>`).join('')||'<p class="hint">هنوز تیمی نیست.</p>';
+  let tm=null,fired=false;
+  g.oncontextmenu=e=>e.preventDefault();
+  g.onpointerdown=e=>{const b=e.target.closest('.pt');if(!b)return;fired=false;clearTimeout(tm);tm=setTimeout(()=>{fired=true;teamMenu(i,ov,b.dataset.n)},550)};
+  const stop=()=>clearTimeout(tm);
+  g.onpointerup=stop;g.onpointerleave=stop;g.onpointercancel=stop;g.onpointermove=stop;
+  g.onclick=e=>{const b=e.target.closest('.pt');if(!b)return;if(fired){fired=false;return}if(window.PICKCB){const f=window.PICKCB;window.PICKCB=null;ov.hidden=true;f(b.dataset.n);return}D.rows[i].s=b.dataset.n;save();render();ov.hidden=true};
+}
+function teamMenu(i,ov,n){
+  let a=$('pact');if(!a){a=document.createElement('div');a.id='pact';document.body.append(a)}
+  a.innerHTML='<div class="pb"><h3>'+esc(n)+'</h3><div class="pa"><button type="button" id="pae" class="go">✏️ ویرایش</button><button type="button" id="pad" class="alt">🗑 حذف</button><button type="button" id="pac" class="alt">انصراف</button></div>'+
+    '<div id="pef" class="pnew" hidden><input id="pen" value="'+esc(n)+'"><input id="pel" type="file" accept="image/*"><button type="button" id="pes" class="go">💾 سیو</button></div><div id="pem" class="hint"></div></div>';
+  a.hidden=false;
+  $('pac').onclick=()=>a.hidden=true;
+  $('pae').onclick=()=>{$('pef').hidden=false};
+  $('pad').onclick=()=>teamDel(i,ov,a,n);
+  $('pes').onclick=()=>teamEdit(i,ov,a,n);
+}
+async function teamsWrite(mut,msg){
+  const tr=await gh('GET',ctUrl(TEAMS_PATH)+'?ref='+encodeURIComponent(G.branch));if(!tr.ok)throw new Error(await gerr(tr));
+  const tj=await tr.json();let list;try{list=JSON.parse(b64d(tj.content))}catch(e){throw new Error('teams.json خراب است؛ دست نزدم.')}
+  if(!Array.isArray(list))throw new Error('teams.json آرایه نیست.');
+  list=mut(list);
+  const pr=await gh('PUT',ctUrl(TEAMS_PATH),{message:msg,content:b64e(JSON.stringify(list,null,2)+'\n'),sha:tj.sha,branch:G.branch});
+  if(!pr.ok)throw new Error(await gerr(pr));
+  return list;
+}
+function syncTeams(list){
+  Object.keys(TL).forEach(k=>delete TL[k]);
+  TEAMS=list.filter(t=>t&&t.name).map(t=>{const n=String(t.name).toUpperCase();if(t.logo)TL[n]=t.logo;return n});
+  fillStrats();
+}
+async function uploadLogo(name,f){
+  const ext=((f.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,''))||'png';
+  const slug=name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'team';
+  const logo='assets/teams/'+slug+'.'+ext;
+  const data=await new Promise((res,rej)=>{const rd=new FileReader();rd.onload=()=>res(rd.result.split(',')[1]);rd.onerror=rej;rd.readAsDataURL(f)});
+  const cur=await gh('GET',ctUrl(logo)+'?ref='+encodeURIComponent(G.branch));
+  const body={message:'لوگوی تیم '+name,content:data,branch:G.branch};
+  if(cur.ok){body.sha=(await cur.json()).sha}
+  const r=await gh('PUT',ctUrl(logo),body);
+  if(!r.ok)throw new Error(await gerr(r));
+  return logo;
+}
+function checkGh(msg){
+  if(!G.token||!G.owner||!G.repo){msg.textContent='اول از صفحه‌ی اصلی ← ⚙️ تنظیمات، اتصال گیت‌هاب را ذخیره کن.';return false}
+  return true;
+}
+async function teamDel(i,ov,a,n){
+  const msg=$('pem');if(!checkGh(msg))return;
+  if(!confirm('آیا مطمئنی می‌خوای '+n+' را برای همیشه حذف کنی؟'))return;
+  msg.textContent='در حال حذف…';
+  try{
+    const list=await teamsWrite(l=>l.filter(t=>!(t&&String(t.name).toUpperCase()===n)),'حذف تیم '+n);
+    syncTeams(list);a.hidden=true;paintGrid(i,ov);
+  }catch(e){msg.textContent='❌ '+e.message}
+}
+async function teamEdit(i,ov,a,n){
+  const msg=$('pem'),name=$('pen').value.trim().toUpperCase(),f=$('pel').files[0];
+  if(!checkGh(msg))return;
+  if(!name){msg.textContent='نام تیم را وارد کن.';return}
+  if(name!==n&&TEAMS.some(x=>x===name)){msg.textContent='این اسم قبلاً ثبت شده.';return}
+  msg.textContent='در حال ذخیره…';
+  try{
+    let logo=null;if(f)logo=await uploadLogo(name,f);
+    const list=await teamsWrite(l=>{const k=l.find(t=>t&&String(t.name).toUpperCase()===n);if(!k)throw new Error('تیم در فایل پیدا نشد.');k.name=name;if(logo)k.logo=logo;return l},'ویرایش تیم '+n+' → '+name);
+    syncTeams(list);
+    D.rows.forEach(r=>{if(r.s===n)r.s=name});save();render();
+    a.hidden=true;paintGrid(i,ov);
+  }catch(e){msg.textContent='❌ '+e.message}
+}
+async function pickAdd(i,ov){
+  const msg=$('pms'),name=$('pnn').value.trim().toUpperCase(),f=$('pnl').files[0];
+  if(!checkGh(msg))return;
+  if(!name){msg.textContent='نام تیم را وارد کن.';return}
+  if(TEAMS.some(n=>n===name)){msg.textContent='این تیم قبلاً ثبت شده.';return}
+  const btn=$('pns');btn.disabled=true;msg.textContent='در حال ذخیره…';
+  try{
+    const logo=f?await uploadLogo(name,f):'';
+    const list=await teamsWrite(l=>{if(l.some(t=>t&&String(t.name).toUpperCase()===name))throw new Error('این تیم قبلاً ثبت شده.');l.push({name,color:'#888888',logo:logo});return l},'افزودن تیم '+name);
+    syncTeams(list);D.rows[i].s=name;save();render();ov.hidden=true;
+  }catch(e){msg.textContent='❌ '+e.message}finally{btn.disabled=false}
+}
+
+render();
 </script>
 </body>
 </html>
