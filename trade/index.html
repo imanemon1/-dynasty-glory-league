@@ -106,7 +106,7 @@ pre{white-space:pre-wrap;direction:ltr;text-align:left;background:var(--bg);bord
 <div class="gh">
 <h3>💾 ذخیره‌ی مستقیم در سایت</h3>
 <p class="hint" style="margin:0 0 6px">با «ذخیره»، تریدهای همین روز مستقیم در <code>data/trades.json</code> گیت‌هاب ثبت می‌شوند و جدول‌ها و آمار سایت چند دقیقه‌ی بعد به‌روز می‌شوند. ذخیره‌ی دوباره‌ی همان تاریخ، جایگزین قبلی می‌شود.</p>
-<div class="btns"><button class="go" type="button" id="gsave">💾 ذخیره در سایت</button><button class="alt" type="button" id="glist">📋 روزهای ذخیره‌شده</button></div>
+<div class="btns"><button class="go" type="button" id="gsave">💾 ذخیره در سایت</button><button class="alt" type="button" id="glist">📋 فهرست همه‌ی تریدها</button></div>
 <div id="gs"></div>
 <div id="gl"></div>
 <details id="gset"><summary>⚙️ تنظیم اتصال به گیت‌هاب</summary>
@@ -338,7 +338,7 @@ function checkRows(){
 $('gsave').onclick=async()=>{
   if(!ready()||!checkRows())return;
   const list=toTrades(),date=D.date,unk=[...new Set(list.map(t=>t.team).filter(t=>!known(t)))];
-  const old=null;
+  
   if(!confirm('ذخیره‌ی '+list.length+' ترید برای '+date+' در سایت؟\n(اگر برای این تاریخ قبلاً ذخیره کرده‌ای، جایگزین می‌شود.)'+(unk.length?'\n\n⚠️ این نام‌ها جزو تیم‌های لیگ نیستند: '+unk.join('، '):'')))return;
   const b=$('gsave');b.disabled=true;gsay('در حال ذخیره…');
   try{
@@ -354,8 +354,12 @@ async function glist(){
     const {rows}=await gread();gsay('');
     const days={};rows.forEach(t=>(days[t.date]=days[t.date]||[]).push(t));
     const ds=Object.keys(days).sort().reverse();
-    $('gl').innerHTML=ds.length?ds.map(d=>{const L=days[d],u=r2(L.reduce((a,t)=>a+(+t.usd||0),0));
-      return `<div class="row"><span><b>${d}</b> · ${L.length} ترید · ${u>0?'+':''}${u}$</span><span><button data-load="${d}">✏️ باز کردن</button> <button class="x" data-del="${d}">🗑 حذف</button></span></div>`}).join(''):'<p class="hint">هنوز چیزی ذخیره نشده.</p>';
+    const cnt=L=>{const c={};L.forEach(t=>c[t.res]=(c[t.res]||0)+1);return Object.entries(c).map(([k,v])=>k+' '+v).join(' · ')};
+    const tot=r2(rows.reduce((a,t)=>a+(+t.usd||0),0));
+    $('gl').innerHTML=ds.length?`<p class="hint"><b>مجموع: ${rows.length} ترید در ${ds.length} روز · ${tot>0?'+':''}${tot}$</b></p>`+ds.map(d=>{const L=days[d],u=r2(L.reduce((a,t)=>a+(+t.usd||0),0));
+      return `<details class="row" style="display:block"><summary><b>${d}</b> · ${L.length} ترید · ${u>0?'+':''}${u}$ <small>(${cnt(L)})</small></summary>`+
+      L.map(t=>`<div class="row"><span>#${t.no} · ${t.team} · ${t.dir||''} · ${t.res} · ${t.pips}p · ${t.usd}$</span><button class="x" data-d1="${d}" data-n1="${t.no}">🗑</button></div>`).join('')+
+      `<div class="btns"><button data-load="${d}">✏️ باز کردن و ویرایش/افزودن</button> <button class="x" data-del="${d}">🗑 حذف کل روز</button></div></details>`}).join(''):'<p class="hint">هنوز چیزی ذخیره نشده.</p>';
     $('gl').dataset.rows=JSON.stringify(rows);
   }catch(e){gsay('❌ '+e.message,'er')}}
 $('glist').onclick=glist;
@@ -369,6 +373,11 @@ $('gl').addEventListener('click',async e=>{
     while(D.rows.length<N)D.rows.push(blank());
     save();$('start').value=D.start;$('date').value=D.date;showFa();render();scrollTo({top:0,behavior:'smooth'});
     gsay('تریدهای '+d+' در برگه باز شد؛ اصلاح کن و «ذخیره در سایت» بزن.','ok');
+  }else if(b.dataset.d1){
+    const d=b.dataset.d1,n=+b.dataset.n1;
+    if(!confirm('ترید '+n+' از '+d+' حذف شود؟'))return;
+    gsay('در حال حذف…');
+    try{await gwrite(r=>r.filter(t=>!(t.date===d&&t.no===n)),'حذف ترید '+n+' از '+d);gsay('🗑 حذف شد.','ok');glist()}catch(er){gsay('❌ '+er.message,'er')}
   }else if(b.dataset.del){
     const d=b.dataset.del;
     if(!confirm('همه‌ی تریدهای '+d+' از سایت حذف شوند؟'))return;

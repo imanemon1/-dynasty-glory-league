@@ -422,6 +422,7 @@ button,.go{min-height:44px}
 .ltw tbody tr:hover td{background:#F5F8FD!important}
 .ltw .tn{color:#0B1220!important;letter-spacing:.01em}
 </style>
+<style>.wx{margin:14px 6px 4px;padding:12px;border-radius:14px;background:#0a1f44;color:#f4ead0;font-size:13px}.wx b{display:block;margin:6px 0}.wx .r{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.wx select,.wx input{flex:1 1 90px;min-width:0;padding:8px;border-radius:8px;border:1px solid #2a4a85;background:#041331;color:#fff;font:inherit}.wx button{padding:8px 14px;border-radius:8px;border:0;background:#f6c744;color:#241a00;font:inherit;font-weight:800}.wx .sv{width:100%;margin-top:8px;padding:11px}.wx .wl{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1d3768}.wx .wl button{background:#6b1d1d;color:#fff;padding:2px 8px}#wms{margin-top:6px;font-size:12px;color:#ffe9a8}</style>
 </head>
 <body>
 <div id="gate"><div class="g">
@@ -531,14 +532,40 @@ return'<div class="lr '+c+'"><span class="no">'+pdg(st.n)+'</span><div class="lb
 h+='<div class="ft"><img class="tg" src="'+A+'target.webp" alt=""><span class="fsep"></span><span class="ftt"><small>پله‌ی فعلی'+(cur?' · '+pdg(cur.n):'')+'</small>'+(cur?cur.name:'هنوز شروع نشده')+'</span></div>';
 document.getElementById("lad").innerHTML=h;
 }
-function wload(){try{return JSON.parse(localStorage.getItem("dgl_wallet"))||{}}catch(e){return{}}}
-function wallet(pr){var sv=wload(),tot=0,h="",bar="";
-WD.forEach(function(w){w.cur=(sv[w.k]!=null?+sv[w.k]:w.v)+(w.k=="trade"?pr:0);tot+=w.cur});
-WD.forEach(function(w){h+='<div class="wc" style="--c:'+w.c+'" data-k="'+w.k+'"><div class="tx"><span class="nm">'+w.nm+'</span><span class="sb">'+(w.k=="trade"&&pr?(pr>0?"+":"")+Math.round(pr*100)/100+'$ از ترید':w.sb)+'</span><b>$'+(Math.round(w.cur*100)/100)+'</b></div><img class="im" src="assets/wallet/'+w.ic+'.webp" alt=""><div class="go">ویرایش مقدار</div></div>';bar+='<i style="width:'+(tot>0?w.cur/tot*100:0)+'%;background:linear-gradient(90deg,'+w.c+','+w.c+'cc)"></i>'});
+var WS={base:{},log:[]},PR=0,WMSG="";
+function wcur(k){var w=WD.filter(function(x){return x.k==k})[0],v=WS.base[k]!=null?+WS.base[k]:w.v;if(k=="trade")v+=PR;WS.log.forEach(function(e){if(e.from==k)v-=e.amt;if(e.to==k)v+=e.amt});return v}
+function wr(x){return Math.round(x*100)/100}
+function wnum(s){return parseFloat(String(s).replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace(/[٫,]/g,"."))}
+function wnm(k){return WD.filter(function(x){return x.k==k})[0].nm}
+function wallet(pr){if(pr!=null)PR=pr;var tot=0,h="",bar="";
+WD.forEach(function(w){w.cur=wcur(w.k);tot+=w.cur});
+WD.forEach(function(w){h+='<div class="wc" style="--c:'+w.c+'" data-k="'+w.k+'"><div class="tx"><span class="nm">'+w.nm+'</span><span class="sb">'+(w.k=="trade"&&PR?(PR>0?"+":"")+wr(PR)+'$ از ترید':w.sb)+'</span><b>$'+wr(w.cur)+'</b></div><img class="im" src="assets/wallet/'+w.ic+'.webp" alt=""><div class="go">ویرایش مقدار</div></div>';bar+='<i style="width:'+(tot>0?Math.max(0,w.cur)/tot*100:0)+'%;background:linear-gradient(90deg,'+w.c+','+w.c+'cc)"></i>'});
+var opt=WD.map(function(w){return'<option value="'+w.k+'">'+w.nm+'</option>'}).join("");
+var lg=WS.log.map(function(e,i){return'<div class="wl"><span>'+e.d+' · '+(e.from?wnm(e.from)+' ← ':'شارژ ')+wnm(e.to)+' · $'+wr(e.amt)+'</span><button type="button" data-ld="'+i+'">✕</button></div>'}).join("")||'<div class="wl">هنوز انتقال یا شارژی ثبت نشده.</div>';
 var e=document.getElementById("wal");
-e.innerHTML='<div class="hd"><img class="cn l" src="assets/wallet/coins1.webp" alt=""><img class="cn r" src="assets/wallet/coins2.webp" alt=""><div class="tl">👑 دارایی کل 👑</div><div class="big">$'+(Math.round(tot*100)/100)+'</div><div class="gn '+(pr>=0?"p":"n")+'">'+(pr>=0?"▲ ":"▼ ")+Math.abs(Math.round(pr*100)/100)+'$ سود/زیان تریدهای لیگ</div></div><div class="wb">'+h+'</div><div class="wbar">'+bar+'</div><div class="wh">🚀 سود تریدها <b>خودکار</b> به حساب تریدینگ اضافه می‌شود</div>';
+e.innerHTML='<div class="hd"><img class="cn l" src="assets/wallet/coins1.webp" alt=""><img class="cn r" src="assets/wallet/coins2.webp" alt=""><div class="tl">👑 دارایی کل 👑</div><div class="big">$'+wr(tot)+'</div><div class="gn '+(PR>=0?"p":"n")+'">'+(PR>=0?"▲ ":"▼ ")+Math.abs(wr(PR))+'$ سود/زیان تریدهای لیگ</div></div><div class="wb">'+h+'</div><div class="wbar">'+bar+'</div><div class="wh">🚀 سود و زیان هر ترید <b>خودکار</b> روی حساب تریدینگ اعمال می‌شود</div>'+
+'<div class="wx"><b>🔁 انتقال بین حساب‌ها</b><div class="r"><select id="wxf">'+opt+'</select><span>←</span><select id="wxt">'+opt.replace('value="back"','value="back" selected')+'</select><input id="wxa" type="text" inputmode="decimal" placeholder="مبلغ $"><button type="button" id="wxb">انتقال</button></div>'+
+'<b>➕ شارژ / برداشت</b><div class="r"><select id="wdt">'+opt.replace('value="cash"','value="cash" selected')+'</select><input id="wda" type="text" inputmode="decimal" placeholder="مبلغ $ (منفی = برداشت)"><button type="button" id="wdb">ثبت</button></div>'+
+'<details><summary>تاریخچه (' +WS.log.length+')</summary>'+lg+'</details>'+
+'<button type="button" class="sv" id="wsv">💾 ذخیره برای همه‌ی دستگاه‌ها</button><div id="wms">'+WMSG+'</div></div>';
 ladder(WD[1].cur,WD[0].cur);
-e.querySelectorAll(".wc").forEach(function(c){c.onclick=function(){var k=c.getAttribute("data-k"),w=WD.filter(function(x){return x.k==k})[0];var cur=sv[k]!=null?sv[k]:w.v;var v=prompt("مقدار پایه‌ی «"+w.nm+"» (دلار):",cur);if(v==null)return;v=parseFloat(String(v).replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}));if(isNaN(v))return;sv[k]=v;localStorage.setItem("dgl_wallet",JSON.stringify(sv));wallet(pr)}})}
+var today=function(){return new Date().toISOString().slice(0,10)};
+e.querySelectorAll(".wc").forEach(function(c){c.onclick=function(){var k=c.getAttribute("data-k"),w=WD.filter(function(x){return x.k==k})[0];var v=prompt("موجودی فعلی «"+w.nm+"» (دلار):",wr(w.cur));if(v==null)return;v=wnum(v);if(isNaN(v))return;WS.base[k]=(WS.base[k]!=null?+WS.base[k]:w.v)+(v-w.cur);WMSG="تغییر ذخیره نشده؛ «ذخیره» را بزن.";wallet()}});
+document.getElementById("wxb").onclick=function(){var f=document.getElementById("wxf").value,t=document.getElementById("wxt").value,a=wnum(document.getElementById("wxa").value);if(f==t||!(a>0)){WMSG="مبدأ و مقصد باید فرق کنند و مبلغ مثبت باشد.";wallet();return}WS.log.push({d:today(),from:f,to:t,amt:a});WMSG="انتقال اعمال شد؛ ذخیره نشده.";wallet()};
+document.getElementById("wdb").onclick=function(){var t=document.getElementById("wdt").value,a=wnum(document.getElementById("wda").value);if(isNaN(a)||!a){WMSG="مبلغ را درست وارد کن.";wallet();return}WS.log.push({d:today(),to:t,amt:a});WMSG="شارژ اعمال شد؛ ذخیره نشده.";wallet()};
+e.querySelectorAll("[data-ld]").forEach(function(b){b.onclick=function(){if(confirm("این مورد حذف شود؟")){WS.log.splice(+b.getAttribute("data-ld"),1);WMSG="حذف شد؛ ذخیره نشده.";wallet()}}});
+document.getElementById("wsv").onclick=wsave}
+function wsave(){var g={};try{g=JSON.parse(localStorage.getItem("dgl_gh"))||{}}catch(x){}
+if(/\.github\.io$/.test(location.hostname)&&!g.owner){g.owner=location.hostname.split(".")[0];g.repo=location.pathname.split("/")[1]||g.owner+".github.io"}
+var m=document.getElementById("wms");
+if(!g.token||!g.owner||!g.repo){m.textContent="اول در صفحه‌ی ثبت ترید (trade) تنظیم اتصال گیت‌هاب را روی همین دستگاه انجام بده.";return}
+var br=g.branch||"main",u="https://api.github.com/repos/"+g.owner+"/"+g.repo+"/contents/data/wallet.json",H={Authorization:"Bearer "+g.token,Accept:"application/vnd.github+json","Content-Type":"application/json"};
+m.textContent="در حال ذخیره…";
+function go(n){return fetch(u+"?ref="+encodeURIComponent(br)+"&t="+Date.now(),{headers:H,cache:"no-store"}).then(function(r){return r.status==404?{}:r.ok?r.json():Promise.reject(new Error("خواندن ناموفق "+r.status))}).then(function(j){
+var body={message:"به‌روزرسانی کیف پول",branch:br,content:btoa(unescape(encodeURIComponent(JSON.stringify({base:WS.base,log:WS.log},null,1)+"\n")))};if(j.sha)body.sha=j.sha;
+return fetch(u,{method:"PUT",headers:H,body:JSON.stringify(body)}).then(function(r){if(r.ok)return 1;if((r.status==409||r.status==422)&&n<2)return go(n+1);return Promise.reject(new Error("ذخیره ناموفق "+r.status+(r.status==401||r.status==403?" (توکن/دسترسی)":"")))})})}
+go(0).then(function(){WMSG="✅ ذخیره شد؛ روی همه‌ی دستگاه‌ها تا چند دقیقه‌ی دیگر دیده می‌شود.";wallet()}).catch(function(x){m.textContent="❌ "+x.message})}
+try{fetch("data/wallet.json?v="+Date.now()).then(function(r){return r.ok?r.json():0}).then(function(j){if(j&&j.base){WS.base=j.base;WS.log=j.log||[];wallet()}}).catch(function(){})}catch(e){}
 var LG={start:"2026-10-26",weeks:8};
 var CUPS=[{d:20,n:"جام نیم‌فصل",img:"assets/cups/cup-20.webp"},{d:30,n:"جام ۳۰ روزه",img:"assets/cups/cup-30.webp"},{d:40,n:"جام بزرگ",img:"assets/cups/cup-40.webp"}];
 function lgTime(){var total=LG.weeks*5,s=new Date(LG.start+"T00:00:00"),n=new Date();n.setHours(0,0,0,0);
