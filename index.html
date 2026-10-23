@@ -431,13 +431,6 @@ button,.go{min-height:44px}
 <style>.wx{margin:14px 6px 4px;padding:12px;border-radius:14px;background:#0a1f44;color:#f4ead0;font-size:13px}.wx b{display:block;margin:6px 0}.wx .r{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.wx select,.wx input{flex:1 1 90px;min-width:0;padding:8px;border-radius:8px;border:1px solid #2a4a85;background:#041331;color:#fff;font:inherit}.wx button{padding:8px 14px;border-radius:8px;border:0;background:#f6c744;color:#241a00;font:inherit;font-weight:800}.wx .sv{width:100%;margin-top:8px;padding:11px}.wx .wl{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1d3768}.wx .wl button{background:#6b1d1d;color:#fff;padding:2px 8px}#wms{margin-top:6px;font-size:12px;color:#ffe9a8}</style>
 </head>
 <body>
-<div id="gate"><div class="g">
-<h2>قوانین لیگ</h2>
-<p class="sub">هر قانون را بخوان و تیک بزن تا وارد لیگ شوی.</p>
-<div id="rules"></div>
-<p class="q">«کار من اجرای درست است، نه پول درآوردن.»</p>
-<button class="go" id="go" disabled>ورود به لیگ</button>
-</div></div>
 
 <div id="tp"><div class="pw" id="tpb"></div></div>
 <div id="rv"><div class="g"><h2>مرور قوانین</h2><div id="rvl"></div><button class="go" id="rvc" style="margin-top:16px">بستن</button></div></div>
@@ -453,12 +446,12 @@ button,.go{min-height:44px}
 <button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw">📰 اخبار</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین و مرور</button>
-<a class="tab tlink" href="trade/" style="text-decoration:none">➕ ثبت مسابقه</a>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr">➕ ثبت ترید</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
 </nav>
 <div id="p-lg" class="tpanel" data-p="lg"><section><div class="sec">🏟 سه تیم برتر</div>
 <div id="podium"><div class="stage" id="stage"></div></div></section>
@@ -473,16 +466,6 @@ button,.go{min-height:44px}
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
 <div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div><div id="tmf" class="tmf" hidden><b>➕ تیم جدید</b><input id="tmn_in" placeholder="اسم تیم (انگلیسی)" maxlength="40"><input id="tmc_in" type="color" value="#888888"><input id="tmlogo" type="file" accept="image/*"><button id="tmsv" onclick="tmSave()">ذخیره</button><div id="tmm" class="hint"></div></div></section></div>
-<div id="p-st" class="tpanel" data-p="st" hidden><section><div class="sec">⚙️ تنظیمات اتصال به گیت‌هاب<small>فقط روی همین دستگاه ذخیره می‌شود</small></div>
-<div class="stf">
-<label>Token<input id="gtok" type="password" autocomplete="off" placeholder="github_pat_..."></label>
-<label>Owner (نام کاربری یا سازمان)<input id="gown"></label>
-<label>Repository<input id="grep"></label>
-<label>Branch<input id="gbr" value="main"></label>
-<label>مسیر فایل ترید‌ها<input id="gpath" value="data/trades.json"></label>
-<button type="button" id="gsv" class="go">ذخیره‌ی تنظیمات</button>
-<div id="gsm" class="hint"></div>
-</div></section></div>
 <div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
 <div class="lad" id="lad"></div>
 </section></div>
@@ -495,6 +478,17 @@ button,.go{min-height:44px}
 <button class="go" type="button" onclick="openRules()" style="margin:0 0 12px">📖 مرور قوانین</button>
 <p class="note">POINT = PIPS + (TP × 5) + (CLOSE × 2) − SL. دلار در امتیاز نیست و فقط ارزش تیم را نشان می‌دهد.</p>
 <p class="note">پله‌ی بعد وقتی باز می‌شود که حساب پشتیبان و حساب تریدینگ هر دو به حد پله برسند.</p></section></div>
+<div id="p-tr" class="tpanel" data-p="tr" hidden><section><div class="sec">➕ ثبت ترید<small>تریدهای امروز را همین‌جا ثبت کن</small></div><iframe id="trf" title="ثبت ترید" style="width:100%;height:82vh;min-height:620px;border:0;border-radius:12px;background:#fff"></iframe></section></div>
+<div id="p-st" class="tpanel" data-p="st" hidden><section><div class="sec">⚙️ تنظیمات اتصال به گیت‌هاب<small>فقط روی همین دستگاه ذخیره می‌شود</small></div>
+<div class="stf">
+<label>Token<input id="gtok" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+<label>Owner (نام کاربری یا سازمان)<input id="gown"></label>
+<label>Repository<input id="grep"></label>
+<label>Branch<input id="gbr" value="main"></label>
+<label>مسیر فایل ترید‌ها<input id="gpath" value="data/trades.json"></label>
+<button type="button" id="gsv" class="go">ذخیره‌ی تنظیمات</button>
+<div id="gsm" class="hint"></div>
+</div></section></div>
 </div>
 
 <script>
@@ -654,11 +648,6 @@ wallet(TS.reduce(function(a,t){return a+(+t.usd||0)},0));
 if(tp&&/^#team=/.test(location.hash))route();
 }
 
-var gate=document.getElementById("gate"),go=document.getElementById("go");
-document.getElementById("rules").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<label><input type="checkbox"><span><b>'+r[1]+'</b><br>'+r[2]+'</span></label>'}).join("");
-function chk(){go.disabled=!!gate.querySelector("input:not(:checked)")}
-gate.addEventListener("change",chk);
-go.onclick=function(){gate.classList.add("off")};
 var rv=document.getElementById("rv");
 document.getElementById("rvl").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<div class="rvi"><b>'+r[1]+'</b><br>'+r[2]+'</div>'}).join("");
 window.openRules=function(){rv.classList.add("on");rv.scrollTop=0};
@@ -730,5 +719,6 @@ setInterval(show,6e4);
     localStorage.setItem(K,JSON.stringify(o));g=o;document.getElementById('gsm').textContent='✅ تنظیمات ذخیره شد.'};
 })();
 </script>
+<script>document.querySelector('[data-t="tr"]').addEventListener("click",function(){document.getElementById("trf").src="trade/?embed=1&_="+Date.now()});</script>
 </body>
 </html>
