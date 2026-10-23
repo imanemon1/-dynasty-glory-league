@@ -44,6 +44,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 .go:disabled{opacity:.4;cursor:not-allowed}
 #rv{position:fixed;inset:0;background:var(--bg);overflow-y:auto;z-index:10;padding:calc(18px + env(safe-area-inset-top,0px)) 14px 24px;display:none}
 #rv.on{display:block}
+.fm{display:flex;gap:3px;margin-top:5px;flex-wrap:nowrap}.fm i{width:9px;height:9px;border-radius:50%;background:#d1d5db;flex:none}
+tr[data-team],.step[data-team]{cursor:pointer}
+#tp{position:fixed;inset:0;background:var(--bg);color:var(--tx);overflow-y:auto;z-index:11;padding:calc(18px + env(safe-area-inset-top,0px)) 14px 24px;display:none}#tp.on{display:block}
+#tp .pw{max-width:560px;margin:0 auto}#tp h2{margin:8px 0 2px;text-align:center}
+#tp .ph{text-align:center;border-top:4px solid var(--c);padding-top:10px}#tp .cr.lg{width:110px;height:110px;margin:0 auto}
+#tp .kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}#tp .kv div{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px;text-align:center}#tp .kv small{display:block;color:var(--mu)}
+#tp .fm{justify-content:center;gap:6px}#tp .fm i{width:20px;height:20px;background:var(--ln)}
+#tp h4{margin:14px 0 6px;color:var(--gold)}#tp .tl{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:13px}#tp .tl b{margin-inline-start:auto}
+#tp .go{width:100%;margin-top:14px}
 .rvi{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px}
 
 .lad{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:12px}
@@ -395,6 +404,7 @@ button,.go{min-height:44px}
 <button class="go" id="go" disabled>ورود به لیگ</button>
 </div></div>
 
+<div id="tp"><div class="pw" id="tpb"></div></div>
 <div id="rv"><div class="g"><h2>مرور قوانین</h2><div id="rvl"></div><button class="go" id="rvc" style="margin-top:16px">بستن</button></div></div>
 
 <div class="wrap">
@@ -450,6 +460,18 @@ fetch("data/teams.json?v="+Date.now()).then(function(r){return r.ok?r.json():0})
 function zero(){return NAMES.map(function(n){return{n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}})}
 function calc(t){var play=t.sl+t.risk+t.close+t.tp,pips=t.pp-t.pn;
 return{n:t.n,sl:t.sl,risk:t.risk,close:t.close,tp:t.tp,play:play,win:play?t.tp/play*100:0,rr:t.pn?t.pp/t.pn:0,pips:pips,usd:t.qp-t.qn,pt:pips+t.tp*5+t.close*2-t.sl}}
+var TR=[],CS=0,G={},tp=null;
+fetch("data/trades.json?v="+Date.now()).then(function(r){return r.ok?r.json():[]}).then(function(j){if(j&&j.length){TR=j;render()}}).catch(function(){});
+function dn(d){var m=/^(\d+)-(\d+)-(\d+)/.exec(d);return m?Math.floor(Date.UTC(+m[1],m[2]-1,+m[3])/864e5):NaN}
+function esc(x){return String(x).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var SKIP={};function trades(){var sd=dn(LG.start),out=[],lc={};NAMES.forEach(function(n){lc[n.toLowerCase()]=n});TR.forEach(function(t){var d=dn(t.date),cn=lc[String(t.team||"").trim().toLowerCase()];if(cn)t.team=cn;if(d>=sd&&cn){t._d=d;t._s=Math.floor((d-sd)/(LG.weeks*7));out.push(t)}else{var sk=t.date+"#"+t.no;if(!SKIP[sk]){SKIP[sk]=1;console.info("trade skipped",t.date,t.no,t.team)}}});return out.sort(function(a,b){return a._d-b._d||a.no-b.no})}
+function agg(list){var m={};NAMES.forEach(function(n){m[n]={n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}});
+list.forEach(function(t){var x=m[t.team];if(!x)return;var k={TP:"tp",CLOSE:"close",RISK:"risk",SL:"sl"}[t.res];if(k)x[k]++;var p=+t.pips||0,q=+t.usd||0;if(p>0)x.pp+=p;else x.pn-=p;if(q>0)x.qp+=q;else x.qn-=q});
+return NAMES.map(function(n){return m[n]})}
+function rank(l){return l.map(calc).sort(function(a,b){return (b.play>0)-(a.play>0)||b.pt-a.pt||b.win-a.win})}
+function cupDay(s,d){var x=new Date(Date.UTC(1970,0,1)+(dn(LG.start)+s*LG.weeks*7)*864e5),c=0,n=dn(LG.start)+s*LG.weeks*7;while(1){var g=new Date(n*864e5).getUTCDay();if(g>0&&g<6)c++;if(c>=d)return n;n++}}
+function cupLeader(s,d,TS){var cd=cupDay(s,d),l=TS.filter(function(t){return t._s==s&&t._d<=cd});if(!l.length)return null;return rank(agg(l))[0].n}
+function awards(r){var by=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]>b[k]))b=x});return b},sl=null;r.forEach(function(x){if(x.play&&(!sl||x.sl<sl.sl))sl=x});return[r[0]&&r[0].play?r[0]:null,by("win"),sl,by("rr")]}
 function cls(v){return v<0?"neg":v>0?"pos":""}
 function f(v,d){return v.toFixed(d||0)}
 var WD=[{k:"trade",ic:"chart",sb:"معاملات هوشمندانه",nm:"حساب تریدینگ",v:17,c:"#f6c744"},{k:"back",ic:"bank",sb:"امنیت سرمایه شما",nm:"حساب پشتیبان",v:160,c:"#4aa3ff"},{k:"save",ic:"pig",sb:"آینده روشن‌تر",nm:"پس‌انداز دلاری",v:0,c:"#c77dff"},{k:"cash",ic:"cash",sb:"سرمایه در دسترس",nm:"دلار نقد",v:100,c:"#5fd68e"}];
@@ -493,41 +515,49 @@ var LG={start:"2026-10-26",weeks:8};
 var CUPS=[{d:20,n:"جام نیم‌فصل",img:"assets/cups/cup-20.webp"},{d:30,n:"جام ۳۰ روزه",img:"assets/cups/cup-30.webp"},{d:40,n:"جام بزرگ",img:"assets/cups/cup-40.webp"}];
 function lgTime(){var total=LG.weeks*5,s=new Date(LG.start+"T00:00:00"),n=new Date();n.setHours(0,0,0,0);
 var fa=function(d){return d.toLocaleDateString("fa-IR-u-ca-persian",{day:"numeric",month:"long"})},td=fa(new Date());
-var e=new Date(s);e.setDate(e.getDate()+LG.weeks*7-3);
+s.setDate(s.getDate()+CS*LG.weeks*7);var e=new Date(s);e.setDate(e.getDate()+LG.weeks*7-3);
 if(n<s){var dd=Math.round((s-n)/864e5);return{before:1,day:0,total:total,pct:0,msg:"⏳ شروع لیگ: "+fa(s)+" ("+dd+" روز مانده) (امروز: "+td+" · پایان: "+fa(e)+")"}}
 var day=0,x=new Date(s);while(x<=n&&day<total){var g=x.getDay();if(g>0&&g<6)day++;x.setDate(x.getDate()+1)}
 var wk=Math.min(Math.ceil(day/5),LG.weeks);
-return{before:0,day:day,total:total,pct:day/total*100,msg:day>=total?"🏁 لیگ تمام شد ("+fa(e)+")":"("+"هفته "+wk+" از "+LG.weeks+" · امروز: "+td+" · پایان: "+fa(e)+" · "+(total-day)+" روز معاملاتی مانده)"}}
+return{before:0,day:day,total:total,pct:day/total*100,msg:day>=total?"🏁 فصل "+(CS+1)+" تمام شد ("+fa(e)+")":"("+"هفته "+wk+" از "+LG.weeks+" · امروز: "+td+" · پایان: "+fa(e)+" · "+(total-day)+" روز معاملاتی مانده)"}}
 fetch("data/league.json").then(function(r){return r.ok?r.json():0}).then(function(j){if(j&&j.start){LG.start=j.start;LG.weeks=j.weeks||8;render()}}).catch(function(){});
+var AWI=-1;
+function awFill(i){var p=document.getElementById("awp"),a=G.A[i],L=G.hr.filter(function(h){return h.a[i]>0}),cr=window.CR;p.innerHTML='<div class="awh">'+a[0]+' '+a[1]+' — '+a[2]+'</div>'+(L.length?L.map(function(h){return'<div class="awr">'+cr(h.n,"sm")+'<span>'+esc(h.n)+'</span><em>'+h.a[i]+'</em></div>'}).join(""):'<div class="awe">هنوز تیمی این جایزه را نگرفته</div>')}
+window.awOpen=function(i){var p=document.getElementById("awp");if(AWI===i){AWI=-1;p.innerHTML="";return}AWI=i;awFill(i)};
+var RC={TP:"#3fbf7a",CLOSE:"#4aa3ff",RISK:"#f6c744",SL:"#ef5b5b"};
+function dots(n,TS){var l=TS.filter(function(t){return t.team==n}).slice(-5).reverse(),h='<div class="fm" dir="ltr">';for(var i=0;i<5;i++){var t=l[i];h+=t?'<i style="background:'+RC[t.res]+'" title="'+t.res+'"></i>':'<i></i>'}return h+'</div>'}
 function render(){
-var r=teams.map(calc).sort(function(a,b){return b.pt-a.pt||b.win-a.win}),tot=0;
+var TS=trades(),W7=LG.weeks*7,SD=dn(LG.start),nw=new Date(),TD=Math.floor(Date.UTC(nw.getFullYear(),nw.getMonth(),nw.getDate())/864e5);
+CS=Math.max(0,Math.floor((TD-SD)/W7));
+var r=rank(agg(TS.filter(function(t){return t._s==CS}))),tot=0;
 r.forEach(function(x){tot+=x.play});
 var T=lgTime(),pc=T.pct;
-document.getElementById("tot").textContent=T.before?"":"روز "+T.day+" از "+T.total;
+document.getElementById("tot").textContent=T.before?"":(CS?"فصل "+(CS+1)+" · ":"")+"روز "+T.day+" از "+T.total;
 document.getElementById("fill").style.width=pc+"%";
 var bar=document.getElementById("bar");bar.querySelectorAll(".mk").forEach(function(e){e.remove()});
 CUPS.forEach(function(c){var e=document.createElement("div");e.className="mk"+(T.day>=c.d?" on":"");e.style.right=(c.d/T.total*100)+"%";e.textContent=c.d;bar.appendChild(e)});
 document.getElementById("lgi").innerHTML=T.msg;document.getElementById("ldr").textContent=tot>0?"👑 پیشتاز: "+r[0].n:"پیشتاز: هنوز مشخص نیست";
-var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+n+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+n.replace("-","")+'</span>'};
+var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+esc(n)+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>'};
 try{document.getElementById("rows").innerHTML=r.map(function(x,i){
 var z=!tot?"":i==0?"z1":i==1?"z2":"";
-return'<tr class="'+z+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+x.n+'</div></div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
-var lead=tot>0?r[0].n:"—";
-document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d;return'<tr class="'+(on&&tot>0?"z1":"")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(on&&tot>0?'<div class="team">'+cr(lead)+'<div><div class="tn">'+lead+'</div></div></div>':'<span class="mu">·</span>')+'</td><td>'+(on?"قهرمان":"قفل")+'</td></tr>'}).join("");
-var by=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]>b[k]))b=x});return b};
-var lo=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]<b[k]))b=x});return b};
-var w=by("win"),q=by("rr"),p=tot?r[0]:null,sl=lo("sl");
+return'<tr class="'+z+'" data-team="'+encodeURIComponent(x.n)+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div>'+dots(x.n,TS)+'</div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
+var CL=CUPS.map(function(c){return T.day>=c.d||CS<Math.floor((TD-SD)/W7)?cupLeader(CS,c.d,TS):null});
+document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d,lead=CL[i];return'<tr class="'+(on&&lead?"z1":"")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(on&&lead?'<div class="team">'+cr(lead)+'<div><div class="tn">'+esc(lead)+'</div></div></div>':'<span class="mu">·</span>')+'</td><td>'+(on?(lead?"قهرمان":"بدون قهرمان"):"قفل")+'</td></tr>'}).join("");
+var AW=awards(r),w=AW[1],q=AW[3],p=AW[0],sl=AW[2];
 var A=[["🥇","توپ طلا","بیشترین امتیاز",p?f(p.pt):"—",p,"#f6c744"],["<img src=\"assets/awards/golden-boot.webp\" alt=\"کفش طلا\">","کفش طلا","بهترین وین‌ریت",w?f(w.win,1)+"%":"—",w,"#3fbf7a"],["<img src=\"assets/awards/golden-glove.webp\" alt=\"دستکش طلا\">","دستکش طلا","کمترین SL",sl?f(sl.sl):"—",sl,"#4aa3ff"],["<img src=\"assets/awards/reward-cup.webp\" alt=\"جایزه‌ی ریوارد\">","جایزه‌ی ریوارد","بهترین R/R",q?f(q.rr,2):"—",q,"#c77dff"]];
-document.getElementById("stats").innerHTML=A.map(function(a,i){return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+a[4].n+'</div>':"")+'<span class="hint">نمایش برندگان ▾</span></div>'}).join("");
-var AWI=-1;function awOpen(i){var p=document.getElementById("awp");if(AWI===i){AWI=-1;p.innerHTML="";return}AWI=i;var L=hr.filter(function(h){return h.a[i]>0});var a=A[i];p.innerHTML='<div class="awh">'+a[0]+' '+a[1]+' — '+a[2]+'</div>'+(L.length?L.map(function(h){return'<div class="awr">'+cr(h.n,"sm")+'<span>'+h.n+'</span><em>'+h.a[i]+'</em></div>'}).join(""):'<div class="awe">هنوز تیمی این جایزه را نگرفته</div>')}
-var H={};r.forEach(function(x){H[x.n]={c:0,a:[0,0,0,0]}});
-CUPS.forEach(function(c){if(T.day>=c.d&&tot)H[lead].c++});
-A.forEach(function(a,i){if(a[4])H[a[4].n].a[i]++});
+document.getElementById("stats").innerHTML=A.map(function(a,i){return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+esc(a[4].n)+'</div>':"")+'<span class="hint">نمایش برندگان ▾</span></div>'}).join("");
+
+var H={};NAMES.forEach(function(n){H[n]={c:0,a:[0,0,0,0]}});
+for(var se=0;se<=CS;se++){var rs=se==CS?r:rank(agg(TS.filter(function(t){return t._s==se})));
+CUPS.forEach(function(c,ci){var l=se==CS?CL[ci]:cupLeader(se,c.d,TS);if(l)H[l].c++});
+awards(rs).forEach(function(x,i){if(x)H[x.n].a[i]++})}
 var hr=Object.keys(H).map(function(n){var h=H[n];return{n:n,c:h.c,a:h.a,t:h.c+h.a[0]+h.a[1]+h.a[2]+h.a[3]}}).sort(function(x,y){return y.t-x.t||y.c-x.c});
-document.getElementById("hon").innerHTML=hr.map(function(h,i){var z=function(v){return v?'<b>'+v+'</b>':'<span class="mu">·</span>'};return'<tr'+(h.t&&i==0?' class="z1"':'')+'><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(h.n)+'<div><div class="tn">'+h.n+'</div></div></div></td><td>'+z(h.c)+'</td><td>'+z(h.a[0])+'</td><td>'+z(h.a[1])+'</td><td>'+z(h.a[2])+'</td><td>'+z(h.a[3])+'</td><td class="pt">'+h.t+'</td></tr>'}).join("");
+window.CR=cr;G={r:r,TS:TS,CS:CS,hr:hr,A:A};if(AWI>=0)awFill(AWI);
+document.getElementById("hon").innerHTML=hr.map(function(h,i){var z=function(v){return v?'<b>'+v+'</b>':'<span class="mu">·</span>'};return'<tr data-team="'+encodeURIComponent(h.n)+'"'+(h.t&&i==0?' class="z1"':'')+'><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(h.n)+'<div><div class="tn">'+esc(h.n)+'</div></div></div></td><td>'+z(h.c)+'</td><td>'+z(h.a[0])+'</td><td>'+z(h.a[1])+'</td><td>'+z(h.a[2])+'</td><td>'+z(h.a[3])+'</td><td class="pt">'+h.t+'</td></tr>'}).join("");
 var ic=["🥇","🥈","🥉"],o=[1,0,2];
-document.getElementById("podium").innerHTML=tot?'<div class="stage" id="stage">'+o.map(function(i){var x=r[i];return'<div class="step s'+(i+1)+'"><i>'+ic[i]+'</i>'+cr(x.n)+'<b>'+x.n+'</b><small>'+f(x.pt)+' امتیاز</small></div>'}).join("")+'</div>':'<div class="empty"><b>⚽</b>فصل هنوز شروع نشده؛ منتظر اولین ترید.</div>';
-wallet(r.reduce(function(a,x){return a+(+x.usd||0)},0));
+document.getElementById("podium").innerHTML=tot?'<div class="stage" id="stage">'+o.filter(function(i){return r[i]&&r[i].play}).map(function(i){var x=r[i];return'<div class="step s'+(i+1)+'" data-team="'+encodeURIComponent(x.n)+'"><i>'+ic[i]+'</i>'+cr(x.n)+'<b>'+esc(x.n)+'</b><small>'+f(x.pt)+' امتیاز</small></div>'}).join("")+'</div>':'<div class="empty"><b>⚽</b>فصل هنوز شروع نشده؛ منتظر اولین ترید.</div>';
+wallet(TS.reduce(function(a,t){return a+(+t.usd||0)},0));
+if(tp&&/^#team=/.test(location.hash))route();
 }
 
 var gate=document.getElementById("gate"),go=document.getElementById("go");
@@ -539,7 +569,25 @@ var rv=document.getElementById("rv");
 document.getElementById("rvl").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<div class="rvi"><b>'+r[1]+'</b><br>'+r[2]+'</div>'}).join("");
 window.openRules=function(){rv.classList.add("on");rv.scrollTop=0};
 document.getElementById("rvc").onclick=function(){rv.classList.remove("on")};
-render();
+tp=document.getElementById("tp");var pushed=false;
+function profile(n){var cr=window.CR,i=NAMES.indexOf(n),h='';
+if(i<0)h='<h2>تیم پیدا نشد</h2>';else{
+var all=G.TS.filter(function(t){return t.team==n}),cur=all.filter(function(t){return t._s==G.CS}),ra=G.r.map(function(x){return x.n}).indexOf(n),x=G.r[ra],cv=all.reduce(function(a,t){return a+(+t.usd||0)},0),hn=G.hr.filter(function(y){return y.n==n})[0];
+h='<div class="ph" style="--c:'+(COL[n]||"#888")+'">'+cr(n,"")+'<h2>'+esc(n)+'</h2>'+dots(n,G.TS)+(all.length?'<small class="mu">← جدیدترین</small>':'')+'</div>';
+if(!all.length)h+='<div class="empty" style="margin-top:14px"><b>⚽</b>هنوز معامله‌ای ندارد</div>';
+else{h+='<div class="kv"><div><small>ارزش باشگاه</small><b dir="ltr">$'+rd(cv)+'</b></div><div><small>رتبه‌ی فصل '+(G.CS+1)+'</small><b>'+(x&&x.play?ra+1:"—")+'</b></div><div><small>امتیاز فصل</small><b>'+(x?f(x.pt):0)+'</b></div><div><small>بازی / برد٪</small><b>'+(x?x.play+" / "+f(x.win,1):"0")+'</b></div></div>';
+var by={};all.forEach(function(t){var o=by[t._s]=by[t._s]||{buy:0,sell:0,pt:0};if(t.dir=="BUY")o.buy+=+t.usd||0;if(t.dir=="SELL")o.sell+=+t.usd||0});
+h+='<h4>فصل‌ها</h4>'+Object.keys(by).reverse().map(function(k){var rs=rank(agg(G.TS.filter(function(t){return t._s==k}))).filter(function(y){return y.n==n})[0];return'<div class="tl"><span>فصل '+(+k+1)+'</span><span>خرید $'+rd(by[k].buy)+' · فروش $'+rd(by[k].sell)+'</span><b>'+f(rs.pt)+' امتیاز</b></div>'}).join("");
+h+='<h4>افتخارات</h4><div class="tl"><span>🏆 '+hn.c+'</span><span>🥇 '+hn.a[0]+' · 👟 '+hn.a[1]+' · 🧤 '+hn.a[2]+' · 🎁 '+hn.a[3]+'</span></div>';
+h+='<h4>آخرین معامله‌ها</h4>'+all.slice(-10).reverse().map(function(t){return'<div class="tl"><span>'+esc(t.date)+' #'+t.no+'</span><span>'+esc(t.dir||"")+'</span><span style="color:'+RC[t.res]+'">'+t.res+'</span><b dir="ltr">'+(t.usd>0?"+":"")+t.usd+'$</b></div>'}).join("")}}
+document.getElementById("tpb").innerHTML=h+'<button class="go" id="tpc2">بستن</button>';
+document.getElementById("tpc2").onclick=closeP;tp.classList.add("on");tp.scrollTop=0}
+function closeP(){if(pushed){pushed=false;history.back()}else if(location.hash.indexOf("#team=")==0){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){location.hash=""}tp.classList.remove("on")}else tp.classList.remove("on")}
+function route(){var m=/^#team=(.+)$/.exec(location.hash);if(m){var n;try{n=decodeURIComponent(m[1])}catch(e){n=m[1]}var k=NAMES.filter(function(z){return z.toLowerCase()==n.toLowerCase()})[0];profile(k||n)}else tp.classList.remove("on")}
+window.addEventListener("hashchange",function(){if(!/^#team=/.test(location.hash))pushed=false;route()});
+document.addEventListener("keydown",function(e){if(e.key=="Escape"&&tp.classList.contains("on"))closeP()});
+document.addEventListener("click",function(e){var el=e.target.closest&&e.target.closest("[data-team]");if(!el||tp.contains(el))return;var nh="#team="+el.getAttribute("data-team");if(location.hash==nh){route();return}pushed=true;location.hash=nh});
+render();route();
 </script>
 <script>
 (function(){

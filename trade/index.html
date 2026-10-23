@@ -45,6 +45,8 @@ td button{margin:0;min-width:40px;height:36px;padding:0 4px;background:var(--bg)
 .t{min-width:34px!important}
 .sep{border-right:2px solid var(--ln)}
 .bad{outline:2px solid var(--neg)!important;outline-offset:-2px}
+.wrn{outline:2px dashed #e0a030!important;outline-offset:-2px}
+#st.wr{color:#e0a030}
 tfoot td{background:var(--card)!important;font-weight:800;border-bottom:0;direction:ltr}
 .pos{color:var(--pos)}.neg{color:var(--neg)}
 
@@ -124,9 +126,13 @@ let D;try{D=JSON.parse(localStorage.getItem(K.day))}catch(e){}
 if(!D||!Array.isArray(D.rows))D=fresh();
 const save=()=>localStorage.setItem(K.day,JSON.stringify(D));
 
-const strats=()=>JSON.parse(localStorage.getItem(K.st)||'[]');
-const fillStrats=()=>{$('sl').innerHTML=strats().map(s=>`<option value="${esc(s)}">`).join('')};
+let TEAMS=[];
+const strats=()=>{try{return JSON.parse(localStorage.getItem(K.st)||'[]')}catch(e){return []}};
+const canon=v=>{const t=String(v||'').trim(),l=t.toLowerCase();return TEAMS.find(n=>n.toLowerCase()===l)||t};
+const known=v=>!TEAMS.length||TEAMS.some(n=>n.toLowerCase()===String(v||'').trim().toLowerCase());
+const fillStrats=()=>{const lc=TEAMS.map(n=>n.toLowerCase()),rest=strats().filter(x=>!lc.includes(String(x).toLowerCase()));$('sl').innerHTML=TEAMS.concat(rest).map(s=>`<option value="${esc(s)}">`).join('')};
 fillStrats();
+fetch('../data/teams.json',{cache:'no-store'}).then(r=>r.ok?r.json():[]).then(j=>{TEAMS=(Array.isArray(j)?j:[]).map(t=>t&&t.name).filter(Boolean);fillStrats();let ch=false;D.rows.forEach(r=>{if(r.s){const c=canon(r.s);if(c!==r.s){r.s=c;ch=true}}});if(ch){save();render()}else D.rows.forEach((_,i)=>paint(i))}).catch(()=>{});
 
 const filled=r=>!!(r.d||r.r||r.p!==''||r.u!=='');
 const val=(r,k)=>r2(r.sg*(parseFloat(r[k])||0));
@@ -159,6 +165,7 @@ function paint(i){
   q('.r').className='r '+(RC[r.r]||'');
   tr.querySelectorAll('.t').forEach(b=>{const [x,c]=TRD[r.t[b.dataset.tf]||''];b.textContent=x;b.className='t '+c});
   q('.a').textContent=r.a?'✓':'·';q('.a').className='a '+(r.a?'c-gold':'');
+  q('.s').classList.toggle('wrn',!!r.s&&TEAMS.length>0&&!known(r.s));
   tr.classList.toggle('on',filled(r));
 }
 function render(){tb.innerHTML=D.rows.map(rowHTML).join('');D.rows.forEach((_,i)=>paint(i));upd()}
@@ -187,7 +194,7 @@ tb.addEventListener('input',e=>{
   if(k==='r'){if(r.r==='TP')r.sg=1;if(r.r==='SL')r.sg=-1}
   el.classList.remove('bad');paint(i);save();upd();
 });
-tb.addEventListener('change',e=>{if(e.target.dataset.k==='s'){const i=+e.target.closest('tr').dataset.i;D.rows[i].s=e.target.value.trim();save()}});
+tb.addEventListener('change',e=>{if(e.target.dataset.k==='s'){const i=+e.target.closest('tr').dataset.i,v=canon(e.target.value);e.target.value=D.rows[i].s=v;e.target.classList.toggle('wrn',!!v&&!known(v));save()}});
 // prefill strategy from the row above
 tb.addEventListener('focusin',e=>{
   const el=e.target;if(!el.classList.contains('s')||el.value)return;
@@ -227,7 +234,7 @@ function build(){
 async function copy(t){try{await navigator.clipboard.writeText(t);return true}catch(e){return false}}
 
 $('send').onclick=async()=>{
-  tb.querySelectorAll('.bad').forEach(x=>x.classList.remove('bad'));
+  tb.querySelectorAll('.bad,.wrn').forEach(x=>x.classList.remove('bad','wrn'));
   const nums=numbers();let err=[];
   D.rows.forEach((r,i)=>{if(nums[i]==null)return;const tr=tb.children[i],miss=[];
     if(!r.s.trim()){miss.push('استراتژی');tr.querySelector('.s').classList.add('bad')}
@@ -237,6 +244,7 @@ $('send').onclick=async()=>{
   });
   if(!nums.some(x=>x!=null)){say('هنوز هیچ تریدی وارد نشده.','er');return}
   if(err.length){say('ناقص است ← '+err.join(' / '),'er');return}
+  const unk=[];D.rows.forEach((r,i)=>{if(nums[i]==null)return;r.s=canon(r.s);if(!known(r.s)){tb.children[i].querySelector('.s').classList.add('wrn');if(!unk.includes(r.s))unk.push(r.s)}});
 
   const text=build();$('msg').textContent=text;$('out').hidden=false;
   localStorage.setItem(K.no,Math.max(...nums.filter(x=>x!=null)));
@@ -244,7 +252,8 @@ $('send').onclick=async()=>{
   D.rows.forEach(r=>{const s=r.s.trim();if(s&&!list.includes(s)){list.push(s);ch=true}});
   if(ch){localStorage.setItem(K.st,JSON.stringify(list));fillStrats()}
   const ok=await copy(text);
-  say(ok?'✅ پیام همه‌ی تریدها کپی شد؛ برای من بفرست.':'پیام آماده است؛ «کپی دوباره» را بزن.',ok?'ok':'er');
+  const wn=unk.length?' ⚠️ این نام‌ها جزو تیم‌های لیگ نیستند و در جدول حساب نمی‌شوند: '+unk.join('، '):'';
+  say((ok?'✅ پیام همه‌ی تریدها کپی شد؛ برای من بفرست.':'پیام آماده است؛ «کپی دوباره» را بزن.')+wn,unk.length?'wr':ok?'ok':'er');
 };
 $('cp').onclick=async()=>say((await copy($('msg').textContent))?'کپی شد.':'کپی نشد؛ متن را دستی انتخاب کن.','ok');
 
