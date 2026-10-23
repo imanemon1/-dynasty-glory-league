@@ -361,6 +361,7 @@ button,.go{min-height:44px}
 .tab:hover{background:var(--hov);color:var(--tx)}
 .tab[aria-selected=true]{background:var(--hov);color:var(--tx);border-color:var(--info);box-shadow:inset 0 -2px 0 var(--info)}
 .tpanel{margin-top:12px;animation:tpIn .3s ease}
+.stf{display:grid;gap:8px}.stf input{width:100%;padding:8px;box-sizing:border-box}
 .tpanel .sec,.tpanel .ltt,.tpanel .stage{margin-top:0}
 .tpanel>section+section{margin-top:16px}
 .tpanel[hidden]{display:none}
@@ -452,6 +453,7 @@ button,.go{min-height:44px}
 <button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw">📰 اخبار</button>
@@ -471,6 +473,16 @@ button,.go{min-height:44px}
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
 <div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div><div id="tmf" class="tmf" hidden><b>➕ تیم جدید</b><input id="tmn_in" placeholder="اسم تیم (انگلیسی)" maxlength="40"><input id="tmc_in" type="color" value="#888888"><input id="tmlogo" type="file" accept="image/*"><button id="tmsv" onclick="tmSave()">ذخیره</button><div id="tmm" class="hint"></div></div></section></div>
+<div id="p-st" class="tpanel" data-p="st" hidden><section><div class="sec">⚙️ تنظیمات اتصال به گیت‌هاب<small>فقط روی همین دستگاه ذخیره می‌شود</small></div>
+<div class="stf">
+<label>Token<input id="gtok" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+<label>Owner (نام کاربری یا سازمان)<input id="gown"></label>
+<label>Repository<input id="grep"></label>
+<label>Branch<input id="gbr" value="main"></label>
+<label>مسیر فایل ترید‌ها<input id="gpath" value="data/trades.json"></label>
+<button type="button" id="gsv" class="go">ذخیره‌ی تنظیمات</button>
+<div id="gsm" class="hint"></div>
+</div></section></div>
 <div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
 <div class="lad" id="lad"></div>
 </section></div>
@@ -706,6 +718,16 @@ h+='<div class="nwr '+e.i+(t<now?" past":"")+'"><i style="background:'+(C[e.i]||
 l.innerHTML=h+(UP?'<div class="nwd" style="font-size:11px;font-weight:400">آخرین به‌روزرسانی: '+tf.format(new Date(UP))+' — اعداد ممکن است چند دقیقه تأخیر داشته باشند.</div>':"")}
 fetch("data/news.json?v="+Date.now()).then(function(r){return r.ok?r.json():{}}).then(function(j){EV=j.events||[];UP=j.updated||"";show()}).catch(function(){show()});
 setInterval(show,6e4);
+})();
+
+(function(){var K='dgl_gh',g={};try{g=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  var f={tok:'gtok',own:'gown',rep:'grep',br:'gbr',pa:'gpath'};
+  if(!g.owner&&/\.github\.io$/.test(location.hostname)){g.owner=location.hostname.split('.')[0];g.repo=g.repo||location.pathname.split('/')[1]||g.owner+'.github.io'}
+  var v={tok:g.token,own:g.owner,rep:g.repo,br:g.branch||'main',pa:g.path||'data/trades.json'};
+  for(var k in f){var el=document.getElementById(f[k]);if(el)el.value=v[k]||''}
+  var b=document.getElementById('gsv');if(!b)return;
+  b.onclick=function(){var o=Object.assign({},g);o.token=document.getElementById('gtok').value.trim();o.owner=document.getElementById('gown').value.trim();o.repo=document.getElementById('grep').value.trim();o.branch=document.getElementById('gbr').value.trim()||'main';o.path=document.getElementById('gpath').value.trim()||'data/trades.json';
+    localStorage.setItem(K,JSON.stringify(o));g=o;document.getElementById('gsm').textContent='✅ تنظیمات ذخیره شد.'};
 })();
 </script>
 </body>
