@@ -293,7 +293,7 @@ button,.go{min-height:44px}
 @media (min-width:768px){body{padding-left:24px;padding-right:24px}.wrap{max-width:960px}.stats{grid-template-columns:repeat(4,1fr)}}
 @media (min-width:1280px){.wrap{max-width:1080px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-.hdr{padding-top:0}.ban{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--ln)}.hdr .hact{justify-content:space-between;margin:12px 0}.hdr .hact .cta{flex:1}
+.hdr{padding-top:0;position:relative}.ov{position:absolute;left:10px;top:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}.ob{background:rgba(10,20,40,.82);color:#ffd54a;border:1px solid #ffd54a;border-radius:8px;padding:4px 10px;font-weight:800;font-size:15px;direction:ltr}.ob.sm{font-size:12px;color:#f4ead0;border-color:#8fb3ff}.hdr{padding-top:0}.ban{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--ln)}.hdr .hact{justify-content:space-between;margin:12px 0}.hdr .hact .cta{flex:1}
 .hon .mu{color:var(--mu)}.hon td{text-align:center}.hon td.tm{text-align:right}
 .ltt{direction:ltr;text-align:center;margin:26px 0 14px;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif}
 .ltt h2{margin:0;font-size:18px;font-weight:600;letter-spacing:.32em;color:#fff}
@@ -442,7 +442,8 @@ button,.go{min-height:44px}
 <div class="wrap">
 <header class="hdr"><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
 
-<div class="hst"><span id="ldr" class="chip"></span><span id="lgi" class="chip"></span></div>
+<div class="hst"><span id="lgi" class="chip"></span><span id="nch" class="chip"></span></div>
+<div class="ov"><div class="ob" id="hwb">$0</div><div class="ob sm" id="htc">ترید: 0</div></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
 <nav class="tabs" role="tablist" aria-label="بخش‌ها">
@@ -546,7 +547,7 @@ function wr(x){return Math.round(x*100)/100}
 function wnum(s){return parseFloat(String(s).replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace(/[٫,]/g,"."))}
 function wnm(k){return WD.filter(function(x){return x.k==k})[0].nm}
 function wallet(pr){if(pr!=null)PR=pr;var tot=0,h="",bar="";
-WD.forEach(function(w){w.cur=wcur(w.k);tot+=w.cur});
+WD.forEach(function(w){w.cur=wcur(w.k);tot+=w.cur});var hw=document.getElementById("hwb");if(hw)hw.textContent="$"+wr(tot);
 WD.forEach(function(w){h+='<div class="wc" style="--c:'+w.c+'" data-k="'+w.k+'"><div class="tx"><span class="nm">'+w.nm+'</span><span class="sb">'+(w.k=="trade"&&PR?(PR>0?"+":"")+wr(PR)+'$ از ترید':w.sb)+'</span><b>$'+wr(w.cur)+'</b></div><img class="im" src="assets/wallet/'+w.ic+'.webp" alt=""><div class="go">ویرایش مقدار</div></div>';bar+='<i style="width:'+(tot>0?Math.max(0,w.cur)/tot*100:0)+'%;background:linear-gradient(90deg,'+w.c+','+w.c+'cc)"></i>'});
 var opt=WD.map(function(w){return'<option value="'+w.k+'">'+w.nm+'</option>'}).join("");
 var lg=WS.log.map(function(e,i){return'<div class="wl"><span>'+e.d+' · '+(e.from?wnm(e.from)+' ← ':'شارژ ')+wnm(e.to)+' · $'+wr(e.amt)+'</span><button type="button" data-ld="'+i+'">✕</button></div>'}).join("")||'<div class="wl">هنوز انتقال یا شارژی ثبت نشده.</div>';
@@ -601,7 +602,7 @@ document.getElementById("tot").textContent=T.before?"":(CS?"فصل "+(CS+1)+" ·
 document.getElementById("fill").style.width=pc+"%";
 var bar=document.getElementById("bar");bar.querySelectorAll(".mk").forEach(function(e){e.remove()});
 CUPS.forEach(function(c){var e=document.createElement("div");e.className="mk"+(T.day>=c.d?" on":"");e.style.right=(c.d/T.total*100)+"%";e.textContent=c.d;bar.appendChild(e)});
-document.getElementById("lgi").innerHTML=T.msg;document.getElementById("ldr").textContent=tot>0?"👑 پیشتاز: "+r[0].n:"پیشتاز: هنوز مشخص نیست";
+document.getElementById("lgi").innerHTML=T.msg;var hc=document.getElementById("htc");if(hc)hc.textContent="ترید: "+TS.length;
 var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+esc(n)+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>'};
 try{document.getElementById("rows").innerHTML=r.map(function(x,i){
 var z=!tot?"":i==0?"z1":i==1?"z2":"";
@@ -674,7 +675,7 @@ kf=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tehran"});
 function E(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function nq(t){return /cpi|ppi|pce|non-?farm|nfp|unemployment rate|employment change|fomc|fed chair|powell|interest rate|rate decision|gdp|ism |retail sales|jobless|unemployment claims|core/i.test(t)}
 function fa(n){return String(n).replace(/\d/g,function(d){return"۰۱۲۳۴۵۶۷۸۹"[d]})}
-function show(){var now=Date.now(),b=document.getElementById("nwb"),l=document.getElementById("nwl");
+function show(){var now=Date.now(),b=document.getElementById("nwb"),l=document.getElementById("nwl");var td=new Date(),ts=td.getFullYear()+"-"+("0"+(td.getMonth()+1)).slice(-2)+"-"+("0"+td.getDate()).slice(-2),nc=EV.filter(function(e){return e.i=="High"&&String(e.d).slice(0,10)==ts}).length,nch=document.getElementById("nch");if(nch)nch.textContent=nc?"🔴 امروز "+nc+" خبر مهم":"امروز خبر مهم نداریم";
 if(!EV.length){b.innerHTML='<div class="nwa wn">اخبار در دسترس نیست. (فایل data/news.json هنوز ساخته نشده یا فید قطع است.)</div>';l.innerHTML="";return}
 var hi=EV.filter(function(e){return e.i=="High"||e.i=="Medium"}).map(function(e){return{e:e,t:new Date(e.d).getTime()}}),cur=null,nx=null;
 hi.forEach(function(x){if(now>=x.t-BEF*6e4&&now<=x.t+AFT*6e4)cur=cur||x;else if(x.t>now&&!nx)nx=x});
