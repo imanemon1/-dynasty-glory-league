@@ -346,6 +346,9 @@ button,.go{min-height:44px}
 #p-hn .sec small{color:#6B7280}
 #p-hn .hon .mu,#p-hn .cupt .mu{color:#9CA3AF}
 #p-hn .tn{color:#111827}
+.cupt .lab{font-family:Inter,"Segoe UI",Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.02em;color:#0B1220;direction:ltr;display:inline-block;white-space:nowrap}
+.cupt td.ps{width:auto;min-width:64px}
+.cupt .wn+.wn{margin-top:6px}
 .cupimg{width:40px;height:auto;flex:0 0 auto;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
 @media (min-width:768px){.cupimg{width:52px}}
 .cupt th:not(.ps):not(.tm),.cupt td:not(.ps):not(.tm){width:16%}
@@ -458,7 +461,7 @@ button,.go{min-height:44px}
 <div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
 <div class="stats" id="stats"></div><div class="awp" id="awp"></div></section>
 <section><div class="sec">🏆 جدول کاپ‌ها</div>
-<div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
+<div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمانان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
 </section>
 </div>
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
@@ -550,14 +553,16 @@ var lg=WS.log.map(function(e,i){return'<div class="wl"><span>'+e.d+' · '+(e.fro
 var e=document.getElementById("wal");
 e.innerHTML='<div class="hd"><img class="cn l" src="assets/wallet/coins1.webp" alt=""><img class="cn r" src="assets/wallet/coins2.webp" alt=""><div class="tl">👑 دارایی کل 👑</div><div class="big">$'+wr(tot)+'</div><div class="gn '+(PR>=0?"p":"n")+'">'+(PR>=0?"▲ ":"▼ ")+Math.abs(wr(PR))+'$ سود/زیان تریدهای لیگ</div></div><div class="wb">'+h+'</div><div class="wbar">'+bar+'</div><div class="wh">🚀 سود و زیان هر ترید <b>خودکار</b> روی حساب تریدینگ اعمال می‌شود</div>'+
 '<div class="wx"><b>🔁 انتقال بین حساب‌ها</b><div class="r"><select id="wxf">'+opt+'</select><span>←</span><select id="wxt">'+opt.replace('value="back"','value="back" selected')+'</select><input id="wxa" type="text" inputmode="decimal" placeholder="مبلغ $"><button type="button" id="wxb">انتقال</button></div>'+
-'<b>➕ شارژ / برداشت</b><div class="r"><select id="wdt">'+opt.replace('value="cash"','value="cash" selected')+'</select><input id="wda" type="text" inputmode="decimal" placeholder="مبلغ $ (منفی = برداشت)"><button type="button" id="wdb">ثبت</button></div>'+
+'<b>➕ واریز / ➖ برداشت</b><div class="r"><select id="wdt">'+opt.replace('value="cash"','value="cash" selected')+'</select><input id="wda" type="text" inputmode="decimal" placeholder="مبلغ $"></div><div class="r"><button type="button" id="wdi">➕ واریز</button><button type="button" id="wdo">➖ برداشت</button></div>'+
 '<details><summary>تاریخچه (' +WS.log.length+')</summary>'+lg+'</details>'+
 '<button type="button" class="sv" id="wsv">💾 ذخیره برای همه‌ی دستگاه‌ها</button><div id="wms">'+WMSG+'</div></div>';
 ladder(WD[1].cur,WD[0].cur);
 var today=function(){return new Date().toISOString().slice(0,10)};
 e.querySelectorAll(".wc").forEach(function(c){c.onclick=function(){var k=c.getAttribute("data-k"),w=WD.filter(function(x){return x.k==k})[0];var v=prompt("موجودی فعلی «"+w.nm+"» (دلار):",wr(w.cur));if(v==null)return;v=wnum(v);if(isNaN(v))return;WS.base[k]=(WS.base[k]!=null?+WS.base[k]:w.v)+(v-w.cur);WMSG="تغییر ذخیره نشده؛ «ذخیره» را بزن.";wallet()}});
 document.getElementById("wxb").onclick=function(){var f=document.getElementById("wxf").value,t=document.getElementById("wxt").value,a=wnum(document.getElementById("wxa").value);if(f==t||!(a>0)){WMSG="مبدأ و مقصد باید فرق کنند و مبلغ مثبت باشد.";wallet();return}WS.log.push({d:today(),from:f,to:t,amt:a});WMSG="انتقال اعمال شد؛ ذخیره نشده.";wallet()};
-document.getElementById("wdb").onclick=function(){var t=document.getElementById("wdt").value,a=wnum(document.getElementById("wda").value);if(isNaN(a)||!a){WMSG="مبلغ را درست وارد کن.";wallet();return}WS.log.push({d:today(),to:t,amt:a});WMSG="شارژ اعمال شد؛ ذخیره نشده.";wallet()};
+function wdo(sign){var t=document.getElementById("wdt").value,a=wnum(document.getElementById("wda").value);if(isNaN(a)||!(a>0)){WMSG="مبلغ مثبت وارد کن.";wallet();return}WS.log.push({d:today(),to:t,amt:sign*a});WMSG=(sign>0?"واریز":"برداشت")+" اعمال شد؛ ذخیره نشده.";wallet()}
+document.getElementById("wdi").onclick=function(){wdo(1)};
+document.getElementById("wdo").onclick=function(){wdo(-1)};
 e.querySelectorAll("[data-ld]").forEach(function(b){b.onclick=function(){if(confirm("این مورد حذف شود؟")){WS.log.splice(+b.getAttribute("data-ld"),1);WMSG="حذف شد؛ ذخیره نشده.";wallet()}}});
 document.getElementById("wsv").onclick=wsave}
 function wsave(){var g={};try{g=JSON.parse(localStorage.getItem("dgl_gh"))||{}}catch(x){}
@@ -566,13 +571,13 @@ var m=document.getElementById("wms");
 if(!g.token||!g.owner||!g.repo){m.textContent="اول در صفحه‌ی ثبت ترید (trade) تنظیم اتصال گیت‌هاب را روی همین دستگاه انجام بده.";return}
 var br=g.branch||"main",u="https://api.github.com/repos/"+g.owner+"/"+g.repo+"/contents/data/wallet.json",H={Authorization:"Bearer "+g.token,Accept:"application/vnd.github+json","Content-Type":"application/json"};
 m.textContent="در حال ذخیره…";
-function go(n){return fetch(u+"?ref="+encodeURIComponent(br)+"&t="+Date.now(),{headers:H,cache:"no-store"}).then(function(r){return r.status==404?{}:r.ok?r.json():Promise.reject(new Error("خواندن ناموفق "+r.status))}).then(function(j){
+function go(n){return fetch(u+"?ref="+encodeURIComponent(br)+"&t="+Date.now(),{headers:H,cache:"no-store"}).then(function(r){return r.status==404?{}:r.ok?r.json():Promise.reject(new Error("خواندن ناموفق "+r.status+(r.status==401||r.status==403?" – توکن این دستگاه نامعتبر یا منقضی است؛ در صفحه trade دوباره تنظیمش کن":"")))}).then(function(j){
 var body={message:"به‌روزرسانی کیف پول",branch:br,content:btoa(unescape(encodeURIComponent(JSON.stringify({base:WS.base,log:WS.log},null,1)+"\n")))};if(j.sha)body.sha=j.sha;
 return fetch(u,{method:"PUT",headers:H,body:JSON.stringify(body)}).then(function(r){if(r.ok)return 1;if((r.status==409||r.status==422)&&n<2)return go(n+1);return Promise.reject(new Error("ذخیره ناموفق "+r.status+(r.status==401||r.status==403?" (توکن/دسترسی)":"")))})})}
 go(0).then(function(){WMSG="✅ ذخیره شد؛ روی همه‌ی دستگاه‌ها تا چند دقیقه‌ی دیگر دیده می‌شود.";wallet()}).catch(function(x){m.textContent="❌ "+x.message})}
 try{fetch("data/wallet.json?v="+Date.now()).then(function(r){return r.ok?r.json():0}).then(function(j){if(j&&j.base){WS.base=j.base;WS.log=j.log||[];wallet()}}).catch(function(){})}catch(e){}
 var LG={start:"2026-10-26",weeks:8};
-var CUPS=[{d:20,n:"جام نیم‌فصل",img:"assets/cups/cup-20.webp"},{d:30,n:"جام ۳۰ روزه",img:"assets/cups/cup-30.webp"},{d:40,n:"جام بزرگ",img:"assets/cups/cup-40.webp"}];
+var CUPS=[{d:40,n:"جام بزرگ",img:"assets/cups/cup-40.webp"},{d:30,n:"جام ۳۰ روزه",img:"assets/cups/cup-30.webp"},{d:20,n:"جام نیم‌فصل",img:"assets/cups/cup-20.webp"}];
 function lgTime(){var total=LG.weeks*5,s=new Date(LG.start+"T00:00:00"),n=new Date();n.setHours(0,0,0,0);
 var fa=function(d){return d.toLocaleDateString("fa-IR-u-ca-persian",{day:"numeric",month:"long"})},td=fa(new Date());
 s.setDate(s.getDate()+CS*LG.weeks*7);var e=new Date(s);e.setDate(e.getDate()+LG.weeks*7-3);
@@ -602,10 +607,10 @@ try{document.getElementById("rows").innerHTML=r.map(function(x,i){
 var z=!tot?"":i==0?"z1":i==1?"z2":"";
 return'<tr class="'+z+'" data-team="'+encodeURIComponent(x.n)+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div>'+dots(x.n,TS)+'</div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
 var CL=CUPS.map(function(c){return T.day>=c.d||CS<Math.floor((TD-SD)/W7)?cupLeader(CS,c.d,TS):null});
-document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d,lead=CL[i];return'<tr class="'+(on&&lead?"z1":"")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(on&&lead?'<div class="team">'+cr(lead)+'<div><div class="tn">'+esc(lead)+'</div></div></div>':'<span class="mu">·</span>')+'</td><td>'+(on?(lead?"قهرمان":"بدون قهرمان"):"قفل")+'</td></tr>'}).join("");
+document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d,lead=CL[i],W=[],LAB=["Grand","Major","Minor"][i]||"";for(var se=0;se<=CS;se++){if(se==CS&&!on)continue;var w=cupLeader(se,c.d,TS);if(w)W.push({s:se,n:w})}return'<tr class="'+(on&&lead?"z1":"")+'"><td class="ps"><span class="lab">'+LAB+'</span></td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(W.length?W.slice().reverse().map(function(x){return'<div class="team wn">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div><div class="mu">فصل '+(x.s+1)+'</div></div></div>'}).join(""):'<span class="mu">·</span>')+'</td><td>'+(on?(lead?"قهرمان":"بدون قهرمان"):"قفل")+'</td></tr>'}).join("");
 var AW=awards(r),w=AW[1],q=AW[3],p=AW[0],sl=AW[2];
 var A=[["🥇","توپ طلا","بیشترین امتیاز",p?f(p.pt):"—",p,"#f6c744"],["<img src=\"assets/awards/golden-boot.webp\" alt=\"کفش طلا\">","کفش طلا","بهترین وین‌ریت",w?f(w.win,1)+"%":"—",w,"#3fbf7a"],["<img src=\"assets/awards/golden-glove.webp\" alt=\"دستکش طلا\">","دستکش طلا","کمترین SL",sl?f(sl.sl):"—",sl,"#4aa3ff"],["<img src=\"assets/awards/reward.webp\" alt=\"جایزه‌ی ریوارد\">","جایزه‌ی ریوارد","بهترین R/R",q?f(q.rr,2):"—",q,"#c77dff"]];
-document.getElementById("stats").innerHTML=A.map(function(a,i){return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+esc(a[4].n)+'</div>':"")+'<span class="hint">نمایش برندگان ▾</span></div>'}).join("");
+document.getElementById("stats").innerHTML=A.map(function(a,i){if(!i)return"";return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+esc(a[4].n)+'</div>':"")+'</div>'}).join("");
 
 var H={};NAMES.forEach(function(n){H[n]={c:0,a:[0,0,0,0]}});
 for(var se=0;se<=CS;se++){var rs=se==CS?r:rank(agg(TS.filter(function(t){return t._s==se})));
@@ -667,6 +672,7 @@ var tf=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Tehran",hour:"2-digit",mi
 df=new Intl.DateTimeFormat("fa-IR",{timeZone:"Asia/Tehran",weekday:"long",month:"long",day:"numeric"}),
 kf=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tehran"});
 function E(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function nq(t){return /cpi|ppi|pce|non-?farm|nfp|unemployment rate|employment change|fomc|fed chair|powell|interest rate|rate decision|gdp|ism |retail sales|jobless|unemployment claims|core/i.test(t)}
 function fa(n){return String(n).replace(/\d/g,function(d){return"۰۱۲۳۴۵۶۷۸۹"[d]})}
 function show(){var now=Date.now(),b=document.getElementById("nwb"),l=document.getElementById("nwl");
 if(!EV.length){b.innerHTML='<div class="nwa wn">اخبار در دسترس نیست. (فایل data/news.json هنوز ساخته نشده یا فید قطع است.)</div>';l.innerHTML="";return}
@@ -676,7 +682,7 @@ if(cur)b.innerHTML='<div class="nwa bad">⛔ الان وقت خبر است: «'+
 else if(nx){var m=Math.round((nx.t-now)/6e4),tx=m>=60?fa(Math.floor(m/60))+" ساعت و "+fa(m%60)+" دقیقه":fa(m)+" دقیقه";b.innerHTML='<div class="nwa ok">✅ فعلاً خبر مهمی نزدیک نیست. خبر بعدی: «'+E(nx.e.t)+'» ساعت '+tf.format(nx.t)+' (تا '+tx+' دیگر)</div>'}
 else b.innerHTML='<div class="nwa ok">✅ خبر مهم دیگری در این بازه نیست.</div>';
 var h="",last="";EV.forEach(function(e){var t=new Date(e.d).getTime(),k=kf.format(t);if(k!=last){last=k;h+='<div class="nwd">'+df.format(t)+(k==kf.format(now)?" · امروز":"")+'</div>'}
-h+='<div class="nwr '+e.i+(t<now?" past":"")+'"><i style="background:'+(C[e.i]||"#888")+'"></i><span class="tm">'+tf.format(t)+'</span><div class="nt">'+E(e.t)+' <small>('+(FA[e.i]||"")+')</small></div><div class="ex">'+(e.f?"پیش‌بینی "+E(e.f)+"<br>":"")+(e.p?"قبلی "+E(e.p):"")+'</div></div>'});
+h+='<div class="nwr '+e.i+(t<now?" past":"")+'"><i style="background:'+(C[e.i]||"#888")+'"></i><span class="tm">'+tf.format(t)+'</span><div class="nt">'+E(e.t)+(nq(e.t)?' <span class="nq" title="اثر زیاد روی نزدک">📈</span>':'')+' <small>('+(FA[e.i]||"")+')</small></div><div class="ex">'+(e.f?"پیش‌بینی "+E(e.f)+"<br>":"")+(e.p?"قبلی "+E(e.p):"")+'</div></div>'});
 l.innerHTML=h+(UP?'<div class="nwd" style="font-size:11px;font-weight:400">آخرین به‌روزرسانی: '+tf.format(new Date(UP))+' — اعداد ممکن است چند دقیقه تأخیر داشته باشند.</div>':"")}
 fetch("data/news.json?v="+Date.now()).then(function(r){return r.ok?r.json():{}}).then(function(j){EV=j.events||[];UP=j.updated||"";show()}).catch(function(){show()});
 setInterval(show,6e4);

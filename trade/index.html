@@ -385,6 +385,29 @@ $('gl').addEventListener('click',async e=>{
     try{await gwrite(r=>r.filter(t=>t.date!==d),'حذف تریدهای '+d);gsay('🗑 تریدهای '+d+' حذف شد.','ok');glist()}catch(er){gsay('❌ '+er.message,'er')}
   }});
 
+/* ---- دو بخش جدا: ثبت ترید | تریدهای ثبت‌شده ---- */
+(function(){
+  const wrap=document.querySelector('.wrap'),box=document.querySelector('.box');
+  const bar=document.createElement('div');bar.className='btns';bar.style.margin='10px 0';
+  bar.innerHTML='<button type="button" class="go" data-v="e">➕ ثبت ترید</button><button type="button" class="alt" data-v="l">📋 تریدهای ثبت‌شده</button>';
+  const shared=document.createElement('div');shared.id='gshared';shared.append($('gs'),$('gset'));
+  const entry=document.createElement('div');entry.id='vEntry';
+  const list=document.createElement('div');list.id='vList';list.hidden=true;
+  const lh=document.createElement('h3');lh.textContent='📋 تریدهای ثبت‌شده';
+  const lb=document.createElement('div');lb.className='btns';lb.append($('glist'));
+  const lp=document.createElement('p');lp.className='hint';lp.textContent='فهرست همه‌ی تریدهای ذخیره‌شده در سایت، گروه‌بندی‌شده بر اساس تاریخ. هر روز را باز کن تا جزئیات ببینی.';
+  list.append(lh,lp,lb,$('gl'));
+  wrap.insertBefore(bar,box);wrap.insertBefore(shared,box);
+  wrap.insertBefore(entry,box);entry.append(box);wrap.append(list);
+  function show(v){
+    entry.hidden=v!=='e';list.hidden=v!=='l';
+    bar.querySelectorAll('button').forEach(b=>{const on=b.dataset.v===v;b.className=on?'go':'alt'});
+    if(v==='l')glist();
+  }
+  bar.addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)});
+  if(location.hash==='#list')show('l');
+})();
+
 render();
 </script>
 </body>
