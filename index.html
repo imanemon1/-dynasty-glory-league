@@ -460,6 +460,8 @@ button,.go{min-height:44px}
 </style>
 <style>.tmbar{display:flex;gap:8px;margin:2px 0 14px}.tmbt{flex:1;min-width:0;padding:11px 6px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.tmbt.on{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 3px rgba(255,213,74,.12)}.tmbt.dng.on{border-color:#ff5d5d;color:#ff7a7a;box-shadow:0 0 0 3px rgba(255,93,93,.14)}.tmsel .tmc .tmb{outline:2px dashed var(--gold);outline-offset:3px;animation:tmp 1.6s ease-in-out infinite}.tmsel.dl .tmc .tmb{outline-color:#ff5d5d}.tmc.cur .tmb{box-shadow:0 0 0 3px var(--gold)}@keyframes tmp{50%{transform:scale(.95)}}.tmfh{display:flex;justify-content:space-between;align-items:center}.tmfx{background:none;border:0;color:var(--mu);font-size:18px;cursor:pointer}.tfl{display:grid;gap:4px;font-size:12px;color:var(--mu)}.tmf #tmsv{font:inherit;padding:11px;border-radius:12px;border:0;background:linear-gradient(135deg,#ffd54a,#e0b03a);color:#111;font-weight:800;cursor:pointer}.tmdl{margin-top:14px;padding:14px;border-radius:14px;border:1px solid #ff5d5d66;background:rgba(255,93,93,.07);display:grid;gap:10px;text-align:center}.tmdb{display:flex;gap:8px}.tmdb button{flex:1;padding:10px;border-radius:12px;font:inherit;font-weight:700;cursor:pointer;border:1px solid var(--ln);background:var(--card);color:var(--tx)}.tmdy{background:#ff5d5d!important;color:#fff!important;border-color:#ff5d5d!important}
 </style>
+<style>.trok{margin:0 0 12px;padding:12px;border-radius:14px;border:1px solid #39C79A0;background:linear-gradient(160deg,rgba(57,199,149,.16),rgba(57,199,149,.04));display:grid;gap:10px}.trok-h{font-weight:800;color:#39C795}.trok-t{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:2px solid var(--c);background:rgba(57,199,149,.08)}.trok-t img{width:44px;height:44px;object-fit:contain}.trok-t b{display:block}.trok-t small{color:var(--mu)}.trok-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.trok-g div{padding:8px 4px;border-radius:10px;background:var(--card);border:1px solid var(--ln)}.trok-g small{display:block;font-size:11px;color:var(--mu)}.trok-g b{font-size:16px}.trok-g .pos{color:#39C795}.trok-g .neg{color:#EF7380}
+</style>
 </head>
 <body>
 
@@ -496,6 +498,7 @@ button,.go{min-height:44px}
 </div>
 <div id="p-tr" class="tpanel" data-p="tr" hidden><section>
 <div id="trh" class="trh"><div class="trc" onclick="trGo('f')"><b>➕</b>ثبت ترید جدید</div><div class="trc" onclick="trGo('l')"><b>📋</b>فهرست ترید</div></div>
+<div id="trok" class="trok" hidden></div>
 <div id="trf" class="tf" hidden>
 <div class="tfh"><button class="tfx" onclick="trGo('h')">→</button><div><small>ثبت ترید</small><b>ترید <span id="trno">#</span></b></div><span class="tfst" id="trst">پیش‌نویس</span></div>
 <div class="tfc"><div class="tft">🧾 مشخصات</div>
@@ -578,7 +581,7 @@ var TR=[],CS=0,G={},tp=null;
 fetch("data/trades.json?v="+Date.now()).then(function(r){return r.ok?r.json():[]}).then(function(j){if(j&&j.length){TR=j;render()}}).catch(function(){});
 function dn(d){var m=/^(\d+)-(\d+)-(\d+)/.exec(d);return m?Math.floor(Date.UTC(+m[1],m[2]-1,+m[3])/864e5):NaN}
 function esc(x){return String(x).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-var SKIP={};function trades(){var sd=dn(LG.start),out=[],lc={};NAMES.forEach(function(n){lc[n.toLowerCase()]=n});TR.forEach(function(t){var d=dn(t.date),cn=lc[String(t.team||"").trim().toLowerCase()];if(cn)t.team=cn;if(d>=sd&&cn){t._d=d;t._s=Math.floor((d-sd)/(LG.weeks*7));out.push(t)}else{var sk=t.date+"#"+t.no;if(!SKIP[sk]){SKIP[sk]=1;console.info("trade skipped",t.date,t.no,t.team)}}});return out.sort(function(a,b){return a._d-b._d||a.no-b.no})}
+var SKIP={};function trades(){var sd=dn(LG.start),out=[],lc={};NAMES.forEach(function(n){lc[n.toLowerCase()]=n});TR.forEach(function(t){var d=dn(t.date),cn=lc[String(t.team||"").trim().toLowerCase()];if(cn)t.team=cn;if(cn){t._d=d;t._s=d>=sd?Math.floor((d-sd)/(LG.weeks*7)):0;out.push(t)}else{var sk=t.date+"#"+t.no;if(!SKIP[sk]){SKIP[sk]=1;console.info("trade skipped",t.date,t.no,t.team)}}});return out.sort(function(a,b){return a._d-b._d||a.no-b.no})}
 function agg(list){var m={};NAMES.forEach(function(n){m[n]={n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}});
 list.forEach(function(t){var x=m[t.team];if(!x)return;var k={TP:"tp",CLOSE:"close",RISK:"risk",SL:"sl"}[t.res];if(k)x[k]++;var p=+t.pips||0,q=+t.usd||0;if(p>0)x.pp+=p;else x.pn-=p;if(q>0)x.qp+=q;else x.qn-=q});
 return NAMES.map(function(n){return m[n]})}
@@ -824,14 +827,16 @@ function list(){var L=(TR||[]).slice().sort(function(a,b){return (+b.no||0)-(+a.
 $("trn").oninput=function(){$("trno").textContent="#"+this.value};
 document.querySelector(".tlot").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;e.preventDefault();var v=+$("trlot").value||0;v=b.dataset.l=="+"?v+0.01:Math.max(0,v-0.01);$("trlot").value=v.toFixed(2)});
 $("trlq").addEventListener("click",function(e){var b=e.target.closest("button");if(b){e.preventDefault();$("trlot").value=b.textContent}});
-window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l";if(k=="f")reset();if(k=="l")list()};
+window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l";if(k=="f"){reset();$("trok").hidden=true}if(k=="l")list()};
 function put(mut,msg){var g=ghc(),m=$("trm");if(!g.token||!g.owner||!g.repo){m.textContent="اول در ⚙️ تنظیمات اتصال گیت‌هاب را انجام بده.";return Promise.reject()}
 var p=g.path||"data/trades.json";return ghApi(g,p).then(function(j){var a=[];if(j.content)a=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));a=mut(a);return ghApi(g,p,"PUT",{message:msg,branch:g.branch||"main",content:btoa(unescape(encodeURIComponent(JSON.stringify(a,null,1)+"\n"))),sha:j.sha||undefined}).then(function(){return a})})}
+function trOk(t){var el=$("trok");if(!el)return;var all=(TR||[]).filter(function(x){return x.team==t.team}),pp=0,uu=0;all.forEach(function(x){pp+=+x.pips||0;uu+=+x.usd||0});pp=rd(pp);uu=rd(uu);
+var cl=function(v){return v>0?"pos":v<0?"neg":""};el.innerHTML='<div class="trok-h">✅ ترید #'+esc(String(t.no))+' ثبت شد</div><div class="trok-t" style="--c:'+(COL[t.team]||"#39C795")+'">'+(LOGO[t.team]?'<img src="'+LOGO[t.team]+'" alt="">':'')+'<div><b>'+esc(t.team)+'</b><small dir="ltr">'+esc(t.dir)+' · '+esc(t.res)+' · '+esc(t.date)+'</small></div></div><div class="trok-g"><div><small>تعداد ترید</small><b>'+all.length+'</b></div><div><small>پیپ کل</small><b class="'+cl(pp)+'" dir="ltr">'+sg(pp)+'</b></div><div><small>دلار کل</small><b class="'+cl(uu)+'" dir="ltr">'+(uu<0?"-$":"$")+Math.abs(uu)+'</b></div></div>';el.hidden=false}
 window.trSave=function(){var m=$("trm");if(!V.dir||!V.res){m.textContent="⚠️ جهت و نتیجه را انتخاب کن.";return}if(!(+$("trlot").value>0)){m.textContent="⚠️ لات را وارد کن.";$("trlot").focus();return}
 var p=(+$("trpp").value||0)-(+$("trpn").value||0),q=(+$("trqp").value||0)-(+$("trqn").value||0),no=+$("trn").value;
 var t={date:$("trd").value,no:no,team:$("trt").value,time:"",dir:V.dir,res:V.res,lot:+$("trlot").value||0,pips:rd(p),usd:rd(q),trend:TF.map(function(f){return TD[f]?f+":"+TD[f]:""}).filter(Boolean).join(" "),conf:[].map.call(document.querySelectorAll("#trf .tcf.on"),function(b){return b.dataset.c}),pincer:!!document.querySelector('.tcf.on[data-c="انبرک"]'),note:$("trnt").value.trim()};
 m.textContent="در حال ذخیره…";$("trsv").disabled=true;
-put(function(a){a.push(t);return a},"ترید #"+no).then(function(a){TR=a;localStorage.setItem("dgl_trno",no);if(t.lot)localStorage.setItem("dgl_trlot",t.lot);render();reset();m.textContent="✅ ترید #"+no+" ذخیره شد.";$("trst").textContent="ذخیره شد";$("trst").className="tfst ok";scrollTo({top:0,behavior:"smooth"})}).catch(function(e){if(e&&e.message)m.textContent="❌ "+e.message}).then(function(){$("trsv").disabled=false})};
+put(function(a){a.push(t);return a},"ترید #"+no).then(function(a){TR=a;localStorage.setItem("dgl_trno",no);if(t.lot)localStorage.setItem("dgl_trlot",t.lot);render();reset();trOk(t);m.textContent="✅ ترید #"+no+" ذخیره شد.";$("trst").textContent="ذخیره شد";$("trst").className="tfst ok";scrollTo({top:0,behavior:"smooth"})}).catch(function(e){if(e&&e.message)m.textContent="❌ "+e.message}).then(function(){$("trsv").disabled=false})};
 window.trDel=function(no){if(!confirm("ترید #"+no+" حذف شود؟"))return;put(function(a){return a.filter(function(t){return +t.no!=no})},"حذف ترید #"+no).then(function(a){TR=a;render();list()}).catch(function(e){alert(e&&e.message||"ناموفق")})};
 document.querySelector('.tab[data-t="tr"]').addEventListener("click",function(){trGo("h")});
 $("trd").addEventListener("input",trJa);
