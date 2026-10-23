@@ -353,6 +353,7 @@ button,.go{min-height:44px}
 @media (min-width:768px){.cupimg{width:52px}}
 .cupt th:not(.ps):not(.tm),.cupt td:not(.ps):not(.tm){width:16%}
 
+.tmf{margin-top:14px;padding:12px;border:1px solid var(--ln);border-radius:14px;background:var(--card);display:grid;gap:8px}.tmf input{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)}.tmf button{font:inherit;padding:9px;border-radius:10px;border:0;background:var(--gold);color:#111;font-weight:700;cursor:pointer}.tmadd{border:2px dashed var(--ln);font-size:44px;color:var(--mu);background:transparent}
 .tmg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(min-width:720px){.tmg{grid-template-columns:repeat(5,1fr)}}.tmc{cursor:pointer;text-align:center}.tmb{aspect-ratio:1/1;border-radius:16px;background:#fff;border:2px solid var(--c);box-shadow:0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:8px;box-sizing:border-box;overflow:hidden}.tmb img{width:100%;height:100%;object-fit:contain}.tmx{font-weight:800;font-size:14px}.tmn{margin-top:6px;font-size:12px;font-weight:700;line-height:1.4}.tmc:active .tmb{transform:scale(.97)}
 .tabs{display:flex;gap:8px;overflow-x:auto;direction:rtl;margin:16px 0 0;padding:4px 2px 8px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -469,7 +470,7 @@ button,.go{min-height:44px}
 </div>
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
-<div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div></section></div>
+<div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div><div id="tmf" class="tmf" hidden><b>➕ تیم جدید</b><input id="tmn_in" placeholder="اسم تیم (انگلیسی)" maxlength="40"><input id="tmc_in" type="color" value="#888888"><input id="tmlogo" type="file" accept="image/*"><button id="tmsv" onclick="tmSave()">ذخیره</button><div id="tmm" class="hint"></div></div></section></div>
 <div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
 <div class="lad" id="lad"></div>
 </section></div>
@@ -594,7 +595,17 @@ var AWI=-1;
 function awFill(i){var p=document.getElementById("awp"),a=G.A[i],L=G.hr.filter(function(h){return h.a[i]>0}),cr=window.CR;p.innerHTML='<div class="awh">'+a[0]+' '+a[1]+' — '+a[2]+'</div>'+(L.length?L.map(function(h){return'<div class="awr">'+cr(h.n,"sm")+'<span>'+esc(h.n)+'</span><em>'+h.a[i]+'</em></div>'}).join(""):'<div class="awe">هنوز تیمی این جایزه را نگرفته</div>')}
 window.awOpen=function(i){var p=document.getElementById("awp");if(AWI===i){AWI=-1;p.innerHTML="";return}AWI=i;awFill(i)};
 var RC={TP:"#3fbf7a",CLOSE:"#4aa3ff",RISK:"#f6c744",SL:"#ef5b5b"};
-function tmFill(){var g=document.getElementById("tmg");if(!g)return;g.innerHTML=NAMES.map(function(n){var im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="" loading="lazy" decoding="async">':'<span class="tmx" style="color:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>';return'<div class="tmc" data-team="'+esc(n)+'" style="--c:'+(COL[n]||"#888")+'"><div class="tmb">'+im+'</div><div class="tmn">'+esc(n)+'</div></div>'}).join("")}
+function tmFill(){var g=document.getElementById("tmg");if(!g)return;g.innerHTML=NAMES.map(function(n){var im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="" loading="lazy" decoding="async">':'<span class="tmx" style="color:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>';return'<div class="tmc" data-team="'+esc(n)+'" style="--c:'+(COL[n]||"#888")+'"><div class="tmb">'+im+'</div><div class="tmn">'+esc(n)+'</div></div>'}).join("")+'<div class="tmc" onclick="tmToggle()"><div class="tmb tmadd">+</div><div class="tmn">تیم جدید</div></div>'}
+function tmToggle(){var f=document.getElementById("tmf");f.hidden=!f.hidden}
+function ghCfg(){var g={};try{g=JSON.parse(localStorage.getItem("dgl_gh"))||{}}catch(x){}if(/\.github\.io$/.test(location.hostname)&&!g.owner){g.owner=location.hostname.split(".")[0];g.repo=location.pathname.split("/")[1]||g.owner+".github.io"}return g}
+function ghApi(g,path,method,body){return fetch("https://api.github.com/repos/"+g.owner+"/"+g.repo+"/contents/"+path+(method?"":"?ref="+encodeURIComponent(g.branch||"main")+"&t="+Date.now()),{method:method||"GET",headers:{Authorization:"Bearer "+g.token,Accept:"application/vnd.github+json","Content-Type":"application/json"},cache:"no-store",body:body?JSON.stringify(body):undefined}).then(function(r){if(r.status==404&&!method)return{};if(!r.ok)return Promise.reject(new Error((method?"ذخیره":"خواندن")+" ناموفق "+r.status+(r.status==401||r.status==403?" – توکن این دستگاه را در صفحه trade دوباره تنظیم کن":"")));return r.json()})}
+function tmSave(){var m=document.getElementById("tmm"),n=document.getElementById("tmn_in").value.trim(),col=document.getElementById("tmc_in").value,file=document.getElementById("tmlogo").files[0];
+if(!n){m.textContent="اسم تیم را بنویس.";return}if(NAMES.some(function(x){return x.toLowerCase()==n.toLowerCase()})){m.textContent="این تیم از قبل وجود دارد.";return}
+var g=ghCfg();if(!g.token||!g.owner||!g.repo){m.textContent="اول در صفحه‌ی ثبت ترید (trade) تنظیم اتصال گیت‌هاب را روی همین دستگاه انجام بده.";return}
+var slug=n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"team-"+Date.now(),logo="",b64="",du="";
+var fr=function(){return new Promise(function(res,rej){if(!file)return res("");var rd=new FileReader();rd.onload=function(){res(rd.result)};rd.onerror=rej;rd.readAsDataURL(file)})};
+m.textContent="در حال ذخیره…";var btn=document.getElementById("tmsv");btn.disabled=true;
+fr().then(function(d){du=d;if(du){b64=du.split(",")[1];var ext=(file.name.split(".").pop()||"png").toLowerCase();logo="assets/teams/"+slug+"."+ext;return ghApi(g,logo).then(function(j){return ghApi(g,logo,"PUT",{message:"لوگوی تیم "+n,branch:g.branch||"main",content:b64,sha:j.sha||undefined})})}}).then(function(){return ghApi(g,"data/teams.json")}).then(function(j){var list=[];if(j.content)list=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));list.push({name:n,color:col,logo:logo||undefined});var c=btoa(unescape(encodeURIComponent(JSON.stringify(list,null,1)+"\n")));return ghApi(g,"data/teams.json","PUT",{message:"تیم جدید: "+n,branch:g.branch||"main",content:c,sha:j.sha||undefined})}).then(function(){NAMES.push(n);COL[n]=col;if(logo)LOGO[n]=du;teams=zero();render();document.getElementById("tmn_in").value="";document.getElementById("tmlogo").value="";m.textContent="✅ «"+n+"» ذخیره شد."}).catch(function(e){m.textContent="❌ "+e.message}).then(function(){btn.disabled=false})}
 function dots(n,TS){var l=TS.filter(function(t){return t.team==n}).slice(-5).reverse(),h='<div class="fm" dir="ltr">';for(var i=0;i<5;i++){var t=l[i];h+=t?'<i style="background:'+RC[t.res]+'" title="'+t.res+'"></i>':'<i></i>'}return h+'</div>'}
 function render(){tmFill();
 var TS=trades(),W7=LG.weeks*7,SD=dn(LG.start),nw=new Date(),TD=Math.floor(Date.UTC(nw.getFullYear(),nw.getMonth(),nw.getDate())/864e5);
@@ -608,7 +619,8 @@ var bar=document.getElementById("bar");bar.querySelectorAll(".mk").forEach(funct
 CUPS.forEach(function(c){var e=document.createElement("div");e.className="mk"+(T.day>=c.d?" on":"");e.style.right=(c.d/T.total*100)+"%";e.textContent=c.d;bar.appendChild(e)});
 document.getElementById("lgi").innerHTML=T.msg;var hc=document.getElementById("htc");if(hc)hc.textContent="ترید: "+TS.length;
 var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+esc(n)+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>'};
-try{document.getElementById("rows").innerHTML=r.map(function(x,i){
+var PL={};TS.forEach(function(t){PL[t.team]=1});var rv=r.filter(function(x){return PL[x.n]});
+try{document.getElementById("rows").innerHTML=rv.map(function(x,i){
 var z=!tot?"":i==0?"z1":i==1?"z2":"";
 return'<tr class="'+z+'" data-team="'+encodeURIComponent(x.n)+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div>'+dots(x.n,TS)+'</div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
 var CL=CUPS.map(function(c){return T.day>=c.d||CS<Math.floor((TD-SD)/W7)?cupLeader(CS,c.d,TS):null});
@@ -623,7 +635,7 @@ CUPS.forEach(function(c,ci){var l=se==CS?CL[ci]:cupLeader(se,c.d,TS);if(l)H[l].c
 awards(rs).forEach(function(x,i){if(x)H[x.n].a[i]++})}
 var hr=Object.keys(H).map(function(n){var h=H[n];return{n:n,c:h.c,a:h.a,t:h.c+h.a[0]+h.a[1]+h.a[2]+h.a[3]}}).sort(function(x,y){return y.t-x.t||y.c-x.c});
 window.CR=cr;G={r:r,TS:TS,CS:CS,hr:hr,A:A};if(AWI>=0)awFill(AWI);
-document.getElementById("hon").innerHTML=hr.map(function(h,i){var z=function(v){return v?'<b>'+v+'</b>':'<span class="mu">·</span>'};return'<tr data-team="'+encodeURIComponent(h.n)+'"'+(h.t&&i==0?' class="z1"':'')+'><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(h.n)+'<div><div class="tn">'+esc(h.n)+'</div></div></div></td><td>'+z(h.c)+'</td><td>'+z(h.a[0])+'</td><td>'+z(h.a[1])+'</td><td>'+z(h.a[2])+'</td><td>'+z(h.a[3])+'</td><td class="pt">'+h.t+'</td></tr>'}).join("");
+document.getElementById("hon").innerHTML=hr.filter(function(h){return h.t>0}).map(function(h,i){var z=function(v){return v?'<b>'+v+'</b>':'<span class="mu">·</span>'};return'<tr data-team="'+encodeURIComponent(h.n)+'"'+(h.t&&i==0?' class="z1"':'')+'><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(h.n)+'<div><div class="tn">'+esc(h.n)+'</div></div></div></td><td>'+z(h.c)+'</td><td>'+z(h.a[0])+'</td><td>'+z(h.a[1])+'</td><td>'+z(h.a[2])+'</td><td>'+z(h.a[3])+'</td><td class="pt">'+h.t+'</td></tr>'}).join("");
 var ic=["🥇","🥈","🥉"],o=[1,0,2];
 document.getElementById("podium").innerHTML=tot?'<div class="stage" id="stage">'+o.filter(function(i){return r[i]&&r[i].play}).map(function(i){var x=r[i];return'<div class="step s'+(i+1)+'" data-team="'+encodeURIComponent(x.n)+'"><i>'+ic[i]+'</i>'+cr(x.n)+'<b>'+esc(x.n)+'</b><small>'+f(x.pt)+' امتیاز</small></div>'}).join("")+'</div>':'<div class="empty"><b>⚽</b>فصل هنوز شروع نشده؛ منتظر اولین ترید.</div>';
 wallet(TS.reduce(function(a,t){return a+(+t.usd||0)},0));
