@@ -431,6 +431,13 @@ button,.go{min-height:44px}
 .ltw .tn{color:#0B1220!important;letter-spacing:.01em}
 </style>
 <style>.wx{margin:14px 6px 4px;padding:12px;border-radius:14px;background:#0a1f44;color:#f4ead0;font-size:13px}.wx b{display:block;margin:6px 0}.wx .r{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.wx select,.wx input{flex:1 1 90px;min-width:0;padding:8px;border-radius:8px;border:1px solid #2a4a85;background:#041331;color:#fff;font:inherit}.wx button{padding:8px 14px;border-radius:8px;border:0;background:#f6c744;color:#241a00;font:inherit;font-weight:800}.wx .sv{width:100%;margin-top:8px;padding:11px}.wx .wl{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1d3768}.wx .wl button{background:#6b1d1d;color:#fff;padding:2px 8px}#wms{margin-top:6px;font-size:12px;color:#ffe9a8}</style>
+<style>.trh{display:grid;gap:14px}.trc{cursor:pointer;text-align:center;padding:38px 10px;border-radius:18px;background:var(--card);border:1px solid var(--info);font-size:20px;font-weight:800}.trc b{display:block;font-size:40px;margin-bottom:8px}
+#p-tr label{display:grid;gap:4px;font-size:12px;color:var(--mu)}#p-tr input,#p-tr select{font:inherit;padding:9px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);width:100%;box-sizing:border-box}
+.trr{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trr4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.trk,.trb{font:inherit;font-weight:800;padding:12px 4px;border-radius:12px;border:2px solid var(--k,var(--ln));background:var(--bg);color:var(--tx);cursor:pointer}.trk.on{background:var(--k,var(--info));color:#fff}.trk.on:not([style]){--k:var(--info)}
+.trsv{font:inherit;font-weight:800;padding:14px;border-radius:12px;border:0;background:var(--gold);color:#111;cursor:pointer}.trnet{text-align:center;font-weight:800;font-size:14px}
+.trw{display:grid;grid-template-columns:70px repeat(3,1fr);gap:6px;align-items:center;margin-bottom:6px;font-size:13px}.trw .trk{padding:8px 2px}
+.tri{display:flex;gap:8px;align-items:center;padding:10px;margin-top:8px;border:1px solid var(--ln);border-radius:12px;background:var(--card);font-size:13px;flex-wrap:wrap}.tri b{margin-inline-end:auto}.tri button{font:inherit;border:0;background:none;color:var(--neg);cursor:pointer}</style>
 </head>
 <body>
 
@@ -446,6 +453,7 @@ button,.go{min-height:44px}
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
 <nav class="tabs" role="tablist" aria-label="بخش‌ها">
 <button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr">📊 ترید</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
@@ -464,6 +472,25 @@ button,.go{min-height:44px}
 <div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمانان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
 </section>
 </div>
+<div id="p-tr" class="tpanel" data-p="tr" hidden><section>
+<div id="trh" class="trh"><div class="trc" onclick="trGo('f')"><b>➕</b>ثبت ترید جدید</div><div class="trc" onclick="trGo('l')"><b>📋</b>فهرست ترید</div></div>
+<div id="trf" class="tmf" hidden>
+<button class="trb" onclick="trGo('h')">↩ بازگشت</button>
+<div class="trr"><label>شماره<input id="trn" type="number" inputmode="numeric"></label><label>تاریخ<input id="trd" type="date"></label></div>
+<label>استراتژی<select id="trt"></select></label>
+<div class="trr"><button class="trk" data-g="dir" data-v="BUY">Buy</button><button class="trk" data-g="dir" data-v="SELL">Sell</button></div>
+<div class="trr4"><button class="trk" data-g="res" data-v="TP" style="--k:#3fbf7a">TP</button><button class="trk" data-g="res" data-v="CLOSE" style="--k:#4aa3ff">CLOSE</button><button class="trk" data-g="res" data-v="RISK" style="--k:#f6c744">RISK</button><button class="trk" data-g="res" data-v="SL" style="--k:#ef5b5b">SL</button></div>
+<div class="trr"><label>پیپ −<input id="trpn" type="number" min="0" step="any" inputmode="decimal"></label><label>پیپ +<input id="trpp" type="number" min="0" step="any" inputmode="decimal"></label></div>
+<div class="trr"><label>دلار −<input id="trqn" type="number" min="0" step="any" inputmode="decimal"></label><label>دلار +<input id="trqp" type="number" min="0" step="any" inputmode="decimal"></label></div>
+<div id="trnet" class="trnet"></div>
+<div class="sec" style="margin:8px 0 0;font-size:14px">روند</div><div id="trtd"></div>
+<div class="sec" style="margin:8px 0 0;font-size:14px">تأیید ورود</div>
+<div class="trr4"><button class="trk trck" data-c="انبرک">انبرک</button><button class="trk trck" data-c="MA50">MA 50</button><button class="trk trck" data-c="MA100">MA 100</button><button class="trk trck" data-c="MA200">MA 200</button></div>
+<label>یادداشت<input id="trnt"></label>
+<button id="trsv" class="trsv" onclick="trSave()">ذخیره ترید</button><div id="trm" style="font-size:13px"></div>
+</div>
+<div id="trl" hidden><button class="trb" onclick="trGo('h')">↩ بازگشت</button><div id="trls"></div></div>
+</section></div>
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
 <div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div><div id="tmf" class="tmf" hidden><b>➕ تیم جدید</b><input id="tmn_in" placeholder="اسم تیم (انگلیسی)" maxlength="40"><input id="tmc_in" type="color" value="#888888"><input id="tmlogo" type="file" accept="image/*"><button id="tmsv" onclick="tmSave()">ذخیره</button><div id="tmm" class="hint"></div></div></section></div>
@@ -717,6 +744,32 @@ setInterval(show,6e4);
   var b=document.getElementById('gsv');if(!b)return;
   b.onclick=function(){var o=Object.assign({},g);o.token=document.getElementById('gtok').value.trim();o.owner=document.getElementById('gown').value.trim();o.repo=document.getElementById('grep').value.trim();o.branch=document.getElementById('gbr').value.trim()||'main';o.path=document.getElementById('gpath').value.trim()||'data/trades.json';
     localStorage.setItem(K,JSON.stringify(o));g=o;document.getElementById('gsm').textContent='✅ تنظیمات ذخیره شد.'};
+})();
+</script>
+<script>
+(function(){var TF=["1m","5m","15m","30m","1h"],V={dir:"",res:""},TD={},$=function(i){return document.getElementById(i)};
+var AR={u:"▲",d:"▼",f:"↔"};
+$("trtd").innerHTML=TF.map(function(f){return'<div class="trw" dir="ltr"><span>'+f+'</span>'+["u","d","f"].map(function(a){return'<button class="trk trt" data-f="'+f+'" data-a="'+a+'">'+AR[a]+'</button>'}).join("")+'</div>'}).join("");
+function ghc(){return typeof ghCfg=="function"?ghCfg():{}}
+function nxt(){var m=0;(TR||[]).forEach(function(t){if(+t.no>m)m=+t.no});var l=+localStorage.getItem("dgl_trno")||0;return Math.max(m,l)+1}
+function net(){var p=(+$("trpp").value||0)-(+$("trpn").value||0),q=(+$("trqp").value||0)-(+$("trqn").value||0);$("trnet").textContent="خالص: "+p+" پیپ · "+q+"$";$("trnet").style.color=q<0||p<0?"var(--neg)":"var(--pos)"}
+["trpp","trpn","trqp","trqn"].forEach(function(i){$(i).oninput=net});
+function reset(){V={dir:"",res:""};TD={};document.querySelectorAll("#trf .trk.on").forEach(function(b){b.classList.remove("on")});["trpp","trpn","trqp","trqn","trnt"].forEach(function(i){$(i).value=""});$("trn").value=nxt();$("trd").value=new Date().toLocaleDateString("sv");$("trt").innerHTML=NAMES.map(function(n){return"<option>"+esc(n)+"</option>"}).join("");net()}
+document.getElementById("trf").addEventListener("click",function(e){var b=e.target.closest(".trk");if(!b)return;
+if(b.dataset.g){document.querySelectorAll('.trk[data-g="'+b.dataset.g+'"]').forEach(function(x){x.classList.remove("on")});b.classList.add("on");V[b.dataset.g]=b.dataset.v}
+else if(b.dataset.f){var f=b.dataset.f,on=b.classList.contains("on");document.querySelectorAll('.trt[data-f="'+f+'"]').forEach(function(x){x.classList.remove("on")});if(on)delete TD[f];else{b.classList.add("on");TD[f]=b.dataset.a}}
+else b.classList.toggle("on")});
+function list(){var L=(TR||[]).slice().sort(function(a,b){return (+b.no||0)-(+a.no||0)});$("trls").innerHTML=L.length?L.map(function(t){return'<div class="tri"><b>#'+esc(String(t.no||""))+" "+esc(t.team||"")+'</b><span>'+esc(t.dir||"")+'</span><span style="color:'+(RC[t.res]||"#888")+'">'+esc(t.res||"")+'</span><span dir="ltr">'+(+t.pips||0)+'p · '+(+t.usd||0)+'$</span><span>'+esc(t.date||"")+'</span><button onclick="trDel('+(+t.no||0)+')">حذف</button></div>'}).join(""):'<div class="tri">هنوز ترید ثبت نشده.</div>'}
+window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l";if(k=="f")reset();if(k=="l")list()};
+function put(mut,msg){var g=ghc(),m=$("trm");if(!g.token||!g.owner||!g.repo){m.textContent="اول در ⚙️ تنظیمات اتصال گیت‌هاب را انجام بده.";return Promise.reject()}
+var p=g.path||"data/trades.json";return ghApi(g,p).then(function(j){var a=[];if(j.content)a=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));a=mut(a);return ghApi(g,p,"PUT",{message:msg,branch:g.branch||"main",content:btoa(unescape(encodeURIComponent(JSON.stringify(a,null,1)+"\n"))),sha:j.sha||undefined}).then(function(){return a})})}
+window.trSave=function(){var m=$("trm");if(!V.dir||!V.res){m.textContent="جهت و نتیجه را انتخاب کن.";return}
+var p=(+$("trpp").value||0)-(+$("trpn").value||0),q=(+$("trqp").value||0)-(+$("trqn").value||0),no=+$("trn").value;
+var t={date:$("trd").value,no:no,team:$("trt").value,time:"",dir:V.dir,res:V.res,pips:p,usd:q,trend:TF.map(function(f){return TD[f]?f+":"+TD[f]:""}).filter(Boolean).join(" "),conf:[].map.call(document.querySelectorAll("#trf .trck.on"),function(b){return b.dataset.c}),pincer:!!document.querySelector('.trck.on[data-c="انبرک"]'),note:$("trnt").value.trim()};
+m.textContent="در حال ذخیره…";$("trsv").disabled=true;
+put(function(a){a.push(t);return a},"ترید #"+no).then(function(a){TR=a;localStorage.setItem("dgl_trno",no);render();m.textContent="✅ ذخیره شد.";reset()}).catch(function(e){if(e&&e.message)m.textContent="❌ "+e.message}).then(function(){$("trsv").disabled=false})};
+window.trDel=function(no){if(!confirm("ترید #"+no+" حذف شود؟"))return;put(function(a){return a.filter(function(t){return +t.no!=no})},"حذف ترید #"+no).then(function(a){TR=a;render();list()}).catch(function(e){alert(e&&e.message||"ناموفق")})};
+document.querySelector('.tab[data-t="tr"]').addEventListener("click",function(){trGo("h")});
 })();
 </script>
 </body>
