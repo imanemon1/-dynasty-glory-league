@@ -438,7 +438,7 @@ button,.go{min-height:44px}
 
 <div class="wrap">
 <header class="hdr"><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
-<div class="hact"><a class="cta" href="trade/">➕ ثبت ترید</a><a class="lnk" href="#" onclick="openRules();return false">قوانین</a></div>
+
 <div class="hst"><span id="ldr" class="chip"></span><span id="lgi" class="chip"></span></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
@@ -448,7 +448,8 @@ button,.go{min-height:44px}
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw">📰 اخبار</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین و مرور</button>
+<a class="tab tlink" href="trade/" style="text-decoration:none">➕ ثبت مسابقه</a>
 </nav>
 <div id="p-lg" class="tpanel" data-p="lg"><section><div class="sec">🏟 سه تیم برتر</div>
 <div id="podium"><div class="stage" id="stage"></div></div></section>
@@ -471,6 +472,7 @@ button,.go{min-height:44px}
 <div id="p-nw" class="tpanel" data-p="nw" hidden><section><div class="sec">📰 اخبار USD<small>به وقت تهران · منبع: Forex Factory</small></div><div id="nwb"></div><div id="nwl"></div></section></div>
 <style>.nwa{margin:8px 0 12px;padding:12px;border-radius:12px;font-weight:800;font-size:14px;line-height:1.7}.nwa.bad{background:#5a1010;color:#ffd6d6;border:1px solid #c33}.nwa.ok{background:#0f3d24;color:#d4ffe4;border:1px solid #2a8}.nwa.wn{background:#4a3a08;color:#ffeaa0;border:1px solid #c9a227}.nwd{margin:14px 0 6px;font-weight:800;color:var(--tx)}.nwr{display:flex;gap:10px;align-items:center;padding:10px;margin:4px 0;border-radius:10px;background:var(--card);border:1px solid var(--ln);font-size:13px}.nwr.past{opacity:.45}.nwr .tm{min-width:48px;font-weight:800;direction:ltr}.nwr .nt{flex:1;min-width:0}.nwr .ex{font-size:11px;color:var(--mu);direction:ltr;text-align:right}.nwr i{width:12px;height:12px;border-radius:50%;flex:0 0 12px}.nwr.High{border-color:#c33}.nwr.High .nt{font-weight:800}</style>
 <div id="p-ru" class="tpanel" data-p="ru" hidden><section><div class="sec">📜 قوانین و توضیحات</div>
+<button class="go" type="button" onclick="openRules()" style="margin:0 0 12px">📖 مرور قوانین</button>
 <p class="note">POINT = PIPS + (TP × 5) + (CLOSE × 2) − SL. دلار در امتیاز نیست و فقط ارزش تیم را نشان می‌دهد.</p>
 <p class="note">پله‌ی بعد وقتی باز می‌شود که حساب پشتیبان و حساب تریدینگ هر دو به حد پله برسند.</p></section></div>
 </div>
@@ -649,7 +651,7 @@ render();route();
 </script>
 <script>
 (function(){
-var tabs=[].slice.call(document.querySelectorAll('.tab'));
+var tabs=[].slice.call(document.querySelectorAll('.tab[data-t]'));
 tabs.forEach(function(b){b.addEventListener('click',function(){
 var k=b.getAttribute('data-t'),p=document.querySelector('.tpanel[data-p="'+k+'"]');
 document.querySelectorAll('.tpanel').forEach(function(x){x.hidden=true});
