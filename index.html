@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#090F1C">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dynasty Glory League</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#090F1C;--card:#111B2D;--hov:#18253B;--tx:#F3F5F9;--mu:#A7B3C7;--gold:#D6B56D;--ln:#26354B;--neg:#EF7380;--pos:#39C795;--info:#70A9F7;color-scheme:dark;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+html,body{margin:0}
+html{background:var(--bg);min-height:100%}
+body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.7;padding:0 14px 90px}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:clamp(28px,8vw,46px);font-weight:800;margin:22px 0 2px;letter-spacing:.5px;color:var(--gold);direction:ltr;text-align:center}
+.sub{text-align:center;color:var(--mu);margin:0 0 16px;font-size:14px}
+.lvl{display:flex;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:10px 14px;font-size:14px}
+.bar{position:relative;height:10px;background:var(--ln);border-radius:6px;margin:34px 6px 8px}
+.fill{height:100%;background:var(--gold);border-radius:6px;transition:width .6s}
+.mk{position:absolute;top:-24px;transform:translateX(50%);font-size:12px;color:var(--mu);text-align:center}
+.mk.on{color:var(--gold);font-weight:600}
+.stage{perspective:700px;margin:26px 0 8px;height:230px;display:flex;justify-content:center;align-items:flex-end;gap:8px;direction:ltr}
+.step{width:30%;max-width:200px;text-align:center;transform:rotateX(16deg);transform-origin:bottom;background:linear-gradient(180deg,var(--gold),#6b4d05);color:#1a1205;border-radius:10px 10px 0 0;box-shadow:0 22px 30px -14px rgba(0,0,0,.55);padding-top:10px;transition:transform .3s}
+.step:hover{transform:rotateX(4deg) translateY(-4px)}
+.step i{font-style:normal;font-size:28px;display:block}
+.step b{display:block;font-size:16px;direction:ltr}
+.step small{font-size:12px;font-weight:600}
+.s1{height:190px}.s2{height:140px;filter:brightness(.88)}.s3{height:105px;filter:brightness(.75)}
+.neg{color:var(--neg)}.pos{color:var(--pos)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button{font:inherit;background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px 14px;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.note{font-size:12px;color:var(--mu)}
+#gate{position:fixed;inset:0;background:var(--bg);overflow-y:auto;z-index:9;padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(24px + env(safe-area-inset-bottom,0px))}
+#gate.off{display:none}
+#gate h2{color:var(--gold);text-align:center;margin:0 0 4px}
+.g{max-width:560px;margin:0 auto}
+.g h3{font-size:14px;color:var(--mu);margin:14px 0 4px}
+.g label{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px;cursor:pointer}
+.g input{margin-top:6px;accent-color:var(--gold);width:18px;height:18px;flex:none}
+.g label:has(input:checked){border-color:var(--gold)}
+.q{text-align:center;font-weight:600;margin:16px 0;color:var(--gold)}
+.go{display:block;width:100%;background:var(--gold);color:#1a1205;font-weight:800;border:0;padding:12px}
+.go:disabled{opacity:.4;cursor:not-allowed}
+#rv{position:fixed;inset:0;background:var(--bg);overflow-y:auto;z-index:10;padding:calc(18px + env(safe-area-inset-top,0px)) 14px 24px;display:none}
+#rv.on{display:block}
+.fm{display:flex;gap:3px;margin-top:5px;flex-wrap:nowrap}.fm i{width:9px;height:9px;border-radius:50%;background:#d1d5db;flex:none}
+tr[data-team],.step[data-team]{cursor:pointer}
+#tp{position:fixed;inset:0;background:var(--bg);color:var(--tx);overflow-y:auto;z-index:11;padding:calc(18px + env(safe-area-inset-top,0px)) 14px 24px;display:none}#tp.on{display:block}
+#tp .pw{max-width:560px;margin:0 auto}#tp h2{margin:8px 0 2px;text-align:center}
+#tp .ph{text-align:center;border-top:4px solid var(--c);padding-top:10px}#tp .cr.lg{width:110px;height:110px;margin:0 auto}
+#tp .kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}#tp .kv div{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px;text-align:center}#tp .kv small{display:block;color:var(--mu)}
+#tp .fm{justify-content:center;gap:6px}#tp .fm i{width:20px;height:20px;background:var(--ln)}
+#tp h4{margin:14px 0 6px;color:var(--gold)}#tp .tl{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:13px}#tp .tl b{margin-inline-start:auto}
+#tp .go{width:100%;margin-top:14px}
+.rvi{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px}
+
+.lad{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:12px}
+.nx{border:1px solid var(--gold);border-radius:14px;padding:12px;background:linear-gradient(145deg,rgba(246,199,68,.12),transparent);margin-bottom:12px}
+.nx h3{margin:0 0 2px;font-size:16px;color:var(--gold)}
+.nx .lt{font-size:12px;color:var(--mu);margin-bottom:8px}
+.rq{margin:8px 0 0;font-size:12px}
+.rq .t{display:flex;justify-content:space-between}
+.rq .t b{direction:ltr}
+.pb{height:9px;background:var(--ln);border-radius:5px;overflow:hidden;margin-top:3px}
+.pb i{display:block;height:100%;border-radius:5px;transition:width .6s}
+.ok{color:var(--pos)}
+.tip{margin-top:10px;font-size:12px;padding:8px 10px;border-radius:10px;background:var(--bg);color:var(--tx)}
+.path{position:relative;margin-right:14px;padding-right:18px;border-right:3px solid var(--ln)}
+.lad{background:radial-gradient(120% 55% at 50% 0,#0c2d78 0,#00133a 55%,#000a24 100%);color:#e6edff;border-radius:26px;padding:10px;border:1px solid #1d3f8a;box-shadow:0 14px 34px -16px #1d5bff;display:flex;flex-direction:column;gap:10px}
+.lad .hd{display:flex;align-items:center;gap:8px;border:2px solid #f6c23e;border-radius:20px;background:linear-gradient(180deg,#0a1a40,#04102d);padding:8px 10px 8px 14px;box-shadow:0 0 18px -4px #f6c23e,inset 0 0 18px -8px #f6c23e;overflow:hidden}
+.lad .hd .ht{flex:1;min-width:0}
+.lad .hd h3{margin:0;font-size:21px;font-weight:800;color:#ffd24a;text-shadow:0 0 12px #ffb40099;line-height:1.35}
+.lad .hd .hs{font-size:14px;color:#9db8ff;margin-top:4px}
+.lad .hd>img{width:96px;height:auto;flex:none;-webkit-mask-image:linear-gradient(to left,transparent,#000 45%);mask-image:linear-gradient(to left,transparent,#000 45%);margin:-6px -8px -6px 0}
+.lad .bk{display:flex;align-items:center;gap:10px;border:2px solid #2d7dff;border-radius:20px;padding:8px 10px;background:linear-gradient(90deg,#002a73,#00184a);box-shadow:0 0 16px -6px #2d7dff}
+.lad .bk.tr{border-color:#f6c23e;background:linear-gradient(90deg,#262626,#15120b);box-shadow:0 0 16px -6px #f6c23e}
+.lad .bk>img{width:52px;height:auto;flex:none}
+.lad .bt{flex:1;min-width:0}
+.lad .brow{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px}
+.lad .blb{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:700;color:#eef3ff;white-space:nowrap}
+.lad .blb img{width:22px;height:22px;object-fit:contain}
+.lad .bv{display:flex;align-items:baseline;gap:6px;font-size:17px;font-weight:800;color:#fff;white-space:nowrap}
+.lad .bv small{font-size:12px;color:#ffd24a;font-weight:600}
+.lad .btr{display:flex;align-items:center;gap:10px}
+.lad .bpc{flex:none;font-size:12px;font-weight:800;color:#9cc2ff;border:1.5px solid #2d7dff;border-radius:12px;padding:1px 9px;background:#00103a}
+.lad .tr .bpc{color:#ffd24a;border-color:#f6c23e;background:#1a1407}
+.lad .btk{position:relative;flex:1;height:16px;border-radius:12px;background:#0b1b3f;border:1px solid #1d3c7a;overflow:hidden}
+.lad .tr .btk{background:#1a1a1a;border-color:#3a3a3a}
+.lad .btk i{position:absolute;left:0;top:0;bottom:0;border-radius:12px;background:linear-gradient(90deg,#1b6bff,#58b4ff);box-shadow:0 0 12px #3b8bff}
+.lad .tr .btk i{background:linear-gradient(90deg,#e07b00,#ffd94a);box-shadow:0 0 12px #ffb300}
+.lad .tip{display:flex;align-items:center;gap:10px;border:1px solid #3a5ea8;border-radius:18px;background:linear-gradient(180deg,#0c2456,#081a40);padding:10px 12px;box-shadow:inset 0 0 14px -8px #4a7bff}
+.lad .tip p{margin:0;flex:1;font-size:14px;line-height:1.8;color:#eef3ff;text-align:right}
+.lad .tip>img{width:44px;height:auto;flex:none}
+.lad .lst{border:2px solid #2d7dff;border-radius:26px;padding:8px;background:linear-gradient(180deg,#03205e,#00113a);box-shadow:0 0 18px -6px #2d7dff,inset 0 0 22px -12px #3b8bff;display:flex;flex-direction:column;gap:6px}
+.lad .lr{display:flex;align-items:center;gap:7px;height:48px;border-radius:32px;padding:0 6px 0 5px;background:linear-gradient(90deg,#071c50,#0d2660);border:1px solid #1f4b9e}
+.lad .lr .no{flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#c9d7ff;background:#0a1d4a;border:2px solid #3a5ea8}
+.lad .lr .nm{font-size:15px;font-weight:700;color:#b3c5ee;white-space:nowrap}
+.lad .lr .bd{flex:none;font-size:12px;font-weight:700;color:#fff;background:#1b6bff;border-radius:14px;padding:3px 10px;box-shadow:0 0 10px -2px #3b8bff;white-space:nowrap}
+.lad .lr .bd.g{background:linear-gradient(180deg,#ffd84a,#e8a300);color:#1a1205;box-shadow:0 0 10px -2px #f6c23e}
+.lad .lr .gap{flex:1}
+.lad .lr .vl{flex:none;font-size:12px;color:#8ea3cf;white-space:nowrap}
+.lad .lr .ic{flex:none;width:38px;height:38px}
+.lad .lr .ic img{width:38px;height:38px;object-fit:contain;display:block}
+.lad .lr.cur{background:linear-gradient(90deg,#3a2c08,#1e1706);border:2px solid #f6c23e;box-shadow:0 0 16px -4px #f6c23e}
+.lad .lr.cur .no{color:#ffd24a;border-color:#f6c23e;box-shadow:0 0 10px #f6c23e}
+.lad .lr.nxt{background:linear-gradient(90deg,#0b3aa0,#06246b);border:2px solid #3b8bff;box-shadow:0 0 18px -4px #3b8bff}
+.lad .lr.nxt .no{background:#1b6bff;color:#fff;border-color:#8cc0ff;box-shadow:0 0 12px #3b8bff}
+.lad .lr.done .no{color:#6ee7a0;border-color:#2fbf78}
+.lad .lr.lk{opacity:.92}
+.lad .ft{display:flex;align-items:center;gap:10px;margin-top:2px}
+.lad .ft .tg{width:34px;height:34px;flex:none;object-fit:contain}
+.lad .ft .fsep{flex:none;width:2px;height:34px;border-radius:2px;background:linear-gradient(#f6c23e,#2d7dff)}
+.lad .ft .ftt{font-size:18px;font-weight:800;color:#eef3ff;white-space:nowrap;line-height:1.4}
+.lad .ft .ftt small{display:block;font-size:12px;font-weight:600;color:#9db8ff}
+.lad .ft .gap{flex:1}
+.rfab{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:8;font:inherit;font-size:14px;font-weight:700;color:#ffd24a;background:linear-gradient(180deg,#1a1407,#0b0b10);border:2px solid #f6c23e;border-radius:22px;padding:9px 18px;cursor:pointer;box-shadow:0 0 14px -4px #f6c23e;white-space:nowrap}
+.wal{position:relative;background:radial-gradient(120% 70% at 50% 0,#0b3a4a 0,#041331 45%,#020b22 100%);color:#f4ead0;border:1.5px solid #f6c74488;border-radius:22px;padding:14px 12px 12px;box-shadow:0 10px 34px -12px #f6c744,inset 0 0 40px -20px #2de3a0;overflow:hidden}
+.wal .hd{position:relative;text-align:center;min-height:128px}
+.wal .cn{position:absolute;top:2px;width:25%;max-width:110px;pointer-events:none;filter:drop-shadow(0 4px 10px #f6c74455)}
+.wal .cn.l{left:-4px}.wal .cn.r{right:-4px}
+.wal .tl{font-size:15px;font-weight:800;color:#ffe9a8;padding-top:2px}
+.wal .big{font-size:42px;font-weight:900;text-align:center;direction:ltr;line-height:1.2;background:linear-gradient(#fff3b0,#f6c744 55%,#d58a00);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 8px #f6c74488)}
+.wal .gn{display:inline-block;margin-top:4px;padding:3px 16px;border-radius:20px;font-size:12px;font-weight:700;direction:ltr;border:1.5px solid;background:#05231f}
+.wal .gn.p{color:#5fe39a;border-color:#1f9d63;box-shadow:0 0 14px -4px #2de39a}.wal .gn.n{color:#ff7a63;border-color:#a8412f;background:#2a0f0c}
+.wb{display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:10px;margin-top:10px}
+.wc{height:100%;box-sizing:border-box}.wc .rw{display:flex;direction:ltr;justify-content:space-between;align-items:center;gap:6px}.wc .rw .nm{font-size:13px;letter-spacing:1px}.wc .rw b{margin:0;font-size:22px}
+.wc[data-k=cash]{box-shadow:0 0 22px -3px #2fe08a,inset 0 0 18px -6px #2fe08a}.wc[data-k=cash] b{color:#7dffb4;text-shadow:0 0 12px #2fe08a,0 0 22px #2fe08a}.wc[data-k=trade] .rw b{color:#ffd27a}
+.wc{--g1:#1a2a6b;--g2:#020b2a;position:relative;display:grid;grid-template-columns:1fr 62px;grid-template-areas:"t i" "b b";align-items:center;gap:2px 4px;padding:10px 8px 10px;border-radius:18px;border:1.5px solid var(--c);background:linear-gradient(160deg,var(--g1),var(--g2));box-shadow:0 0 16px -6px var(--c),inset 0 0 18px -10px var(--c);cursor:pointer;text-align:right;overflow:hidden}
+.wc:active{transform:scale(.98)}
+.wc .tx{grid-area:t;min-width:0}
+.wc .im{grid-area:i;width:62px;height:62px;object-fit:contain;justify-self:center}
+.wc .nm{font-size:12.5px;font-weight:800;color:#fff;display:block;line-height:1.3}
+.wc .sb{font-size:9.5px;color:#fff9;display:block;line-height:1.3;margin-bottom:2px}
+.wc b{display:block;font-size:24px;font-weight:900;direction:ltr;text-align:right;color:var(--c);text-shadow:0 0 14px var(--c);line-height:1.15}
+.wc .go{grid-area:b;margin-top:6px;text-align:center;font-size:12px;font-weight:800;color:#fff;padding:5px 0;border-radius:20px;background:linear-gradient(var(--c1),var(--c2));box-shadow:0 3px 10px -3px var(--c)}
+.wc .go:after{content:" ‹"}
+.wc[data-k=trade]{--g1:#6b3f06;--g2:#1b0f03;--c1:#ffb830;--c2:#e07b00}
+.wc[data-k=back]{--g1:#0a3ba8;--g2:#020d33;--c1:#2a8bff;--c2:#0a52d6}
+.wc[data-k=cash]{--g1:#087244;--g2:#02170f;--c1:#2fe08a;--c2:#0fa55a}
+.wc[data-k=save]{--g1:#5a1f9c;--g2:#150633;--c1:#b259ff;--c2:#7a22d6}
+.wbar{position:relative;display:flex;height:12px;border-radius:8px;margin:16px 14px 6px 22px;background:#ffffff1a;box-shadow:0 0 14px -4px #4aa3ff}
+.wbar i{display:block;height:100%}.wbar i:first-child{border-radius:0 8px 8px 0}.wbar i:last-of-type{border-radius:8px 0 0 8px}
+.wbar:after{content:"⭐";position:absolute;left:-14px;top:50%;transform:translateY(-50%);font-size:22px;filter:drop-shadow(0 0 6px #f6c744)}
+.wh{font-size:11.5px;color:#ffffffcc;text-align:center}.wh b{color:#f6c744}
+.sec{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin:26px 0 10px}
+.sec:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--gold)}
+.sec small{font-weight:400;color:var(--mu);font-size:12px;margin-right:auto}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px 12px 10px;text-align:center}
+.st:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ac,var(--gold))}
+.st .ic{font-size:26px;line-height:1.2}
+.st{background:#fff!important;border-color:#E5E7EB!important;cursor:pointer}
+.st .tt,.st b,.st .who{color:#111827!important}
+.st .ds{color:#6B7280!important}
+.st .ic img{width:68px;height:68px;object-fit:contain;display:block}
+.st .hint{display:block;margin-top:8px;font-size:12px;color:#6B7280;font-weight:700}
+.awp{background:#fff;color:#111827;border-radius:14px;padding:12px;margin-top:12px}
+.awp:empty{display:none}
+.awh{font-weight:800;margin-bottom:6px}
+.awr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E5E7EB;font-weight:700;min-height:44px}
+.awr em{margin-inline-start:auto;font-style:normal;background:#F3F4F6;border-radius:8px;padding:2px 10px}
+.awe{color:#6B7280;padding:8px 0}
+.tn,.step b,.who,.awr span{text-transform:uppercase}
+@media (max-width:1279px){
+.ltw:not(.gt){overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ltw:not(.gt) table{table-layout:fixed;width:854px;min-width:0}
+.ltw:not(.gt) th,.ltw:not(.gt) td{box-sizing:border-box}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:62px}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) td.ps{width:34px;padding-left:6px;padding-right:0;position:sticky;left:0;z-index:2;background:#fff}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:200px;position:sticky;left:34px;z-index:2;background:#fff;box-shadow:4px 0 6px -4px rgba(11,18,32,.18)}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) th.tm{background:#F3F5F9}
+.ltw:not(.gt) .team{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;gap:6px}
+.ltw:not(.gt) .team>div{min-width:0;flex:1}
+.ltw:not(.gt) .tn{white-space:normal;line-height:1.15}
+}
+@media (max-width:767px){
+.ltw table{font-size:13px}
+.ltw th{font-size:10px}
+.ltw:not(.gt) .tn{font-size:15.6px}
+.ltw:not(.gt) .team .cr.lg{width:111px;height:111px;flex:0 0 111px}
+}
+@media (min-width:768px) and (max-width:1279px){
+.ltw:not(.gt) table{width:974px}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:320px}
+.ltw:not(.gt) .tn{font-size:20.28px}
+.ltw:not(.gt) .team .cr.lg{width:104px;height:104px;flex:0 0 104px}
+}
+.st .tt{display:block;font-size:13px;font-weight:800}
+.st .ds{display:block;font-size:11px;color:var(--mu)}
+.st b{display:block;font-size:22px;color:var(--ac,var(--gold));direction:ltr;margin:2px 0}
+.st .who{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;direction:ltr}
+.cups{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cup{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:10px 6px;text-align:center;font-size:12px;color:var(--mu);opacity:.75}
+.cup .ic{font-size:28px;line-height:1.2;filter:grayscale(1)}
+.cup.on{opacity:1;border-color:var(--gold);color:var(--tx);box-shadow:0 0 18px -6px var(--gold)}
+.cup.on .ic{filter:none}
+.cup b{display:block;color:var(--gold);font-size:14px;direction:ltr}
+.cup .mb{height:5px;background:var(--ln);border-radius:3px;margin:6px 8px 0;overflow:hidden}
+.cup .mb i{display:block;height:100%;background:var(--gold)}
+.tw{overflow-x:auto;border:1px solid var(--ln);border-radius:14px;background:var(--card)}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:620px;font-size:13px;text-align:center}
+th,td{padding:10px 6px;border-bottom:1px solid var(--ln);background:var(--card)}
+th{color:var(--mu);font-weight:600;font-size:11px;background:var(--bg)}
+tbody tr:last-child td{border-bottom:0}
+.ps,.tm,.pt{position:sticky;z-index:1}
+.ps{right:0;width:34px;font-weight:800}
+.tm{right:34px;text-align:right;min-width:112px;box-shadow:-6px 0 8px -8px rgba(0,0,0,.5)}
+.pt{left:0;font-weight:800;color:var(--gold);font-size:15px;box-shadow:6px 0 8px -8px rgba(0,0,0,.5)}
+th.ps,th.tm,th.pt{z-index:2}
+.z1 .ps{box-shadow:inset -4px 0 0 #f6c744}.z2 .ps{box-shadow:inset -4px 0 0 #4aa3ff}.z9 .ps{box-shadow:inset -4px 0 0 #ff5a47}
+.z1 td{background:linear-gradient(270deg,rgba(246,199,68,.14),var(--card) 55%)}
+.z1 .ps,.z1 .tm,.z1 .pt{background:var(--card)}
+.team{display:flex;align-items:center;gap:8px;direction:ltr;justify-content:flex-end;flex-direction:row-reverse}
+.cr{flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;background:linear-gradient(145deg,var(--c),#0006);border:2px solid rgba(255,255,255,.25);letter-spacing:-.3px}
+.cr.sm{width:22px;height:22px;font-size:7px;border-width:1px}
+.tn{font-weight:800;font-size:14px;direction:ltr;text-align:left}
+.rb{display:flex;height:4px;border-radius:2px;overflow:hidden;background:var(--ln);margin-top:3px;width:64px}
+.rb i{display:block;height:100%}
+.neg{color:var(--neg)}.pos{color:var(--pos)}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--mu);margin:10px 2px 0}
+.leg span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--k);margin-left:5px}
+.empty{text-align:center;color:var(--mu);padding:26px 10px;background:var(--card);border:1px dashed var(--ln);border-radius:14px}
+.empty b{display:block;font-size:34px}
+.stage .nm{font-size:11px;opacity:.85}
+.step .cr{margin:0 auto 4px;width:34px;height:34px;font-size:10px}
+.cr.lg{background:none;border:0;border-radius:0;width:36px;height:36px}
+.cr.lg img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
+.cr.lg.sm{width:26px;height:26px}
+.step .cr.lg{width:56px;height:56px}
+.ltw .team .cr.lg{width:54px;height:54px;flex:0 0 54px;background:#fff;border:0;border-radius:50%;padding:4px;box-sizing:border-box}
+
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:nowrap}
+.brand{display:flex;align-items:center;gap:8px;min-width:0}
+.brand img{width:40px;height:40px;object-fit:contain;border-radius:8px;flex:none}
+.bt2{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.bt2 b{font-size:14px;color:var(--gold);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bt2 span{font-size:12px;color:var(--mu)}
+.hact{display:flex;align-items:center;gap:8px;flex:none}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:12px;background:var(--gold);color:#1a1205;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap}
+.lnk,.lnk2{display:inline-flex;align-items:center;min-height:44px;padding:0 8px;color:var(--mu);font-size:13px;text-decoration:none}
+.lnk2{margin-top:4px}
+.hst{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{font-size:12px;color:var(--mu);background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:4px 12px}
+.chip:empty{display:none}
+#lgi{margin:0!important;text-align:right!important}
+.lvl{background:var(--card);border-color:var(--ln)}
+.bar{background:var(--ln);margin-top:32px}
+.fill{background:var(--info)}.mk.on{color:var(--info)}
+button,.go{min-height:44px}
+.wc:hover,.st:hover{background:var(--hov)}
+.lad .lst .lr:not(.cur):not(.nxt){opacity:.85}
+.lad,.wal{background:var(--card);border:1px solid var(--ln);box-shadow:none;color:var(--tx)}
+.lad .hd,.lad .bk,.lad .tip,.lad .lst,.lad .lr{background:var(--bg);box-shadow:none;border:1px solid var(--ln)}
+.lad .hd{border-color:var(--gold)}.lad .hd h3{color:var(--gold);text-shadow:none}
+.lad .bk.tr{border-color:var(--ln)}.lad .bk{border-color:var(--info)}
+.lad .btk i{background:var(--info);box-shadow:none}.lad .tr .btk i{background:var(--gold);box-shadow:none}
+.lad .lr.cur{border:2px solid var(--gold);box-shadow:none;background:var(--hov)}
+.lad .lr.nxt{border:2px solid var(--info);box-shadow:none;background:var(--hov)}
+.lad .lr .bd.g{background:var(--gold);box-shadow:none}.lad .lr .bd{background:var(--info);color:#06101f;box-shadow:none}
+.lad .lr .no{box-shadow:none!important}
+.lad .lst{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:16px;border:1px solid var(--ln);background:var(--bg);box-shadow:none}
+.lad .lsh{font-size:13px;font-weight:700;color:var(--mu);padding:4px 4px 0}
+.lad .lr{display:grid;grid-template-columns:34px minmax(0,1fr) 40px;align-items:center;gap:10px;height:auto;min-height:60px;padding:8px 10px;border-radius:12px;background:var(--card);border:1px solid var(--ln)}
+.lad .lr .no{width:34px;height:34px;font-size:14px;color:var(--mu);border-color:var(--ln);background:var(--bg)}
+.lad .lr .lb{min-width:0;display:flex;flex-direction:column;gap:4px}
+.lad .lr .l1{display:flex;align-items:center;gap:8px;min-width:0}
+.lad .lr .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;color:var(--tx)}
+.lad .lr .bd{margin-inline-start:auto}
+.lad .lr .l2{font-size:12px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lad .lr .ic,.lad .lr .ic img{width:40px;height:40px}
+.lad .lr.done .no{color:var(--pos);border-color:var(--pos)}
+.lad .lr.cur{border-color:var(--gold)}
+.lad .lr.cur .no{color:var(--gold);border-color:var(--gold)}
+.lad .lr.nxt{border-color:var(--info)}
+.lad .lr.nxt .no{background:var(--info);color:#06101f;border-color:var(--info)}
+.lad .lr.lk .nm{color:var(--mu)}
+.wal .big{background:none;color:var(--gold);-webkit-text-fill-color:var(--gold);filter:none}
+.wal .tl{color:var(--mu)}
+.wc{background:var(--bg)!important;border-color:var(--c);box-shadow:none}
+.wc:hover{background:var(--hov)!important}
+.wc .go{background:var(--hov);box-shadow:none;color:var(--tx)}
+.wbar{box-shadow:none}
+.sec:before{background:var(--gold)}
+.sec{margin:32px 0 12px}
+.cup,.st{background:var(--card)}
+.step{background:var(--card);color:var(--tx);border:1px solid var(--ln);box-shadow:none;transform:none}
+.step:hover{transform:none}
+.s1{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}.s2,.s3{filter:none}
+.stage{perspective:none;height:200px}
+.z1 .ps{box-shadow:inset -4px 0 0 var(--gold)}.z2 .ps{box-shadow:inset -4px 0 0 var(--info)}.z9 .ps{box-shadow:inset -4px 0 0 var(--neg)}
+.z1 td{background:linear-gradient(270deg,rgba(214,181,109,.12),var(--card) 55%)}
+.tn,.cr{font-size:inherit}
+@media (max-width:389px){.cta{padding:0 10px;font-size:13px}.bt2 span{display:none}.hact{gap:4px}}
+@media (min-width:768px){body{padding-left:24px;padding-right:24px}.wrap{max-width:960px}.stats{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1280px){.wrap{max-width:1080px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.hdr{padding-top:0;position:relative}.hdr .hst{position:absolute;top:10px;right:10px;left:auto;width:auto;margin:0;gap:6px;flex-wrap:nowrap;justify-content:flex-start;z-index:2}.hdr .hst .chip{font-size:11px;background:rgba(10,20,40,.82);padding:3px 8px}.ov{position:absolute;left:10px;top:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}.ob{background:rgba(10,20,40,.82);color:#ffd54a;border:1px solid #ffd54a;border-radius:8px;padding:4px 10px;font-weight:800;font-size:15px;direction:ltr}.ob.sm{font-size:12px;color:#f4ead0;border-color:#8fb3ff}.hdr{padding-top:0}.ban{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--ln)}.hdr .hact{justify-content:space-between;margin:12px 0}.hdr .hact .cta{flex:1}
+.hon .mu{color:var(--mu)}.hon td{text-align:center}.hon td.tm{text-align:right}
+.ltt{direction:ltr;text-align:center;margin:26px 0 14px;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif}
+.ltt h2{margin:0;font-size:18px;font-weight:600;letter-spacing:.32em;color:#fff}
+.ltt p{margin:6px 0 0;font-size:12px;color:#B9C6FF}
+.ltt .ltl{display:block;margin:0 auto 14px;height:132px;width:auto}
+.ltt p{letter-spacing:.32em}
+.ltw{direction:ltr;background:#fff;border:1px solid #E3E8F0;border-radius:12px;overflow:hidden;padding:0}
+.ltw table{font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0;margin:0;min-width:0;font-size:10px;color:#0B1220;text-align:center}
+.ltw th{background:#F3F5F9;color:#5B6679;font-size:8px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:10px 0;line-height:1.2;border-bottom:1px solid #E3E8F0;vertical-align:middle}
+.ltw th b{display:block;font-weight:700}
+.ltw th .lg{display:none}
+.ltw td{background:#fff;padding:10px 0;border-bottom:1px solid #E9EDF4;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;transition:background .2s;vertical-align:middle}
+.ltw tbody tr:last-child td{border-bottom:0}
+.ltw tbody tr:hover td{background:#F7F9FC}
+.ltw tbody tr td:first-child{box-shadow:inset 4px 0 0 var(--c,#888)}
+.ltw th.ps,.ltw td.ps{width:5%;font-weight:700;padding-left:6px;padding-right:0}
+.ltw th.tm,.ltw td.tm{width:28%;text-align:left;padding-left:6px;padding-right:0}
+.ltw th:not(.ps):not(.tm),.ltw td:not(.ps):not(.tm){width:7.2%;padding-left:0;padding-right:0}
+.ltw th.pt,.ltw td.pt{border-left:1px solid #E3E8F0;color:#8A6A2A;font-weight:700}
+.ltw .team{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:4px;min-width:0}
+.ltw .team>div{min-width:0;flex:1}
+.ltw .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;font-weight:700;color:#0B1220}
+.ltw .team .cr{width:18px;height:18px;flex:0 0 18px;font-size:5.5px;font-weight:800;letter-spacing:0;background:#F3F5F9;background-image:none;color:var(--c);border:1.5px solid var(--c);box-shadow:none;box-sizing:border-box}
+.ltw .rb{display:none}
+.ltw .z1 td.ps{color:#8A6A2A}
+.ltw .z2 td.ps{color:#2F6FDB}
+.ltw .pos{color:#14885C}.ltw .neg{color:#D0303F}
+@media (min-width:768px){
+.ltw table{font-size:17px}
+.ltw th{font-size:13px;padding:16px 4px 14px;letter-spacing:.04em}
+.ltw th .lg{display:block}.ltw th .sh{display:none}
+.ltw td{padding:20px 4px}
+.ltw th.ps,.ltw td.ps{padding-left:18px;font-size:19px}
+.ltw th.tm,.ltw td.tm{padding-left:14px}
+.ltw .tn{font-size:26.52px}
+.ltw .team{gap:12px}
+.ltw .team .cr{width:36px;height:36px;flex:0 0 36px;font-size:9px;border-width:2px}
+}
+@media (min-width:1280px){.ltw th.tm,.ltw td.tm{width:34%}.ltw .team .cr.lg{width:144px;height:144px;flex:0 0 144px;background:#fff;border:0;border-radius:50%;padding:5px;box-sizing:border-box}}
+.gt th{background:#3B3F46;color:#fff}
+.gt td{background:#fff;color:#1F2937}
+.gt tbody tr td:first-child{box-shadow:none}
+.gt tbody tr:hover td{background:#F7F8FA}
+.gt .z1 td{background:#FBF6EA}
+.gt tfoot td{background:#3B3F46;color:#fff}
+.gt th.tm,.gt td.tm{text-align:left}
+.gt td.pt{color:#8A6A2A}
+#p-hn{background:#F3F4F6;border-radius:14px;padding:12px;color:#1F2937}
+#p-hn .sec{color:#111827}
+#p-hn .sec small{color:#6B7280}
+#p-hn .hon .mu,#p-hn .cupt .mu{color:#9CA3AF}
+#p-hn .tn{color:#111827}
+.cupt .lab{font-family:Inter,"Segoe UI",Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.02em;color:#0B1220;direction:ltr;display:inline-block;white-space:nowrap}
+.cupt td.ps{width:auto;min-width:64px}
+.cupt .wn+.wn{margin-top:6px}
+.cupimg{width:40px;height:auto;flex:0 0 auto;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+@media (min-width:768px){.cupimg{width:52px}}
+.cupt th:not(.ps):not(.tm),.cupt td:not(.ps):not(.tm){width:16%}
+
+.tmf{margin-top:14px;padding:12px;border:1px solid var(--ln);border-radius:14px;background:var(--card);display:grid;gap:8px}.tmf input{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)}.tmf button{font:inherit;padding:9px;border-radius:10px;border:0;background:var(--gold);color:#111;font-weight:700;cursor:pointer}.tmadd{border:2px dashed var(--ln);font-size:44px;color:var(--mu);background:transparent}
+.tmg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(min-width:720px){.tmg{grid-template-columns:repeat(5,1fr)}}.tmc{cursor:pointer;text-align:center}.tmb{aspect-ratio:1/1;border-radius:16px;background:#fff;border:2px solid var(--c);box-shadow:0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:8px;box-sizing:border-box;overflow:hidden}.tmb img{width:100%;height:100%;object-fit:contain}.tmx{font-weight:800;font-size:14px}.tmn{margin-top:6px;font-size:12px;font-weight:700;line-height:1.4}.tmc:active .tmb{transform:scale(.97)}
+.tabs{display:flex;gap:8px;overflow-x:auto;direction:rtl;margin:16px 0 0;padding:4px 2px 8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;min-height:44px;padding:0 16px;border-radius:999px;background:var(--card);color:var(--mu);border:1px solid var(--ln);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:background .2s,border-color .2s,color .2s}
+.tab:hover{background:var(--hov);color:var(--tx)}
+.tab[aria-selected=true]{background:var(--hov);color:var(--tx);border-color:var(--info);box-shadow:inset 0 -2px 0 var(--info)}
+.tpanel{margin-top:12px;animation:tpIn .3s ease}
+.stf{display:grid;gap:8px}.stf input{width:100%;padding:8px;box-sizing:border-box}
+.tpanel .sec,.tpanel .ltt,.tpanel .stage{margin-top:0}
+.tpanel>section+section{margin-top:16px}
+.tpanel[hidden]{display:none}
+@keyframes tpIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tpanel{animation:none}}
+
+/* ---- League logo sizes (final override) ---- */
+.ltw td.tm .team{gap:16px;align-items:center}
+.ltw td.tm .team>div{padding-left:2px}
+.ltw td.tm .team .cr.lg{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;padding:6px;overflow:visible;border-radius:50%}
+.ltw td.tm .team .cr.lg{padding:0;overflow:visible}
+.ltw td.tm .team .cr.lg img{width:100%;height:100%;object-fit:contain;transform:scale(1.3);transform-origin:center}
+@media (max-width:767px){
+.ltw td.tm .team{gap:10px}
+.ltw td.tm .team .cr.lg{width:120px;height:120px;flex:0 0 120px}
+}
+@media (min-width:768px) and (max-width:1279px){
+.ltw td.tm .team .cr.lg{width:150px;height:150px;flex:0 0 150px}
+}
+@media (min-width:1280px){
+.ltw td.tm .team .cr.lg{width:160px;height:160px;flex:0 0 160px}
+}
+/* ---- Phone: whole league table fits the screen (no scroll) ---- */
+@media (max-width:767px){
+.ltw:not(.gt){overflow:hidden}
+.ltw:not(.gt) table{width:100%;min-width:0;table-layout:fixed}
+.ltw table{font-size:10px}
+.ltw th{font-size:8px;padding:8px 0;letter-spacing:0}
+.ltw td{padding:8px 0}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) td.ps{width:5%;position:static;box-shadow:none;padding-left:6px;padding-right:0;font-size:12px}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:30%;position:static;box-shadow:none;padding-left:4px;padding-right:2px}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:7.2%}
+.ltw td.tm .team{gap:4px}
+.ltw:not(.gt) .tn{font-size:11px;line-height:1.1;white-space:normal;overflow-wrap:anywhere}
+.ltw td.tm .team .cr.lg{width:40px;height:40px;flex:0 0 40px;padding:0}
+.ltw td.tm .team .cr.lg img{transform:none}
+}
+/* ---- Standard sizes (final, desktop + laptop + phone) ---- */
+.ltt .ltl{height:96px!important}
+.ltt h2{font-size:15px!important;letter-spacing:.28em!important}
+.ltt p{font-size:11px!important;letter-spacing:.28em!important}
+.ltw .team .cr.lg,.ltw td.tm .team .cr.lg{width:44px!important;height:44px!important;flex:0 0 44px!important;padding:3px!important;overflow:hidden!important;box-sizing:border-box!important}
+.ltw .team .cr.lg img,.ltw td.tm .team .cr.lg img{transform:none!important;width:100%!important;height:100%!important;object-fit:contain!important}
+.ltw .tn,.ltw:not(.gt) .tn{font-size:14px!important;line-height:1.15!important;font-weight:700!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.ltw td.tm .team{gap:8px!important}
+@media (max-width:767px){
+.ltw .team .cr.lg,.ltw td.tm .team .cr.lg{width:34px!important;height:34px!important;flex:0 0 34px!important}
+.ltw .tn,.ltw:not(.gt) .tn{font-size:11px!important}
+.ltw td.tm .team{gap:5px!important}
+.ltt .ltl{height:80px!important}
+}
+/* ---- Laptop/desktop: bigger logos, table scrolls inside with sticky header ---- */
+@media (min-width:768px){
+.ltw .team .cr.lg,.ltw td.tm .team .cr.lg{width:64px!important;height:64px!important;flex:0 0 64px!important;padding:4px!important}
+.ltw td.tm .team{gap:14px!important}
+.ltw .tn,.ltw:not(.gt) .tn{font-size:16px!important}
+.ltw:not(.gt){overflow:visible!important;max-height:none!important}
+.ltw:not(.gt) thead th{position:static}
+}
+/* ---- League table: clean white look, no dark halo around logos ---- */
+.ltw .team .cr.lg,.ltw td.tm .team .cr.lg{background:#fff!important;border:0!important;box-shadow:0 0 0 1px #E6EAF2,0 1px 2px rgba(11,18,32,.08)!important;border-radius:50%!important}
+.ltw .team .cr.lg img,.ltw td.tm .team .cr.lg img{filter:none!important;background:transparent!important;mix-blend-mode:normal!important}
+.ltw td{background:#fff!important}
+.ltw tbody tr:hover td{background:#F5F8FD!important}
+.ltw .tn{color:#0B1220!important;letter-spacing:.01em}
+</style>
+<style>.wx{margin:14px 6px 4px;padding:12px;border-radius:14px;background:#0a1f44;color:#f4ead0;font-size:13px}.wx b{display:block;margin:6px 0}.wx .r{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.wx select,.wx input{flex:1 1 90px;min-width:0;padding:8px;border-radius:8px;border:1px solid #2a4a85;background:#041331;color:#fff;font:inherit}.wx button{padding:8px 14px;border-radius:8px;border:0;background:#f6c744;color:#241a00;font:inherit;font-weight:800}.wx .sv{width:100%;margin-top:8px;padding:11px}.wx .wl{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1d3768}.wx .wl button{background:#6b1d1d;color:#fff;padding:2px 8px}#wms{margin-top:6px;font-size:12px;color:#ffe9a8}</style>
+</head>
+<body>
+
+<div id="tp"><div class="pw" id="tpb"></div></div>
+<div id="rv"><div class="g"><h2>مرور قوانین</h2><div id="rvl"></div><button class="go" id="rvc" style="margin-top:16px">بستن</button></div></div>
+
+<div class="wrap">
+<header class="hdr"><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
+
+<div class="hst"><span id="lgi" class="chip"></span><span id="nch" class="chip"></span></div>
+<div class="ov"><div class="ob" id="hwb">$0</div><div class="ob sm" id="htc">ترید: 0</div></div>
+<div class="lvl"><span id="tot"></span></div>
+<div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
+<nav class="tabs" role="tablist" aria-label="بخش‌ها">
+<button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr">➕ ثبت ترید</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw">📰 اخبار</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین و مرور</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
+</nav>
+<div id="p-lg" class="tpanel" data-p="lg"><section><div class="sec">🏟 سه تیم برتر</div>
+<div id="podium"><div class="stage" id="stage"></div></div></section>
+<section><div class="ltt"><img class="ltl" src="assets/league/logo-2026.png" alt="Dynasty Glory League" width="400" height="430" loading="lazy"><h2>DYNASTY GLORY LEAGUE</h2><p>LEAGUE STANDINGS</p></div>
+<div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
+<div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
+<div class="stats" id="stats"></div><div class="awp" id="awp"></div></section>
+<section><div class="sec">🏆 جدول کاپ‌ها</div>
+<div class="ltw gt"><table class="cupt"><thead><tr><th class="ps">#</th><th class="tm">کاپ</th><th>روز</th><th class="tm">قهرمانان</th><th>وضعیت</th></tr></thead><tbody id="cups"></tbody></table></div>
+</section>
+</div>
+<div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
+<div class="wal" id="wal"></div></section></div>
+<div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div><div id="tmf" class="tmf" hidden><b>➕ تیم جدید</b><input id="tmn_in" placeholder="اسم تیم (انگلیسی)" maxlength="40"><input id="tmc_in" type="color" value="#888888"><input id="tmlogo" type="file" accept="image/*"><button id="tmsv" onclick="tmSave()">ذخیره</button><div id="tmm" class="hint"></div></div></section></div>
+<div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
+<div class="lad" id="lad"></div>
+</section></div>
+<div id="p-hn" class="tpanel" data-p="hn" hidden><section><div class="sec">🏅 افتخارات باشگاه</div>
+<div class="sec">🏅 دستاوردهای باشگاه</div>
+<div class="ltw gt"><table class="hon"><thead><tr><th class="ps">#</th><th class="tm">باشگاه</th><th>🏆 کاپ</th><th>🥇 توپ</th><th>👟 کفش</th><th>🧤 دستکش</th><th>🎁 ریوارد</th><th class="pt">کل</th></tr></thead><tbody id="hon"></tbody></table></div></section></div>
+<div id="p-nw" class="tpanel" data-p="nw" hidden><section><div class="sec">📰 اخبار USD<small>به وقت تهران · منبع: Forex Factory</small></div><div id="nwb"></div><div id="nwl"></div></section></div>
+<style>.nwa{margin:8px 0 12px;padding:12px;border-radius:12px;font-weight:800;font-size:14px;line-height:1.7}.nwa.bad{background:#5a1010;color:#ffd6d6;border:1px solid #c33}.nwa.ok{background:#0f3d24;color:#d4ffe4;border:1px solid #2a8}.nwa.wn{background:#4a3a08;color:#ffeaa0;border:1px solid #c9a227}.nwd{margin:14px 0 6px;font-weight:800;color:var(--tx)}.nwr{display:flex;gap:10px;align-items:center;padding:10px;margin:4px 0;border-radius:10px;background:var(--card);border:1px solid var(--ln);font-size:13px}.nwr.past{opacity:.45}.nwr .tm{min-width:48px;font-weight:800;direction:ltr}.nwr .nt{flex:1;min-width:0}.nwr .ex{font-size:11px;color:var(--mu);direction:ltr;text-align:right}.nwr i{width:12px;height:12px;border-radius:50%;flex:0 0 12px}.nwr.High{border-color:#c33}.nwr.High .nt{font-weight:800}</style>
+<div id="p-ru" class="tpanel" data-p="ru" hidden><section><div class="sec">📜 قوانین و توضیحات</div>
+<button class="go" type="button" onclick="openRules()" style="margin:0 0 12px">📖 مرور قوانین</button>
+<p class="note">POINT = PIPS + (TP × 5) + (CLOSE × 2) − SL. دلار در امتیاز نیست و فقط ارزش تیم را نشان می‌دهد.</p>
+<p class="note">پله‌ی بعد وقتی باز می‌شود که حساب پشتیبان و حساب تریدینگ هر دو به حد پله برسند.</p></section></div>
+<div id="p-tr" class="tpanel" data-p="tr" hidden><section><div class="sec">➕ ثبت ترید<small>تریدهای امروز را همین‌جا ثبت کن</small></div><iframe id="trf" title="ثبت ترید" style="width:100%;height:82vh;min-height:620px;border:0;border-radius:12px;background:#fff"></iframe></section></div>
+<div id="p-st" class="tpanel" data-p="st" hidden><section><div class="sec">⚙️ تنظیمات اتصال به گیت‌هاب<small>فقط روی همین دستگاه ذخیره می‌شود</small></div>
+<div class="stf">
+<label>Token<input id="gtok" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+<label>Owner (نام کاربری یا سازمان)<input id="gown"></label>
+<label>Repository<input id="grep"></label>
+<label>Branch<input id="gbr" value="main"></label>
+<label>مسیر فایل ترید‌ها<input id="gpath" value="data/trades.json"></label>
+<button type="button" id="gsv" class="go">ذخیره‌ی تنظیمات</button>
+<div id="gsm" class="hint"></div>
+</div></section></div>
+</div>
+
+<script>
+var RULES=[["do","فقط ستاپ، نه حس","بدون ستاپ کامل ورود ممنوع؛ هیچ تریدی از روی حوصله، ترس یا هیجان."],
+["do","صبر تا ناحیه","دنبال قیمت ندو. یا میاد به ناحیه‌ات، یا اصلاً تریدی نیست."],
+["do","دو ضربه، کافیه","اگر از یک ناحیه ۲ بار SL خوردی، تا ستاپ جدید ورود ممنوع."],
+["do","اول حفظ سرمایه","ریسک ثابت، استاپ دست‌نخورده."],
+["do","ذهنت رئیس است","عصبانی، عجول، خسته یا بیش‌ازحد هیجان‌زده؟ ترید نکن."],
+["dont","نکنه دنبال جبران ضرر بری","Revenge trade بزرگ‌ترین دشمنته. ضرر بخشی از بازیه، نه توهین شخصی."],
+["dont","نکنه حجم رو زود زیاد کنی","حجم بالا قبل از زمانش یعنی نابودی پلکان. اول ثبات، بعد قدرت."],
+["dont","نکنه وسط معامله نظرت عوض شه","پلن که چیدی تا پایان همون پلنه. دست‌کاری SL/TP از ترس یا طمع ممنوع."],
+["dont","نکنه تو بازار بی‌تصمیم ترید کنی","رنج، خبر، کندل‌های درهم = صبر."],
+["dont","نکنه با بقیه مقایسه کنی","مسیر تو، پلکان تو، لیگ تو."]];
+var NAMES=[],COL={},LOGO={};
+var teams=zero();
+fetch("data/teams.json?v="+Date.now()).then(function(r){return r.ok?r.json():0}).then(function(j){if(!j||!j.length)return;NAMES=[];j.forEach(function(t){if(!t||!t.name)return;NAMES.push(t.name);COL[t.name]=t.color||"#888";if(t.logo)LOGO[t.name]=t.logo});teams=zero();render()}).catch(function(){});
+function zero(){return NAMES.map(function(n){return{n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}})}
+function calc(t){var play=t.sl+t.risk+t.close+t.tp,pips=t.pp-t.pn;
+return{n:t.n,sl:t.sl,risk:t.risk,close:t.close,tp:t.tp,play:play,win:play?t.tp/play*100:0,rr:t.pn?t.pp/t.pn:0,pips:pips,usd:t.qp-t.qn,pt:pips+t.tp*5+t.close*2-t.sl}}
+var TR=[],CS=0,G={},tp=null;
+fetch("data/trades.json?v="+Date.now()).then(function(r){return r.ok?r.json():[]}).then(function(j){if(j&&j.length){TR=j;render()}}).catch(function(){});
+function dn(d){var m=/^(\d+)-(\d+)-(\d+)/.exec(d);return m?Math.floor(Date.UTC(+m[1],m[2]-1,+m[3])/864e5):NaN}
+function esc(x){return String(x).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var SKIP={};function trades(){var sd=dn(LG.start),out=[],lc={};NAMES.forEach(function(n){lc[n.toLowerCase()]=n});TR.forEach(function(t){var d=dn(t.date),cn=lc[String(t.team||"").trim().toLowerCase()];if(cn)t.team=cn;if(d>=sd&&cn){t._d=d;t._s=Math.floor((d-sd)/(LG.weeks*7));out.push(t)}else{var sk=t.date+"#"+t.no;if(!SKIP[sk]){SKIP[sk]=1;console.info("trade skipped",t.date,t.no,t.team)}}});return out.sort(function(a,b){return a._d-b._d||a.no-b.no})}
+function agg(list){var m={};NAMES.forEach(function(n){m[n]={n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}});
+list.forEach(function(t){var x=m[t.team];if(!x)return;var k={TP:"tp",CLOSE:"close",RISK:"risk",SL:"sl"}[t.res];if(k)x[k]++;var p=+t.pips||0,q=+t.usd||0;if(p>0)x.pp+=p;else x.pn-=p;if(q>0)x.qp+=q;else x.qn-=q});
+return NAMES.map(function(n){return m[n]})}
+function rank(l){return l.map(calc).sort(function(a,b){return (b.play>0)-(a.play>0)||b.pt-a.pt||b.win-a.win})}
+function cupDay(s,d){var x=new Date(Date.UTC(1970,0,1)+(dn(LG.start)+s*LG.weeks*7)*864e5),c=0,n=dn(LG.start)+s*LG.weeks*7;while(1){var g=new Date(n*864e5).getUTCDay();if(g>0&&g<6)c++;if(c>=d)return n;n++}}
+function cupLeader(s,d,TS){var cd=cupDay(s,d),l=TS.filter(function(t){return t._s==s&&t._d<=cd});if(!l.length)return null;return rank(agg(l))[0].n}
+function awards(r){var by=function(k){var b=null;r.forEach(function(x){if(x.play&&(!b||x[k]>b[k]))b=x});return b},sl=null;r.forEach(function(x){if(x.play&&(!sl||x.sl<sl.sl))sl=x});return[r[0]&&r[0].play?r[0]:null,by("win"),sl,by("rr")]}
+function cls(v){return v<0?"neg":v>0?"pos":""}
+function f(v,d){return v.toFixed(d||0)}
+var WD=[{k:"trade",ic:"chart",sb:"معاملات هوشمندانه",nm:"حساب تریدینگ",v:17,c:"#f6c744"},{k:"back",ic:"bank",sb:"امنیت سرمایه شما",nm:"حساب پشتیبان",v:160,c:"#4aa3ff"},{k:"save",ic:"pig",sb:"آینده روشن‌تر",nm:"پس‌انداز دلاری",v:0,c:"#c77dff"},{k:"cash",ic:"cash",sb:"سرمایه در دسترس",nm:"دلار نقد",v:100,c:"#5fd68e"}];
+var LD=[{n:1,name:"Initiate",bank:140,trade:17,lot:0.10},{n:2,name:"Apprentice",bank:200,trade:30,lot:0.20},{n:3,name:"Skilled Trader",bank:300,trade:null,lot:0.30},{n:4,name:"Strategist",bank:400,trade:null,lot:0.40},{n:5,name:"Profit Seeker",bank:500,trade:null,lot:0.50},{n:6,name:"Risk Tamer",bank:600,trade:null,lot:0.60},{n:7,name:"Market Conqueror",bank:700,trade:null,lot:0.70},{n:8,name:"Elite Trader",bank:800,trade:null,lot:0.80},{n:9,name:"Master of Balance",bank:900,trade:null,lot:0.90},{n:10,name:"Dynasty Glory",bank:1000,trade:null,lot:1.00}];
+var LB=0,LT=0;
+try{fetch("data/ladder.json").then(function(r){return r.json()}).then(function(j){if(j&&j.steps&&j.steps.length){LD=j.steps;ladder(LB,LT)}}).catch(function(){})}catch(e){}
+function rd(x){return Math.round(x*100)/100}
+var LIMG={1:"s1",2:"s2",3:"s3",4:"s4",5:"s5",6:"s6",7:"s7",8:"s8",9:"s9",10:"s10"};
+function pdg(s){return String(s).replace(/\d/g,function(d){return "۰۱۲۳۴۵۶۷۸۹"[d]})}
+function ladder(bank,trade){LB=bank;LT=trade;
+var A="assets/ladder/",ok=function(st){return bank>=st.bank&&(st.trade==null||trade>=st.trade)};
+var ci=-1;LD.forEach(function(st,i){if(ci==i-1&&ok(st))ci=i});
+var cur=LD[ci],nx=LD[ci+1],h="";
+var card=function(cls,img,lbl,ic,v,need,pc){return'<div class="bk'+cls+'"><img src="'+A+img+'.webp" alt=""><div class="bt"><div class="brow"><span class="blb"><img src="'+A+ic+'.webp" alt="">'+lbl+'</span><span class="bv"><small>'+(v>=need?'✓ کامل':'(کم: $'+rd(need-v)+')')+'</small><b dir="ltr">$'+rd(v)+' / $'+need+'</b></span></div><div class="btr"><span class="bpc">'+Math.round(Math.min(v/need*100,100))+'%</span><div class="btk"><i style="width:'+Math.min(v/need*100,100)+'%"></i></div></div></div></div>'};
+if(nx){
+var tipB=nx.bank-bank,tipT=nx.trade==null?0:nx.trade-trade,tip="";
+if(tipB>0&&tipT>0)tip="هر دو شرط کم است: اول حساب تریدینگ را به $"+nx.trade+" برسان ($"+rd(tipT)+" مانده)، بعد حساب پشتیبان را پر کن ($"+rd(tipB)+").";
+else if(tipB>0)tip="فقط حساب پشتیبان مانده: $"+rd(tipB)+" دیگر.";
+else if(tipT>0)tip="فقط حساب تریدینگ مانده: $"+rd(tipT)+" سود دیگر.";
+else tip="هر دو شرط پر است؛ پله‌ی بعد باز شد.";
+h+='<div class="hd"><div class="ht"><h3>🎯 پله‌ی بعدی: '+nx.name+'</h3><div class="hs">پله‌ی '+pdg(nx.n)+' · لات '+pdg(nx.lot.toFixed(2))+(cur?' (الان '+pdg(cur.lot.toFixed(2))+')':'')+'</div></div><img src="'+A+'hdr.webp" alt=""></div>'
++card("","wallet","حساب پشتیبان","bank",bank,nx.bank)
++(nx.trade==null?'<div class="bk tr"><img src="'+A+'chart.webp" alt=""><div class="bt"><div class="blb"><img src="'+A+'trend.webp" alt="">حساب تریدینگ: هنوز تعیین نشده</div></div></div>':card(" tr","chart","حساب تریدینگ","trend",trade,nx.trade))
++'<div class="tip"><p>'+tip+'</p><img src="'+A+'bulb.webp" alt=""></div>'}
+else h+='<div class="hd"><div class="ht"><h3>👑 به قله رسیدی</h3><div class="hs">آخرین پله‌ی لیگ</div></div></div>';
+h+='<div class="lsh">همه‌ی پله‌ها از بالا به پایین</div><div class="lst">'+LD.slice().reverse().map(function(st){var i=st.n-1,c=i<ci?"done":i==ci?"cur":i==ci+1?"nxt":"lk";
+var badge=c=="cur"?'<span class="bd g">الان اینجایی</span>':c=="nxt"?'<span class="bd">بعدی</span>':'';
+return'<div class="lr '+c+'"><span class="no">'+pdg(st.n)+'</span><div class="lb"><div class="l1"><span class="nm">'+st.name+'</span>'+badge+'</div><div class="l2">پشتیبان $'+st.bank+' · تریدینگ '+(st.trade==null?"؟":"$"+st.trade)+' · لات '+st.lot.toFixed(2)+'</div></div><span class="ic"><img src="'+A+LIMG[st.n]+'.webp" alt=""></span></div>'}).join("")+'</div>';
+h+='<div class="ft"><img class="tg" src="'+A+'target.webp" alt=""><span class="fsep"></span><span class="ftt"><small>پله‌ی فعلی'+(cur?' · '+pdg(cur.n):'')+'</small>'+(cur?cur.name:'هنوز شروع نشده')+'</span></div>';
+document.getElementById("lad").innerHTML=h;
+}
+var WS={base:{},log:[]},PR=0,WMSG="";
+function wcur(k){var w=WD.filter(function(x){return x.k==k})[0],v=WS.base[k]!=null?+WS.base[k]:w.v;if(k=="trade")v+=PR;WS.log.forEach(function(e){if(e.from==k)v-=e.amt;if(e.to==k)v+=e.amt});return v}
+function wr(x){return Math.round(x*100)/100}
+function wnum(s){return parseFloat(String(s).replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace(/[٫,]/g,"."))}
+function wnm(k){return WD.filter(function(x){return x.k==k})[0].nm}
+function wallet(pr){if(pr!=null)PR=pr;var tot=0,h="",bar="";
+WD.forEach(function(w){w.cur=wcur(w.k);tot+=w.cur});var hw=document.getElementById("hwb");if(hw)hw.textContent="$"+wr(tot);
+WD.forEach(function(w){h+='<div class="wc" style="--c:'+w.c+'" data-k="'+w.k+'"><div class="tx">'+(w.k=="trade"||w.k=="cash"?'<div class="rw"><span class="nm">'+(w.k=="trade"?"TRADE":"دلاری")+'</span><b>$'+wr(w.cur)+'</b></div><span class="sb">'+(w.k=="trade"&&PR?(PR>0?"+":"")+wr(PR)+'$ از ترید':w.sb)+'</span>':'<span class="nm">'+w.nm+'</span><span class="sb">'+(w.k=="trade"&&PR?(PR>0?"+":"")+wr(PR)+'$ از ترید':w.sb)+'</span><b>$'+wr(w.cur)+'</b>')+'</div><img class="im" src="assets/wallet/'+w.ic+'.webp" alt=""><div class="go">ویرایش مقدار</div></div>';bar+='<i style="width:'+(tot>0?Math.max(0,w.cur)/tot*100:0)+'%;background:linear-gradient(90deg,'+w.c+','+w.c+'cc)"></i>'});
+var opt=WD.map(function(w){return'<option value="'+w.k+'">'+w.nm+'</option>'}).join("");
+var lg=WS.log.map(function(e,i){return'<div class="wl"><span>'+e.d+' · '+(e.from?wnm(e.from)+' ← ':'شارژ ')+wnm(e.to)+' · $'+wr(e.amt)+'</span><button type="button" data-ld="'+i+'">✕</button></div>'}).join("")||'<div class="wl">هنوز انتقال یا شارژی ثبت نشده.</div>';
+var e=document.getElementById("wal");
+e.innerHTML='<div class="hd"><img class="cn l" src="assets/wallet/coins1.webp" alt=""><img class="cn r" src="assets/wallet/coins2.webp" alt=""><div class="tl">👑 دارایی کل 👑</div><div class="big">$'+wr(tot)+'</div><div class="gn '+(PR>=0?"p":"n")+'">'+(PR>=0?"▲ ":"▼ ")+Math.abs(wr(PR))+'$ سود/زیان تریدهای لیگ</div></div><div class="wb">'+h+'</div><div class="wbar">'+bar+'</div><div class="wh">🚀 سود و زیان هر ترید <b>خودکار</b> روی حساب تریدینگ اعمال می‌شود</div>'+
+'<div class="wx"><b>🔁 انتقال بین حساب‌ها</b><div class="r"><select id="wxf">'+opt+'</select><span>←</span><select id="wxt">'+opt.replace('value="back"','value="back" selected')+'</select><input id="wxa" type="text" inputmode="decimal" placeholder="مبلغ $"><button type="button" id="wxb">انتقال</button></div>'+
+'<b>➕ واریز / ➖ برداشت</b><div class="r"><select id="wdt">'+opt.replace('value="cash"','value="cash" selected')+'</select><input id="wda" type="text" inputmode="decimal" placeholder="مبلغ $"></div><div class="r"><button type="button" id="wdi">➕ واریز</button><button type="button" id="wdo">➖ برداشت</button></div>'+
+'<details><summary>تاریخچه (' +WS.log.length+')</summary>'+lg+'</details>'+
+'<button type="button" class="sv" id="wsv">💾 ذخیره برای همه‌ی دستگاه‌ها</button><div id="wms">'+WMSG+'</div></div>';
+ladder(WD[1].cur,WD[0].cur);
+var today=function(){return new Date().toISOString().slice(0,10)};
+e.querySelectorAll(".wc").forEach(function(c){c.onclick=function(){var k=c.getAttribute("data-k"),w=WD.filter(function(x){return x.k==k})[0];var v=prompt("موجودی فعلی «"+w.nm+"» (دلار):",wr(w.cur));if(v==null)return;v=wnum(v);if(isNaN(v))return;WS.base[k]=(WS.base[k]!=null?+WS.base[k]:w.v)+(v-w.cur);WMSG="تغییر ذخیره نشده؛ «ذخیره» را بزن.";wallet()}});
+document.getElementById("wxb").onclick=function(){var f=document.getElementById("wxf").value,t=document.getElementById("wxt").value,a=wnum(document.getElementById("wxa").value);if(f==t||!(a>0)){WMSG="مبدأ و مقصد باید فرق کنند و مبلغ مثبت باشد.";wallet();return}WS.log.push({d:today(),from:f,to:t,amt:a});WMSG="انتقال اعمال شد؛ ذخیره نشده.";wallet()};
+function wdo(sign){var t=document.getElementById("wdt").value,a=wnum(document.getElementById("wda").value);if(isNaN(a)||!(a>0)){WMSG="مبلغ مثبت وارد کن.";wallet();return}WS.log.push({d:today(),to:t,amt:sign*a});WMSG=(sign>0?"واریز":"برداشت")+" اعمال شد؛ ذخیره نشده.";wallet()}
+document.getElementById("wdi").onclick=function(){wdo(1)};
+document.getElementById("wdo").onclick=function(){wdo(-1)};
+e.querySelectorAll("[data-ld]").forEach(function(b){b.onclick=function(){if(confirm("این مورد حذف شود؟")){WS.log.splice(+b.getAttribute("data-ld"),1);WMSG="حذف شد؛ ذخیره نشده.";wallet()}}});
+document.getElementById("wsv").onclick=wsave}
+function wsave(){var g={};try{g=JSON.parse(localStorage.getItem("dgl_gh"))||{}}catch(x){}
+if(/\.github\.io$/.test(location.hostname)&&!g.owner){g.owner=location.hostname.split(".")[0];g.repo=location.pathname.split("/")[1]||g.owner+".github.io"}
+var m=document.getElementById("wms");
+if(!g.token||!g.owner||!g.repo){m.textContent="اول در صفحه‌ی ثبت ترید (trade) تنظیم اتصال گیت‌هاب را روی همین دستگاه انجام بده.";return}
+var br=g.branch||"main",u="https://api.github.com/repos/"+g.owner+"/"+g.repo+"/contents/data/wallet.json",H={Authorization:"Bearer "+g.token,Accept:"application/vnd.github+json","Content-Type":"application/json"};
+m.textContent="در حال ذخیره…";
+function go(n){return fetch(u+"?ref="+encodeURIComponent(br)+"&t="+Date.now(),{headers:H,cache:"no-store"}).then(function(r){return r.status==404?{}:r.ok?r.json():Promise.reject(new Error("خواندن ناموفق "+r.status+(r.status==401||r.status==403?" – توکن این دستگاه نامعتبر یا منقضی است؛ در صفحه trade دوباره تنظیمش کن":"")))}).then(function(j){
+var body={message:"به‌روزرسانی کیف پول",branch:br,content:btoa(unescape(encodeURIComponent(JSON.stringify({base:WS.base,log:WS.log},null,1)+"\n")))};if(j.sha)body.sha=j.sha;
+return fetch(u,{method:"PUT",headers:H,body:JSON.stringify(body)}).then(function(r){if(r.ok)return 1;if((r.status==409||r.status==422)&&n<2)return go(n+1);return Promise.reject(new Error("ذخیره ناموفق "+r.status+(r.status==401||r.status==403?" (توکن/دسترسی)":"")))})})}
+go(0).then(function(){WMSG="✅ ذخیره شد؛ روی همه‌ی دستگاه‌ها تا چند دقیقه‌ی دیگر دیده می‌شود.";wallet()}).catch(function(x){m.textContent="❌ "+x.message})}
+try{fetch("data/wallet.json?v="+Date.now()).then(function(r){return r.ok?r.json():0}).then(function(j){if(j&&j.base){WS.base=j.base;WS.log=j.log||[];wallet()}}).catch(function(){})}catch(e){}
+var LG={start:"2026-10-26",weeks:8};
+var CUPS=[{d:40,n:"جام بزرگ",img:"assets/cups/cup-40.webp"},{d:30,n:"جام ۳۰ روزه",img:"assets/cups/cup-30.webp"},{d:20,n:"جام نیم‌فصل",img:"assets/cups/cup-20.webp"}];
+function lgTime(){var total=LG.weeks*5,s=new Date(LG.start+"T00:00:00"),n=new Date();n.setHours(0,0,0,0);
+var fa=function(d){return d.toLocaleDateString("fa-IR-u-ca-persian",{day:"numeric",month:"long"})},td=fa(new Date());
+s.setDate(s.getDate()+CS*LG.weeks*7);var e=new Date(s);e.setDate(e.getDate()+LG.weeks*7-3);
+if(n<s){var dd=Math.round((s-n)/864e5);return{before:1,day:0,total:total,pct:0,msg:"⏳ شروع لیگ: "+fa(s)+" ("+dd+" روز مانده) (امروز: "+td+" · پایان: "+fa(e)+")"}}
+var day=0,x=new Date(s);while(x<=n&&day<total){var g=x.getDay();if(g>0&&g<6)day++;x.setDate(x.getDate()+1)}
+var wk=Math.min(Math.ceil(day/5),LG.weeks);
+return{before:0,day:day,total:total,pct:day/total*100,msg:day>=total?"🏁 فصل "+(CS+1)+" تمام شد ("+fa(e)+")":"("+"هفته "+wk+" از "+LG.weeks+" · امروز: "+td+" · پایان: "+fa(e)+" · "+(total-day)+" روز معاملاتی مانده)"}}
+fetch("data/league.json").then(function(r){return r.ok?r.json():0}).then(function(j){if(j&&j.start){LG.start=j.start;LG.weeks=j.weeks||8;render()}}).catch(function(){});
+var AWI=-1;
+function awFill(i){var p=document.getElementById("awp"),a=G.A[i],L=G.hr.filter(function(h){return h.a[i]>0}),cr=window.CR;p.innerHTML='<div class="awh">'+a[0]+' '+a[1]+' — '+a[2]+'</div>'+(L.length?L.map(function(h){return'<div class="awr">'+cr(h.n,"sm")+'<span>'+esc(h.n)+'</span><em>'+h.a[i]+'</em></div>'}).join(""):'<div class="awe">هنوز تیمی این جایزه را نگرفته</div>')}
+window.awOpen=function(i){var p=document.getElementById("awp");if(AWI===i){AWI=-1;p.innerHTML="";return}AWI=i;awFill(i)};
+var RC={TP:"#3fbf7a",CLOSE:"#4aa3ff",RISK:"#f6c744",SL:"#ef5b5b"};
+function tmFill(){var g=document.getElementById("tmg");if(!g)return;g.innerHTML=NAMES.map(function(n){var im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="" loading="lazy" decoding="async">':'<span class="tmx" style="color:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>';return'<div class="tmc" data-team="'+esc(n)+'" style="--c:'+(COL[n]||"#888")+'"><div class="tmb">'+im+'</div><div class="tmn">'+esc(n)+'</div></div>'}).join("")+'<div class="tmc" onclick="tmToggle()"><div class="tmb tmadd">+</div><div class="tmn">تیم جدید</div></div>'}
+function tmToggle(){var f=document.getElementById("tmf");f.hidden=!f.hidden}
+function ghCfg(){var g={};try{g=JSON.parse(localStorage.getItem("dgl_gh"))||{}}catch(x){}if(/\.github\.io$/.test(location.hostname)&&!g.owner){g.owner=location.hostname.split(".")[0];g.repo=location.pathname.split("/")[1]||g.owner+".github.io"}return g}
+function ghApi(g,path,method,body){return fetch("https://api.github.com/repos/"+g.owner+"/"+g.repo+"/contents/"+path+(method?"":"?ref="+encodeURIComponent(g.branch||"main")+"&t="+Date.now()),{method:method||"GET",headers:{Authorization:"Bearer "+g.token,Accept:"application/vnd.github+json","Content-Type":"application/json"},cache:"no-store",body:body?JSON.stringify(body):undefined}).then(function(r){if(r.status==404&&!method)return{};if(!r.ok)return Promise.reject(new Error((method?"ذخیره":"خواندن")+" ناموفق "+r.status+(r.status==401||r.status==403?" – توکن این دستگاه را در صفحه trade دوباره تنظیم کن":"")));return r.json()})}
+function tmSave(){var m=document.getElementById("tmm"),n=document.getElementById("tmn_in").value.trim(),col=document.getElementById("tmc_in").value,file=document.getElementById("tmlogo").files[0];
+if(!n){m.textContent="اسم تیم را بنویس.";return}if(NAMES.some(function(x){return x.toLowerCase()==n.toLowerCase()})){m.textContent="این تیم از قبل وجود دارد.";return}
+var g=ghCfg();if(!g.token||!g.owner||!g.repo){m.textContent="اول در صفحه‌ی ثبت ترید (trade) تنظیم اتصال گیت‌هاب را روی همین دستگاه انجام بده.";return}
+var slug=n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"team-"+Date.now(),logo="",b64="",du="";
+var fr=function(){return new Promise(function(res,rej){if(!file)return res("");var rd=new FileReader();rd.onload=function(){res(rd.result)};rd.onerror=rej;rd.readAsDataURL(file)})};
+m.textContent="در حال ذخیره…";var btn=document.getElementById("tmsv");btn.disabled=true;
+fr().then(function(d){du=d;if(du){b64=du.split(",")[1];var ext=(file.name.split(".").pop()||"png").toLowerCase();logo="assets/teams/"+slug+"."+ext;return ghApi(g,logo).then(function(j){return ghApi(g,logo,"PUT",{message:"لوگوی تیم "+n,branch:g.branch||"main",content:b64,sha:j.sha||undefined})})}}).then(function(){return ghApi(g,"data/teams.json")}).then(function(j){var list=[];if(j.content)list=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));list.push({name:n,color:col,logo:logo||undefined});var c=btoa(unescape(encodeURIComponent(JSON.stringify(list,null,1)+"\n")));return ghApi(g,"data/teams.json","PUT",{message:"تیم جدید: "+n,branch:g.branch||"main",content:c,sha:j.sha||undefined})}).then(function(){NAMES.push(n);COL[n]=col;if(logo)LOGO[n]=du;teams=zero();render();document.getElementById("tmn_in").value="";document.getElementById("tmlogo").value="";m.textContent="✅ «"+n+"» ذخیره شد."}).catch(function(e){m.textContent="❌ "+e.message}).then(function(){btn.disabled=false})}
+function dots(n,TS){var l=TS.filter(function(t){return t.team==n}).slice(-5).reverse(),h='<div class="fm" dir="ltr">';for(var i=0;i<5;i++){var t=l[i];h+=t?'<i style="background:'+RC[t.res]+'" title="'+t.res+'"></i>':'<i></i>'}return h+'</div>'}
+function render(){tmFill();
+var TS=trades(),W7=LG.weeks*7,SD=dn(LG.start),nw=new Date(),TD=Math.floor(Date.UTC(nw.getFullYear(),nw.getMonth(),nw.getDate())/864e5);
+CS=Math.max(0,Math.floor((TD-SD)/W7));
+var r=rank(agg(TS.filter(function(t){return t._s==CS}))),tot=0;
+r.forEach(function(x){tot+=x.play});
+var T=lgTime(),pc=T.pct;
+document.getElementById("tot").textContent=T.before?"":(CS?"فصل "+(CS+1)+" · ":"")+"روز "+T.day+" از "+T.total;
+document.getElementById("fill").style.width=pc+"%";
+var bar=document.getElementById("bar");bar.querySelectorAll(".mk").forEach(function(e){e.remove()});
+CUPS.forEach(function(c){var e=document.createElement("div");e.className="mk"+(T.day>=c.d?" on":"");e.style.right=(c.d/T.total*100)+"%";e.textContent=c.d;bar.appendChild(e)});
+document.getElementById("lgi").innerHTML=T.msg;var hc=document.getElementById("htc");if(hc)hc.textContent="ترید: "+TS.length;
+var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+esc(n)+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>'};
+var PL={};TS.forEach(function(t){PL[t.team]=1});var rv=r.filter(function(x){return PL[x.n]});
+try{document.getElementById("rows").innerHTML=rv.map(function(x,i){
+var z=!tot?"":i==0?"z1":i==1?"z2":"";
+return'<tr class="'+z+'" data-team="'+encodeURIComponent(x.n)+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div>'+dots(x.n,TS)+'</div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
+var CL=CUPS.map(function(c){return T.day>=c.d||CS<Math.floor((TD-SD)/W7)?cupLeader(CS,c.d,TS):null});
+document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d,lead=CL[i],W=[],LAB=["Grand","Major","Minor"][i]||"";for(var se=0;se<=CS;se++){if(se==CS&&!on)continue;var w=cupLeader(se,c.d,TS);if(w)W.push({s:se,n:w})}return'<tr class="'+(on&&lead?"z1":"")+'"><td class="ps"><span class="lab">'+LAB+'</span></td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(W.length?W.slice().reverse().map(function(x){return'<div class="team wn">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div><div class="mu">فصل '+(x.s+1)+'</div></div></div>'}).join(""):'<span class="mu">·</span>')+'</td><td>'+(on?(lead?"قهرمان":"بدون قهرمان"):"قفل")+'</td></tr>'}).join("");
+var AW=awards(r),w=AW[1],q=AW[3],p=AW[0],sl=AW[2];
+var A=[["🥇","توپ طلا","بیشترین امتیاز",p?f(p.pt):"—",p,"#f6c744"],["<img src=\"assets/awards/golden-boot.webp\" alt=\"کفش طلا\">","کفش طلا","بهترین وین‌ریت",w?f(w.win,1)+"%":"—",w,"#3fbf7a"],["<img src=\"assets/awards/golden-glove.webp\" alt=\"دستکش طلا\">","دستکش طلا","کمترین SL",sl?f(sl.sl):"—",sl,"#4aa3ff"],["<img src=\"assets/awards/reward.webp\" alt=\"جایزه‌ی ریوارد\">","جایزه‌ی ریوارد","بهترین R/R",q?f(q.rr,2):"—",q,"#c77dff"]];
+document.getElementById("stats").innerHTML=A.map(function(a,i){if(!i)return"";return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+esc(a[4].n)+'</div>':"")+'</div>'}).join("");
+
+var H={};NAMES.forEach(function(n){H[n]={c:0,a:[0,0,0,0]}});
+for(var se=0;se<=CS;se++){var rs=se==CS?r:rank(agg(TS.filter(function(t){return t._s==se})));
+CUPS.forEach(function(c,ci){var l=se==CS?CL[ci]:cupLeader(se,c.d,TS);if(l)H[l].c++});
+awards(rs).forEach(function(x,i){if(x)H[x.n].a[i]++})}
+var hr=Object.keys(H).map(function(n){var h=H[n];return{n:n,c:h.c,a:h.a,t:h.c+h.a[0]+h.a[1]+h.a[2]+h.a[3]}}).sort(function(x,y){return y.t-x.t||y.c-x.c});
+window.CR=cr;G={r:r,TS:TS,CS:CS,hr:hr,A:A};if(AWI>=0)awFill(AWI);
+document.getElementById("hon").innerHTML=hr.filter(function(h){return h.t>0}).map(function(h,i){var z=function(v){return v?'<b>'+v+'</b>':'<span class="mu">·</span>'};return'<tr data-team="'+encodeURIComponent(h.n)+'"'+(h.t&&i==0?' class="z1"':'')+'><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(h.n)+'<div><div class="tn">'+esc(h.n)+'</div></div></div></td><td>'+z(h.c)+'</td><td>'+z(h.a[0])+'</td><td>'+z(h.a[1])+'</td><td>'+z(h.a[2])+'</td><td>'+z(h.a[3])+'</td><td class="pt">'+h.t+'</td></tr>'}).join("");
+var ic=["🥇","🥈","🥉"],o=[1,0,2];
+document.getElementById("podium").innerHTML=tot?'<div class="stage" id="stage">'+o.filter(function(i){return r[i]&&r[i].play}).map(function(i){var x=r[i];return'<div class="step s'+(i+1)+'" data-team="'+encodeURIComponent(x.n)+'"><i>'+ic[i]+'</i>'+cr(x.n)+'<b>'+esc(x.n)+'</b><small>'+f(x.pt)+' امتیاز</small></div>'}).join("")+'</div>':'<div class="empty"><b>⚽</b>فصل هنوز شروع نشده؛ منتظر اولین ترید.</div>';
+wallet(TS.reduce(function(a,t){return a+(+t.usd||0)},0));
+if(tp&&/^#team=/.test(location.hash))route();
+}
+
+var rv=document.getElementById("rv");
+document.getElementById("rvl").innerHTML=RULES.map(function(r,i){return(i==0?'<h3>بکن</h3>':i==5?'<h3>نکن</h3>':"")+'<div class="rvi"><b>'+r[1]+'</b><br>'+r[2]+'</div>'}).join("");
+window.openRules=function(){rv.classList.add("on");rv.scrollTop=0};
+document.getElementById("rvc").onclick=function(){rv.classList.remove("on")};
+tp=document.getElementById("tp");var pushed=false;
+function profile(n){var cr=window.CR,i=NAMES.indexOf(n),h='';
+if(i<0)h='<h2>تیم پیدا نشد</h2>';else{
+var all=G.TS.filter(function(t){return t.team==n}),cur=all.filter(function(t){return t._s==G.CS}),ra=G.r.map(function(x){return x.n}).indexOf(n),x=G.r[ra],cv=all.reduce(function(a,t){return a+(+t.usd||0)},0),hn=G.hr.filter(function(y){return y.n==n})[0];
+h='<div class="ph" style="--c:'+(COL[n]||"#888")+'">'+cr(n,"")+'<h2>'+esc(n)+'</h2>'+dots(n,G.TS)+(all.length?'<small class="mu">← جدیدترین</small>':'')+'</div>';
+if(!all.length)h+='<div class="empty" style="margin-top:14px"><b>⚽</b>هنوز معامله‌ای ندارد</div>';
+else{h+='<div class="kv"><div><small>ارزش باشگاه</small><b dir="ltr">$'+rd(cv)+'</b></div><div><small>رتبه‌ی فصل '+(G.CS+1)+'</small><b>'+(x&&x.play?ra+1:"—")+'</b></div><div><small>امتیاز فصل</small><b>'+(x?f(x.pt):0)+'</b></div><div><small>بازی / برد٪</small><b>'+(x?x.play+" / "+f(x.win,1):"0")+'</b></div></div>';
+var st={tot:all.length,buy:0,sell:0,sl:0,risk:0,close:0,tp:0,pips:0,usd:0,bp:-1e9,bu:-1e9,wp:0,wu:0};all.forEach(function(t){if(t.dir=="BUY")st.buy++;if(t.dir=="SELL")st.sell++;var k={TP:"tp",CLOSE:"close",RISK:"risk",SL:"sl"}[t.res];if(k)st[k]++;var p=+t.pips||0,q=+t.usd||0;st.pips+=p;st.usd+=q;if(p>st.bp)st.bp=p;if(q>st.bu)st.bu=q});st.play=st.sl+st.risk+st.close+st.tp;st.wr=st.play?st.tp/st.play*100:0;if(st.bp<-1e8)st.bp=0;if(st.bu<-1e8)st.bu=0;
+var sx=function(l,v){return'<div><small>'+l+'</small><b dir="ltr">'+v+'</b></div>'};
+h+='<h4>آمار کلی (همه‌ی فصل‌ها)</h4><div class="kv">'+sx('کل معاملات',st.tot)+sx('ورود (خرید)',st.buy)+sx('خروج (فروش)',st.sell)+sx('کل بازی',st.play)+sx('استاپ (SL)',st.sl)+sx('ریسک‌فری',st.risk)+sx('کلوز',st.close)+sx('تیپی (TP)',st.tp)+sx('وین ریت کلی',f(st.wr,1)+'%')+sx('ریوارد کلی ($)',rd(st.usd))+sx('بیشترین پیپ تک‌معامله',f(st.bp))+sx('بیشترین ریوارد تک‌معامله ($)',rd(st.bu))+sx('مجموع پیپ',f(st.pips))+'</div>';
+var by={};all.forEach(function(t){var o=by[t._s]=by[t._s]||{buy:0,sell:0,pt:0};if(t.dir=="BUY")o.buy+=+t.usd||0;if(t.dir=="SELL")o.sell+=+t.usd||0});
+h+='<h4>فصل‌ها</h4>'+Object.keys(by).reverse().map(function(k){var rs=rank(agg(G.TS.filter(function(t){return t._s==k}))).filter(function(y){return y.n==n})[0];return'<div class="tl"><span>فصل '+(+k+1)+'</span><span>خرید $'+rd(by[k].buy)+' · فروش $'+rd(by[k].sell)+'</span><b>'+f(rs.pt)+' امتیاز</b></div>'}).join("");
+h+='<h4>افتخارات</h4><div class="tl"><span>🏆 '+hn.c+'</span><span>🥇 '+hn.a[0]+' · 👟 '+hn.a[1]+' · 🧤 '+hn.a[2]+' · 🎁 '+hn.a[3]+'</span></div>';
+h+='<h4>آخرین معامله‌ها</h4>'+all.slice(-10).reverse().map(function(t){return'<div class="tl"><span>'+esc(t.date)+' #'+t.no+'</span><span>'+esc(t.dir||"")+'</span><span style="color:'+RC[t.res]+'">'+t.res+'</span><b dir="ltr">'+(t.usd>0?"+":"")+t.usd+'$</b></div>'}).join("")}}
+document.getElementById("tpb").innerHTML=h+'<button class="go" id="tpc2">بستن</button>';
+document.getElementById("tpc2").onclick=closeP;tp.classList.add("on");tp.scrollTop=0}
+function closeP(){if(pushed){pushed=false;history.back()}else if(location.hash.indexOf("#team=")==0){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){location.hash=""}tp.classList.remove("on")}else tp.classList.remove("on")}
+function route(){var m=/^#team=(.+)$/.exec(location.hash);if(m){var n;try{n=decodeURIComponent(m[1])}catch(e){n=m[1]}var k=NAMES.filter(function(z){return z.toLowerCase()==n.toLowerCase()})[0];profile(k||n)}else tp.classList.remove("on")}
+window.addEventListener("hashchange",function(){if(!/^#team=/.test(location.hash))pushed=false;route()});
+document.addEventListener("keydown",function(e){if(e.key=="Escape"&&tp.classList.contains("on"))closeP()});
+document.addEventListener("click",function(e){var el=e.target.closest&&e.target.closest("[data-team]");if(!el||tp.contains(el))return;var nh="#team="+el.getAttribute("data-team");if(location.hash==nh){route();return}pushed=true;location.hash=nh});
+render();route();
+</script>
+<script>
+(function(){
+var tabs=[].slice.call(document.querySelectorAll('.tab[data-t]'));
+tabs.forEach(function(b){b.addEventListener('click',function(){
+var k=b.getAttribute('data-t'),p=document.querySelector('.tpanel[data-p="'+k+'"]');
+document.querySelectorAll('.tpanel').forEach(function(x){x.hidden=true});
+tabs.forEach(function(t){t.setAttribute('aria-selected','false')});
+p.hidden=false;b.setAttribute('aria-selected','true');
+});});
+})();
+</script>
+<script>
+(function(){
+var C={High:"#e03131",Medium:"#f08c00",Low:"#e6c200",Holiday:"#888"},FA={High:"مهم",Medium:"متوسط",Low:"کم",Holiday:"تعطیل"},EV=[],UP="",BEF=30,AFT=30;
+var tf=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Tehran",hour:"2-digit",minute:"2-digit",hour12:false}),
+df=new Intl.DateTimeFormat("fa-IR",{timeZone:"Asia/Tehran",weekday:"long",month:"long",day:"numeric"}),
+kf=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tehran"});
+function E(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function nq(t){return /cpi|ppi|pce|non-?farm|nfp|unemployment rate|employment change|fomc|fed chair|powell|interest rate|rate decision|gdp|ism |retail sales|jobless|unemployment claims|core/i.test(t)}
+function fa(n){return String(n).replace(/\d/g,function(d){return"۰۱۲۳۴۵۶۷۸۹"[d]})}
+function show(){var now=Date.now(),b=document.getElementById("nwb"),l=document.getElementById("nwl");var td=new Date(),ts=td.getFullYear()+"-"+("0"+(td.getMonth()+1)).slice(-2)+"-"+("0"+td.getDate()).slice(-2),nc=EV.filter(function(e){return e.i=="High"&&String(e.d).slice(0,10)==ts}).length,nch=document.getElementById("nch");if(nch)nch.textContent=nc?"🔴 امروز "+nc+" خبر مهم":"امروز خبر مهم نداریم";
+if(!EV.length){b.innerHTML='<div class="nwa wn">اخبار در دسترس نیست. (فایل data/news.json هنوز ساخته نشده یا فید قطع است.)</div>';l.innerHTML="";return}
+var hi=EV.filter(function(e){return e.i=="High"||e.i=="Medium"}).map(function(e){return{e:e,t:new Date(e.d).getTime()}}),cur=null,nx=null;
+hi.forEach(function(x){if(now>=x.t-BEF*6e4&&now<=x.t+AFT*6e4)cur=cur||x;else if(x.t>now&&!nx)nx=x});
+if(cur)b.innerHTML='<div class="nwa bad">⛔ الان وقت خبر است: «'+E(cur.e.t)+'» ('+FA[cur.e.i]+'). وارد بازار نشو.</div>';
+else if(nx){var m=Math.round((nx.t-now)/6e4),tx=m>=60?fa(Math.floor(m/60))+" ساعت و "+fa(m%60)+" دقیقه":fa(m)+" دقیقه";b.innerHTML='<div class="nwa ok">✅ فعلاً خبر مهمی نزدیک نیست. خبر بعدی: «'+E(nx.e.t)+'» ساعت '+tf.format(nx.t)+' (تا '+tx+' دیگر)</div>'}
+else b.innerHTML='<div class="nwa ok">✅ خبر مهم دیگری در این بازه نیست.</div>';
+var h="",last="";EV.forEach(function(e){var t=new Date(e.d).getTime(),k=kf.format(t);if(k!=last){last=k;h+='<div class="nwd">'+df.format(t)+(k==kf.format(now)?" · امروز":"")+'</div>'}
+h+='<div class="nwr '+e.i+(t<now?" past":"")+'"><i style="background:'+(C[e.i]||"#888")+'"></i><span class="tm">'+tf.format(t)+'</span><div class="nt">'+E(e.t)+(nq(e.t)?' <span class="nq" title="اثر زیاد روی نزدک">📈</span>':'')+' <small>('+(FA[e.i]||"")+')</small></div><div class="ex">'+(e.f?"پیش‌بینی "+E(e.f)+"<br>":"")+(e.p?"قبلی "+E(e.p):"")+'</div></div>'});
+l.innerHTML=h+(UP?'<div class="nwd" style="font-size:11px;font-weight:400">آخرین به‌روزرسانی: '+tf.format(new Date(UP))+' — اعداد ممکن است چند دقیقه تأخیر داشته باشند.</div>':"")}
+fetch("data/news.json?v="+Date.now()).then(function(r){return r.ok?r.json():{}}).then(function(j){EV=j.events||[];UP=j.updated||"";show()}).catch(function(){show()});
+setInterval(show,6e4);
+})();
+
+(function(){var K='dgl_gh',g={};try{g=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+  var f={tok:'gtok',own:'gown',rep:'grep',br:'gbr',pa:'gpath'};
+  if(!g.owner&&/\.github\.io$/.test(location.hostname)){g.owner=location.hostname.split('.')[0];g.repo=g.repo||location.pathname.split('/')[1]||g.owner+'.github.io'}
+  var v={tok:g.token,own:g.owner,rep:g.repo,br:g.branch||'main',pa:g.path||'data/trades.json'};
+  for(var k in f){var el=document.getElementById(f[k]);if(el)el.value=v[k]||''}
+  var b=document.getElementById('gsv');if(!b)return;
+  b.onclick=function(){var o=Object.assign({},g);o.token=document.getElementById('gtok').value.trim();o.owner=document.getElementById('gown').value.trim();o.repo=document.getElementById('grep').value.trim();o.branch=document.getElementById('gbr').value.trim()||'main';o.path=document.getElementById('gpath').value.trim()||'data/trades.json';
+    localStorage.setItem(K,JSON.stringify(o));g=o;document.getElementById('gsm').textContent='✅ تنظیمات ذخیره شد.'};
+})();
+</script>
+<script>document.querySelector('[data-t="tr"]').addEventListener("click",function(){document.getElementById("trf").src="trade/?embed=1&_="+Date.now()});</script>
+</body>
+</html>
