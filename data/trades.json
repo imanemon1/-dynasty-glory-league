@@ -1,1 +1,20 @@
-[]
+[
+ {
+  "date": "2026-10-23",
+  "no": 1,
+  "team": "HDMACD",
+  "time": "",
+  "dir": "BUY",
+  "res": "TP",
+  "lot": 0.1,
+  "pips": 50,
+  "usd": 5,
+  "trend": "1m:u 5m:u 15m:u 30m:u 1h:u",
+  "conf": [
+   "انبرک",
+   "MA100"
+  ],
+  "pincer": true,
+  "note": ""
+ }
+]
