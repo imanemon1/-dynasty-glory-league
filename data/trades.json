@@ -16,5 +16,24 @@
   ],
   "pincer": true,
   "note": ""
+ },
+ {
+  "date": "2026-10-24",
+  "no": 2,
+  "team": "PIVOT POINTS",
+  "time": "",
+  "dir": "BUY",
+  "res": "TP",
+  "lot": 0.1,
+  "pips": 2,
+  "usd": 2,
+  "trend": "1m:d 5m:d 15m:d 30m:d 1h:d",
+  "conf": [
+   "انبرک",
+   "MA50",
+   "MA100"
+  ],
+  "pincer": true,
+  "note": ""
  }
 ]
