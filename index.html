@@ -353,6 +353,7 @@ button,.go{min-height:44px}
 @media (min-width:768px){.cupimg{width:52px}}
 .cupt th:not(.ps):not(.tm),.cupt td:not(.ps):not(.tm){width:16%}
 
+.tmg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(min-width:720px){.tmg{grid-template-columns:repeat(5,1fr)}}.tmc{cursor:pointer;text-align:center}.tmb{aspect-ratio:1/1;border-radius:16px;background:#fff;border:2px solid var(--c);box-shadow:0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:8px;box-sizing:border-box;overflow:hidden}.tmb img{width:100%;height:100%;object-fit:contain}.tmx{font-weight:800;font-size:14px}.tmn{margin-top:6px;font-size:12px;font-weight:700;line-height:1.4}.tmc:active .tmb{transform:scale(.97)}
 .tabs{display:flex;gap:8px;overflow-x:auto;direction:rtl;margin:16px 0 0;padding:4px 2px 8px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex:0 0 auto;min-height:44px;padding:0 16px;border-radius:999px;background:var(--card);color:var(--mu);border:1px solid var(--ln);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:background .2s,border-color .2s,color .2s}
@@ -449,6 +450,7 @@ button,.go{min-height:44px}
 <nav class="tabs" role="tablist" aria-label="بخش‌ها">
 <button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw">📰 اخبار</button>
@@ -467,6 +469,7 @@ button,.go{min-height:44px}
 </div>
 <div id="p-wl" class="tpanel" data-p="wl" hidden><section><div class="sec">💰 کیف پول دلاری<small>روی هر کارت بزن تا مقدارش را عوض کنی</small></div>
 <div class="wal" id="wal"></div></section></div>
+<div id="p-tm" class="tpanel" data-p="tm" hidden><section><div class="sec">👥 همه‌ی تیم‌ها<small>روی هر تیم بزن تا آمارش را ببینی</small></div><div id="tmg" class="tmg"></div></section></div>
 <div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
 <div class="lad" id="lad"></div>
 </section></div>
@@ -591,8 +594,9 @@ var AWI=-1;
 function awFill(i){var p=document.getElementById("awp"),a=G.A[i],L=G.hr.filter(function(h){return h.a[i]>0}),cr=window.CR;p.innerHTML='<div class="awh">'+a[0]+' '+a[1]+' — '+a[2]+'</div>'+(L.length?L.map(function(h){return'<div class="awr">'+cr(h.n,"sm")+'<span>'+esc(h.n)+'</span><em>'+h.a[i]+'</em></div>'}).join(""):'<div class="awe">هنوز تیمی این جایزه را نگرفته</div>')}
 window.awOpen=function(i){var p=document.getElementById("awp");if(AWI===i){AWI=-1;p.innerHTML="";return}AWI=i;awFill(i)};
 var RC={TP:"#3fbf7a",CLOSE:"#4aa3ff",RISK:"#f6c744",SL:"#ef5b5b"};
+function tmFill(){var g=document.getElementById("tmg");if(!g)return;g.innerHTML=NAMES.map(function(n){var im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="" loading="lazy" decoding="async">':'<span class="tmx" style="color:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>';return'<div class="tmc" data-team="'+esc(n)+'" style="--c:'+(COL[n]||"#888")+'"><div class="tmb">'+im+'</div><div class="tmn">'+esc(n)+'</div></div>'}).join("")}
 function dots(n,TS){var l=TS.filter(function(t){return t.team==n}).slice(-5).reverse(),h='<div class="fm" dir="ltr">';for(var i=0;i<5;i++){var t=l[i];h+=t?'<i style="background:'+RC[t.res]+'" title="'+t.res+'"></i>':'<i></i>'}return h+'</div>'}
-function render(){
+function render(){tmFill();
 var TS=trades(),W7=LG.weeks*7,SD=dn(LG.start),nw=new Date(),TD=Math.floor(Date.UTC(nw.getFullYear(),nw.getMonth(),nw.getDate())/864e5);
 CS=Math.max(0,Math.floor((TD-SD)/W7));
 var r=rank(agg(TS.filter(function(t){return t._s==CS}))),tot=0;
@@ -642,6 +646,9 @@ var all=G.TS.filter(function(t){return t.team==n}),cur=all.filter(function(t){re
 h='<div class="ph" style="--c:'+(COL[n]||"#888")+'">'+cr(n,"")+'<h2>'+esc(n)+'</h2>'+dots(n,G.TS)+(all.length?'<small class="mu">← جدیدترین</small>':'')+'</div>';
 if(!all.length)h+='<div class="empty" style="margin-top:14px"><b>⚽</b>هنوز معامله‌ای ندارد</div>';
 else{h+='<div class="kv"><div><small>ارزش باشگاه</small><b dir="ltr">$'+rd(cv)+'</b></div><div><small>رتبه‌ی فصل '+(G.CS+1)+'</small><b>'+(x&&x.play?ra+1:"—")+'</b></div><div><small>امتیاز فصل</small><b>'+(x?f(x.pt):0)+'</b></div><div><small>بازی / برد٪</small><b>'+(x?x.play+" / "+f(x.win,1):"0")+'</b></div></div>';
+var st={tot:all.length,buy:0,sell:0,sl:0,risk:0,close:0,tp:0,pips:0,usd:0,bp:-1e9,bu:-1e9,wp:0,wu:0};all.forEach(function(t){if(t.dir=="BUY")st.buy++;if(t.dir=="SELL")st.sell++;var k={TP:"tp",CLOSE:"close",RISK:"risk",SL:"sl"}[t.res];if(k)st[k]++;var p=+t.pips||0,q=+t.usd||0;st.pips+=p;st.usd+=q;if(p>st.bp)st.bp=p;if(q>st.bu)st.bu=q});st.play=st.sl+st.risk+st.close+st.tp;st.wr=st.play?st.tp/st.play*100:0;if(st.bp<-1e8)st.bp=0;if(st.bu<-1e8)st.bu=0;
+var sx=function(l,v){return'<div><small>'+l+'</small><b dir="ltr">'+v+'</b></div>'};
+h+='<h4>آمار کلی (همه‌ی فصل‌ها)</h4><div class="kv">'+sx('کل معاملات',st.tot)+sx('ورود (خرید)',st.buy)+sx('خروج (فروش)',st.sell)+sx('کل بازی',st.play)+sx('استاپ (SL)',st.sl)+sx('ریسک‌فری',st.risk)+sx('کلوز',st.close)+sx('تیپی (TP)',st.tp)+sx('وین ریت کلی',f(st.wr,1)+'%')+sx('ریوارد کلی ($)',rd(st.usd))+sx('بیشترین پیپ تک‌معامله',f(st.bp))+sx('بیشترین ریوارد تک‌معامله ($)',rd(st.bu))+sx('مجموع پیپ',f(st.pips))+'</div>';
 var by={};all.forEach(function(t){var o=by[t._s]=by[t._s]||{buy:0,sell:0,pt:0};if(t.dir=="BUY")o.buy+=+t.usd||0;if(t.dir=="SELL")o.sell+=+t.usd||0});
 h+='<h4>فصل‌ها</h4>'+Object.keys(by).reverse().map(function(k){var rs=rank(agg(G.TS.filter(function(t){return t._s==k}))).filter(function(y){return y.n==n})[0];return'<div class="tl"><span>فصل '+(+k+1)+'</span><span>خرید $'+rd(by[k].buy)+' · فروش $'+rd(by[k].sell)+'</span><b>'+f(rs.pt)+' امتیاز</b></div>'}).join("");
 h+='<h4>افتخارات</h4><div class="tl"><span>🏆 '+hn.c+'</span><span>🥇 '+hn.a[0]+' · 👟 '+hn.a[1]+' · 🧤 '+hn.a[2]+' · 🎁 '+hn.a[3]+'</span></div>';
