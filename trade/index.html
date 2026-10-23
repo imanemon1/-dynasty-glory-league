@@ -59,6 +59,14 @@ tfoot td{background:var(--card)!important;font-weight:800;border-bottom:0;direct
 #st{margin-top:10px;font-size:13px;min-height:20px;text-align:center}
 #st.ok{color:var(--pos)}#st.er{color:var(--neg)}
 pre{white-space:pre-wrap;direction:ltr;text-align:left;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:10px;font:inherit;font-size:13px;margin:8px 0 0;unicode-bidi:plaintext}
+.gh{margin-top:14px;border-top:1px solid var(--ln);padding-top:12px}
+.gh h3{margin:0 0 6px;font-size:15px;color:var(--gold)}
+.gh details{margin:6px 0}.gh summary{cursor:pointer;color:var(--mu);font-size:13px}
+.gh label{margin-top:8px}.gh input{width:100%;margin-top:3px;direction:ltr;text-align:left}
+.gh .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:6px 8px;border:1px solid var(--ln);border-radius:10px;margin-top:6px;background:var(--bg);font-size:14px}
+.gh .row b{direction:ltr}.gh .row button{font:inherit;font-size:13px;padding:4px 10px;border-radius:8px;border:1px solid var(--ln);background:var(--card);color:var(--tx);cursor:pointer}
+.gh .row button.x{color:var(--neg);border-color:var(--neg)}
+#gs{font-size:13px;margin-top:6px}#gs.ok{color:var(--pos)}#gs.er{color:var(--neg)}
 </style>
 </head>
 <body>
@@ -95,6 +103,21 @@ pre{white-space:pre-wrap;direction:ltr;text-align:left;background:var(--bg);bord
 <button class="alt" type="button" id="reset">🗑 برگه‌ی جدید</button>
 </div>
 <div id="st"></div>
+<div class="gh">
+<h3>💾 ذخیره‌ی مستقیم در سایت</h3>
+<p class="hint" style="margin:0 0 6px">با «ذخیره»، تریدهای همین روز مستقیم در <code>data/trades.json</code> گیت‌هاب ثبت می‌شوند و جدول‌ها و آمار سایت چند دقیقه‌ی بعد به‌روز می‌شوند. ذخیره‌ی دوباره‌ی همان تاریخ، جایگزین قبلی می‌شود.</p>
+<div class="btns"><button class="go" type="button" id="gsave">💾 ذخیره در سایت</button><button class="alt" type="button" id="glist">📋 روزهای ذخیره‌شده</button></div>
+<div id="gs"></div>
+<div id="gl"></div>
+<details id="gset"><summary>⚙️ تنظیم اتصال به گیت‌هاب</summary>
+<label>Token<input id="gtok" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+<label>Owner (نام کاربری یا سازمان)<input id="gown"></label>
+<label>Repository<input id="grep"></label>
+<label>Branch<input id="gbr" value="main"></label>
+<label>مسیر فایل<input id="gpath" value="data/trades.json"></label>
+<div class="btns"><button class="alt" type="button" id="gsv" style="grid-column:1/-1">ذخیره‌ی تنظیمات (فقط روی همین دستگاه)</button></div>
+</details>
+</div>
 <div id="out" hidden>
 <pre id="msg"></pre>
 <div class="btns"><button class="alt" type="button" id="cp" style="grid-column:1/-1">کپی دوباره</button></div>
@@ -256,6 +279,102 @@ $('send').onclick=async()=>{
   say((ok?'✅ پیام همه‌ی تریدها کپی شد؛ برای من بفرست.':'پیام آماده است؛ «کپی دوباره» را بزن.')+wn,unk.length?'wr':ok?'ok':'er');
 };
 $('cp').onclick=async()=>say((await copy($('msg').textContent))?'کپی شد.':'کپی نشد؛ متن را دستی انتخاب کن.','ok');
+
+/* ---- GitHub save ---- */
+const GK='dgl_gh';
+const G=(()=>{let g={};try{g=JSON.parse(localStorage.getItem(GK)||'{}')}catch(e){}
+  if(!g.owner&&/\.github\.io$/.test(location.hostname)){g.owner=location.hostname.split('.')[0];g.repo=g.repo||location.pathname.split('/')[1]||g.owner+'.github.io'}
+  return Object.assign({branch:'main',path:'data/trades.json'},g)})();
+const gf={tok:$('gtok'),own:$('gown'),rep:$('grep'),br:$('gbr'),pa:$('gpath')};
+gf.tok.value=G.token||'';gf.own.value=G.owner||'';gf.rep.value=G.repo||'';gf.br.value=G.branch;gf.pa.value=G.path;
+if(!G.token)$('gset').open=true;
+$('gsv').onclick=()=>{G.token=gf.tok.value.trim();G.owner=gf.own.value.trim();G.repo=gf.rep.value.trim();G.branch=gf.br.value.trim()||'main';G.path=gf.pa.value.trim()||'data/trades.json';
+  localStorage.setItem(GK,JSON.stringify(G));gsay('تنظیمات ذخیره شد.','ok')};
+function gsay(t,c){const e=$('gs');e.textContent=t;e.className=c||''}
+const b64e=t=>{const b=new TextEncoder().encode(t);let s='';b.forEach(x=>s+=String.fromCharCode(x));return btoa(s)};
+const b64d=t=>new TextDecoder().decode(Uint8Array.from(atob(t.replace(/\s/g,'')),c=>c.charCodeAt(0)));
+const gurl=()=>`https://api.github.com/repos/${encodeURIComponent(G.owner)}/${encodeURIComponent(G.repo)}/contents/${G.path.split('/').map(encodeURIComponent).join('/')}`;
+const gh=(m,u,b)=>fetch(u,{method:m,headers:{Authorization:'Bearer '+G.token,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:b?JSON.stringify(b):undefined,cache:'no-store'});
+function ready(){if(!G.token||!G.owner||!G.repo){$('gset').open=true;gsay('اول تنظیم اتصال (Token / Owner / Repository) را کامل کن و ذخیره بزن.','er');return false}return true}
+async function gerr(r){let m='';try{m=(await r.json()).message||''}catch(e){}
+  if(r.status===401)return 'توکن نامعتبر یا منقضی است.';
+  if(r.status===403||r.status===404)return 'دسترسی نیست: توکن باید روی همین ریپو دسترسی Contents: Read and write داشته باشد. ('+r.status+')';
+  return 'خطا '+r.status+' '+m}
+async function gread(){
+  const r=await gh('GET',gurl()+'?ref='+encodeURIComponent(G.branch));
+  if(r.status===404){const e=await gerr(r);if(/Not Found/i.test(e)||true){return {rows:[],sha:null,missing:true,r}}}
+  if(!r.ok)throw new Error(await gerr(r));
+  const j=await r.json();let rows=[];try{rows=JSON.parse(b64d(j.content))}catch(e){throw new Error('trades.json خراب است؛ دست نزدم.')}
+  if(!Array.isArray(rows))throw new Error('trades.json آرایه نیست؛ دست نزدم.');
+  return {rows,sha:j.sha}}
+async function gwrite(mutate,msg){
+  for(let k=0;k<3;k++){
+    const cur=await gread();
+    if(cur.missing){const t=await gh('GET',`https://api.github.com/repos/${G.owner}/${G.repo}`);if(!t.ok)throw new Error(await gerr(t))}
+    const rows=mutate(cur.rows).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.no-b.no);
+    const body={message:msg,content:b64e(JSON.stringify(rows,null,1)+'\n'),branch:G.branch};if(cur.sha)body.sha=cur.sha;
+    const r=await gh('PUT',gurl(),body);
+    if(r.ok)return rows;
+    if(r.status!==409&&r.status!==422)throw new Error(await gerr(r));
+  }
+  throw new Error('تداخل در ذخیره؛ دوباره امتحان کن.')}
+function toTrades(){
+  const nums=numbers(),out=[];
+  D.rows.forEach((r,i)=>{if(nums[i]==null)return;
+    out.push({date:D.date,no:nums[i],team:canon(r.s.trim()),time:r.h||'',dir:r.d,res:r.r,pips:val(r,'p'),usd:val(r,'u'),
+      trend:Object.fromEntries(TF.filter(t=>r.t[t]).map(t=>[t,r.t[t]])),pincer:!!r.a,note:r.n.trim()})});
+  return out}
+function checkRows(){
+  tb.querySelectorAll('.bad').forEach(x=>x.classList.remove('bad'));
+  const nums=numbers(),err=[];
+  D.rows.forEach((r,i)=>{if(nums[i]==null)return;const tr=tb.children[i],miss=[];
+    if(!r.s.trim()){miss.push('استراتژی');tr.querySelector('.s').classList.add('bad')}
+    if(!r.d){miss.push('جهت');tr.querySelector('.d').classList.add('bad')}
+    if(!r.r){miss.push('نتیجه');tr.querySelector('.r').classList.add('bad')}
+    if(miss.length)err.push('ترید '+nums[i]+': '+miss.join('، '))});
+  if(!nums.some(x=>x!=null)){gsay('هنوز هیچ تریدی وارد نشده.','er');return false}
+  if(err.length){gsay('ناقص است ← '+err.join(' / '),'er');return false}
+  return true}
+$('gsave').onclick=async()=>{
+  if(!ready()||!checkRows())return;
+  const list=toTrades(),date=D.date,unk=[...new Set(list.map(t=>t.team).filter(t=>!known(t)))];
+  const old=null;
+  if(!confirm('ذخیره‌ی '+list.length+' ترید برای '+date+' در سایت؟\n(اگر برای این تاریخ قبلاً ذخیره کرده‌ای، جایگزین می‌شود.)'+(unk.length?'\n\n⚠️ این نام‌ها جزو تیم‌های لیگ نیستند: '+unk.join('، '):'')))return;
+  const b=$('gsave');b.disabled=true;gsay('در حال ذخیره…');
+  try{
+    let had=0;
+    const rows=await gwrite(r=>{had=r.filter(t=>t.date===date).length;return r.filter(t=>t.date!==date).concat(list)},'ثبت تریدهای '+date+' ('+list.length+' ترید)');
+    localStorage.setItem(K.no,Math.max(...list.map(t=>t.no)));
+    gsay('✅ ذخیره شد: '+list.length+' ترید برای '+date+(had?' (جایگزین '+had+' ترید قبلی)':'')+'. مجموع '+rows.length+'. سایت تا چند دقیقه‌ی دیگر به‌روز می‌شود.','ok');
+    if($('gl').innerHTML)glist();
+  }catch(e){gsay('❌ '+e.message,'er')}finally{b.disabled=false}};
+async function glist(){
+  if(!ready())return;gsay('در حال خواندن…');
+  try{
+    const {rows}=await gread();gsay('');
+    const days={};rows.forEach(t=>(days[t.date]=days[t.date]||[]).push(t));
+    const ds=Object.keys(days).sort().reverse();
+    $('gl').innerHTML=ds.length?ds.map(d=>{const L=days[d],u=r2(L.reduce((a,t)=>a+(+t.usd||0),0));
+      return `<div class="row"><span><b>${d}</b> · ${L.length} ترید · ${u>0?'+':''}${u}$</span><span><button data-load="${d}">✏️ باز کردن</button> <button class="x" data-del="${d}">🗑 حذف</button></span></div>`}).join(''):'<p class="hint">هنوز چیزی ذخیره نشده.</p>';
+    $('gl').dataset.rows=JSON.stringify(rows);
+  }catch(e){gsay('❌ '+e.message,'er')}}
+$('glist').onclick=glist;
+$('gl').addEventListener('click',async e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const rows=JSON.parse($('gl').dataset.rows||'[]');
+  if(b.dataset.load){
+    const d=b.dataset.load,L=rows.filter(t=>t.date===d);
+    if(D.rows.some(filled)&&!confirm('برگه‌ی فعلی با تریدهای '+d+' عوض شود؟'))return;
+    D={date:d,start:Math.min(...L.map(t=>t.no)),rows:L.map(t=>({s:t.team||'',h:t.time||'',d:t.dir||'',r:t.res||'',sg:(t.pips<0||t.usd<0)?-1:1,p:String(Math.abs(t.pips)||''),u:String(Math.abs(t.usd)||''),t:Object.assign({},t.trend),a:!!t.pincer,n:t.note||''}))};
+    while(D.rows.length<N)D.rows.push(blank());
+    save();$('start').value=D.start;$('date').value=D.date;showFa();render();scrollTo({top:0,behavior:'smooth'});
+    gsay('تریدهای '+d+' در برگه باز شد؛ اصلاح کن و «ذخیره در سایت» بزن.','ok');
+  }else if(b.dataset.del){
+    const d=b.dataset.del;
+    if(!confirm('همه‌ی تریدهای '+d+' از سایت حذف شوند؟'))return;
+    gsay('در حال حذف…');
+    try{await gwrite(r=>r.filter(t=>t.date!==d),'حذف تریدهای '+d);gsay('🗑 تریدهای '+d+' حذف شد.','ok');glist()}catch(er){gsay('❌ '+er.message,'er')}
+  }});
 
 render();
 </script>
