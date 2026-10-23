@@ -407,6 +407,14 @@ button,.go{min-height:44px}
 .ltw td.tm .team{gap:5px!important}
 .ltt .ltl{height:80px!important}
 }
+/* ---- Laptop/desktop: bigger logos, table scrolls inside with sticky header ---- */
+@media (min-width:768px){
+.ltw .team .cr.lg,.ltw td.tm .team .cr.lg{width:64px!important;height:64px!important;flex:0 0 64px!important;padding:4px!important}
+.ltw td.tm .team{gap:14px!important}
+.ltw .tn,.ltw:not(.gt) .tn{font-size:16px!important}
+.ltw:not(.gt){overflow:auto!important;max-height:min(74vh,720px);overscroll-behavior:auto}
+.ltw:not(.gt) thead th{position:sticky;top:0;z-index:3;box-shadow:0 1px 0 #E3E8F0}
+}
 </style>
 </head>
 <body>
