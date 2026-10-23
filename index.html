@@ -446,7 +446,6 @@ button,.go{min-height:44px}
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
 <nav class="tabs" role="tablist" aria-label="بخش‌ها">
 <button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr">➕ ثبت ترید</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
@@ -480,7 +479,6 @@ button,.go{min-height:44px}
 <button class="go" type="button" onclick="openRules()" style="margin:0 0 12px">📖 مرور قوانین</button>
 <p class="note">POINT = PIPS + (TP × 5) + (CLOSE × 2) − SL. دلار در امتیاز نیست و فقط ارزش تیم را نشان می‌دهد.</p>
 <p class="note">پله‌ی بعد وقتی باز می‌شود که حساب پشتیبان و حساب تریدینگ هر دو به حد پله برسند.</p></section></div>
-<div id="p-tr" class="tpanel" data-p="tr" hidden><section><div class="sec">➕ ثبت ترید<small>تریدهای امروز را همین‌جا ثبت کن</small></div><iframe id="trf" title="ثبت ترید" style="width:100%;height:82vh;min-height:620px;border:0;border-radius:12px;background:#fff"></iframe></section></div>
 <div id="p-st" class="tpanel" data-p="st" hidden><section><div class="sec">⚙️ تنظیمات اتصال به گیت‌هاب<small>فقط روی همین دستگاه ذخیره می‌شود</small></div>
 <div class="stf">
 <label>Token<input id="gtok" type="password" autocomplete="off" placeholder="github_pat_..."></label>
@@ -721,6 +719,5 @@ setInterval(show,6e4);
     localStorage.setItem(K,JSON.stringify(o));g=o;document.getElementById('gsm').textContent='✅ تنظیمات ذخیره شد.'};
 })();
 </script>
-<script>document.querySelector('[data-t="tr"]').addEventListener("click",function(){document.getElementById("trf").src="trade/?embed=1&_="+Date.now()});</script>
 </body>
 </html>
