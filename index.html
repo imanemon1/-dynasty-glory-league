@@ -456,6 +456,8 @@ button,.go{min-height:44px}
 .trb{border-radius:12px;margin-bottom:6px}
 .tri{display:flex;gap:8px;align-items:center;padding:10px;margin-top:8px;border:1px solid var(--ln);border-radius:12px;background:var(--card);font-size:13px;flex-wrap:wrap}.tri b{margin-inline-end:auto}.tri button{border:0;background:none;color:var(--neg);min-height:32px;padding:4px 8px}</style>
 
+<style>.tfa{margin:-4px 2px 10px;font-size:13px;color:var(--gold);text-align:center;direction:rtl}.tlab{font-size:13px;color:var(--mu);margin:0 2px 6px}.spk{position:relative;margin-bottom:12px}.spb{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 12px;border-radius:12px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font:inherit;font-size:16px;text-align:right;cursor:pointer;-webkit-appearance:none;appearance:none}.spb:focus{outline:none;border-color:var(--gold)}.spl{margin-top:6px;max-height:55vh;overflow-y:auto;border:1px solid var(--ln);border-radius:12px;background:var(--bg);padding:4px}.spl[hidden]{display:none}.spi{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;color:var(--tx);font-size:15px;cursor:pointer}.spi:active,.spi.on{background:rgba(255,213,74,.12)}.spi .ck{margin-right:auto;color:var(--gold);font-weight:800;width:16px;text-align:center}.spi img,.spb img{width:34px;height:34px;object-fit:contain;flex:0 0 34px}.spd{width:14px;height:14px;border-radius:50%;flex:0 0 14px}.spb .spd{width:20px;height:20px;flex:0 0 20px}.spb .sn{flex:1}
+</style>
 </head>
 <body>
 
@@ -496,7 +498,8 @@ button,.go{min-height:44px}
 <div class="tfh"><button class="tfx" onclick="trGo('h')">→</button><div><small>ثبت ترید</small><b>ترید <span id="trno">#</span></b></div><span class="tfst" id="trst">پیش‌نویس</span></div>
 <div class="tfc"><div class="tft">🧾 مشخصات</div>
 <div class="tg2"><label>شماره<input id="trn" type="number" inputmode="numeric"></label><label>تاریخ<input id="trd" type="date"></label></div>
-<label>استراتژی<select id="trt"></select></label>
+<div class="tfa" id="trfa"></div>
+<div class="tlab">استراتژی</div><div class="spk"><button type="button" id="trtb" class="spb"></button><div id="trtl" class="spl" hidden></div><input type="hidden" id="trt"></div>
 <label>لات (حجم ورود)<div class="tlot"><button type="button" data-l="-">−</button><input id="trlot" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" dir="ltr"><button type="button" data-l="+">+</button></div></label>
 <div class="tchips" id="trlq"><button type="button">0.01</button><button type="button">0.05</button><button type="button">0.1</button><button type="button">0.5</button><button type="button">1</button></div>
 </div>
@@ -783,7 +786,14 @@ function nxt(){var m=0;(TR||[]).forEach(function(t){if(+t.no>m)m=+t.no});var l=+
 function rd(x){return Math.round(x*100)/100}function sg(x){return x>0?"+"+x:String(x)}function col(x){return x>0?"var(--pos)":x<0?"var(--neg)":"var(--tx)"}
 function net(){var p=rd((+$("trpp").value||0)-(+$("trpn").value||0)),q=rd((+$("trqp").value||0)-(+$("trqn").value||0));$("trnp").textContent=sg(p);$("trnq").textContent=(q<0?"-$":q>0?"+$":"$")+Math.abs(q);$("trnp").style.color=col(p);$("trnq").style.color=col(q)}
 ["trpp","trpn","trqp","trqn"].forEach(function(i){$(i).oninput=net});
-function reset(){V={dir:"",res:""};TD={};document.querySelectorAll("#trf .tk.on").forEach(function(b){b.classList.remove("on")});["trpp","trpn","trqp","trqn","trnt"].forEach(function(i){$(i).value=""});$("trlot").value=localStorage.getItem("dgl_trlot")||"";$("trn").value=nxt();$("trno").textContent="#"+$("trn").value;$("trst").textContent="پیش‌نویس";$("trst").className="tfst";$("trd").value=new Date().toLocaleDateString("sv");$("trt").innerHTML=NAMES.map(function(n){return"<option>"+esc(n)+"</option>"}).join("");net()}
+var PD=["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];function pn(x){return String(x).replace(/\d/g,function(d){return PD[+d]})}
+var JM=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"],JW=["یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنج‌شنبه","جمعه","شنبه"];
+function g2j(gy,gm,gd){var gdm=[0,31,59,90,120,151,181,212,243,273,304,334],gy2=gm>2?gy+1:gy;var days=355666+365*gy+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)+gd+gdm[gm-1];var jy=-1595+33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365}var jm,jd;if(days<186){jm=1+Math.floor(days/31);jd=1+days%31}else{jm=7+Math.floor((days-186)/30);jd=1+(days-186)%30}return[jy,jm,jd]}
+function trJa(){var v=$("trd").value,el=$("trfa");if(!v){el.textContent="";return}var p=v.split("-").map(Number),d=new Date(p[0],p[1]-1,p[2]);var j=g2j(p[0],p[1],p[2]);el.textContent="📅 "+JW[d.getDay()]+"، "+pn(j[2])+" "+JM[j[1]-1]+" "+pn(j[0])}
+function spPaint(n){var b=$("trtb"),im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="">':'<span class="spd" style="background:'+(COL[n]||"#888")+'"></span>';b.innerHTML=(n?im+'<span class="sn">'+esc(n)+'</span>':'<span class="sn">انتخاب کنید</span>')+'<span style="color:var(--gold)">▾</span>'}
+function spSet(n){$("trt").value=n;spPaint(n)}
+function spList(){var l=$("trtl");l.innerHTML=NAMES.map(function(n){var im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="">':'<span class="spd" style="background:'+(COL[n]||"#888")+'"></span>';return'<div class="spi'+(n===$("trt").value?' on':'')+'" data-n="'+esc(n)+'">'+im+'<span>'+esc(n)+'</span><span class="ck">'+(n===$("trt").value?'✓':'')+'</span></div>'}).join("")}
+function reset(){V={dir:"",res:""};TD={};document.querySelectorAll("#trf .tk.on").forEach(function(b){b.classList.remove("on")});["trpp","trpn","trqp","trqn","trnt"].forEach(function(i){$(i).value=""});$("trlot").value=localStorage.getItem("dgl_trlot")||"";$("trn").value=nxt();$("trno").textContent="#"+$("trn").value;$("trst").textContent="پیش‌نویس";$("trst").className="tfst";$("trd").value=new Date().toLocaleDateString("sv");spSet(NAMES[0]||"");trJa();net()}
 document.getElementById("trf").addEventListener("click",function(e){var b=e.target.closest(".tk");if(!b)return;
 if(b.dataset.g){document.querySelectorAll('.tk[data-g="'+b.dataset.g+'"]').forEach(function(x){x.classList.remove("on")});b.classList.add("on");V[b.dataset.g]=b.dataset.v}
 else if(b.dataset.f){var f=b.dataset.f,on=b.classList.contains("on");document.querySelectorAll('.trt[data-f="'+f+'"]').forEach(function(x){x.classList.remove("on")});if(on)delete TD[f];else{b.classList.add("on");TD[f]=b.dataset.a}}
@@ -802,7 +812,9 @@ m.textContent="در حال ذخیره…";$("trsv").disabled=true;
 put(function(a){a.push(t);return a},"ترید #"+no).then(function(a){TR=a;localStorage.setItem("dgl_trno",no);if(t.lot)localStorage.setItem("dgl_trlot",t.lot);render();reset();m.textContent="✅ ترید #"+no+" ذخیره شد.";$("trst").textContent="ذخیره شد";$("trst").className="tfst ok";scrollTo({top:0,behavior:"smooth"})}).catch(function(e){if(e&&e.message)m.textContent="❌ "+e.message}).then(function(){$("trsv").disabled=false})};
 window.trDel=function(no){if(!confirm("ترید #"+no+" حذف شود؟"))return;put(function(a){return a.filter(function(t){return +t.no!=no})},"حذف ترید #"+no).then(function(a){TR=a;render();list()}).catch(function(e){alert(e&&e.message||"ناموفق")})};
 document.querySelector('.tab[data-t="tr"]').addEventListener("click",function(){trGo("h")});
+$("trd").addEventListener("input",trJa);
+$("trtb").addEventListener("click",function(){var l=$("trtl");if(l.hidden){spList();l.hidden=false}else l.hidden=true});
+$("trtl").addEventListener("click",function(e){var it=e.target.closest(".spi");if(!it)return;spSet(it.dataset.n);$("trtl").hidden=true});
 })();
 </script>
-</body>
 </html>
