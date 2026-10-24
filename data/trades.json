@@ -5,16 +5,17 @@
   "team": "HDRSI",
   "time": "22:13",
   "dir": "BUY",
-  "res": "OPEN",
+  "res": "TP",
   "lot": 0.1,
-  "pips": 0,
-  "usd": 0,
+  "pips": 3.5,
+  "usd": 3.5,
   "trend": "1m:u 5m:u 15m:d 30m:d 1h:d",
   "conf": [
    "انبرک",
    "MA100"
   ],
   "pincer": true,
-  "note": ""
+  "note": "Ghjv",
+  "closed": "2026-10-24"
  }
 ]
