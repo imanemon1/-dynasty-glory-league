@@ -539,8 +539,7 @@ button,.go{min-height:44px}
 <div id="p-ld" class="tpanel" data-p="ld" hidden><section><div class="sec">🪜 پله‌ی فعلی و بعدی</div>
 <div class="lad" id="lad"></div>
 </section></div>
-<div id="p-hn" class="tpanel" data-p="hn" hidden><section><div class="sec">🏅 افتخارات باشگاه</div>
-<div class="sec">🏅 دستاوردهای باشگاه</div>
+<div id="p-hn" class="tpanel" data-p="hn" hidden><section>
 <div class="ltw gt"><table class="hon"><thead><tr><th class="ps">#</th><th class="tm">باشگاه</th><th>🏆 کاپ</th><th>🥇 توپ</th><th>👟 کفش</th><th>🧤 دستکش</th><th>🎁 ریوارد</th><th class="pt">کل</th></tr></thead><tbody id="hon"></tbody></table></div></section></div>
 <div id="p-nw" class="tpanel" data-p="nw" hidden><section><div class="sec">📰 اخبار USD<small>به وقت تهران · منبع: Forex Factory</small></div><div id="nwb"></div><div id="nwl"></div></section></div>
 <style>.nwa{margin:8px 0 12px;padding:12px;border-radius:12px;font-weight:800;font-size:14px;line-height:1.7}.nwa.bad{background:#5a1010;color:#ffd6d6;border:1px solid #c33}.nwa.ok{background:#0f3d24;color:#d4ffe4;border:1px solid #2a8}.nwa.wn{background:#4a3a08;color:#ffeaa0;border:1px solid #c9a227}.nwd{margin:14px 0 6px;font-weight:800;color:var(--tx)}.nwr{display:flex;gap:10px;align-items:center;padding:10px;margin:4px 0;border-radius:10px;background:var(--card);border:1px solid var(--ln);font-size:13px}.nwr.past{opacity:.45}.nwr .tm{min-width:48px;font-weight:800;direction:ltr}.nwr .nt{flex:1;min-width:0}.nwr .ex{font-size:11px;color:var(--mu);direction:ltr;text-align:right}.nwr i{width:12px;height:12px;border-radius:50%;flex:0 0 12px}.nwr.High{border-color:#c33}.nwr.High .nt{font-weight:800}</style>
@@ -719,7 +718,7 @@ var A=[["🥇","توپ طلا","بیشترین امتیاز",p?f(p.pt):"—",p,"
 document.getElementById("stats").innerHTML=A.map(function(a,i){if(!i)return"";return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+esc(a[4].n)+'</div>':"")+'</div>'}).join("");
 
 var H={};NAMES.forEach(function(n){H[n]={c:0,a:[0,0,0,0]}});
-for(var se=0;se<=CS;se++){var rs=se==CS?r:rank(agg(TS.filter(function(t){return t._s==se})));
+var DONE=T.day>=T.total;for(var se=0;se<=CS;se++){if(se==CS&&!DONE)break;var rs=se==CS?r:rank(agg(TS.filter(function(t){return t._s==se})));
 CUPS.forEach(function(c,ci){var l=se==CS?CL[ci]:cupLeader(se,c.d,TS);if(l)H[l].c++});
 awards(rs).forEach(function(x,i){if(x)H[x.n].a[i]++})}
 var hr=Object.keys(H).map(function(n){var h=H[n];return{n:n,c:h.c,a:h.a,t:h.c+h.a[0]+h.a[1]+h.a[2]+h.a[3]}}).sort(function(x,y){return y.t-x.t||y.c-x.c});
