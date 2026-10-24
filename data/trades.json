@@ -5,16 +5,17 @@
   "team": "LASTKISS",
   "time": "20:14",
   "dir": "BUY",
-  "res": "OPEN",
+  "res": "TP",
   "lot": 0.1,
-  "pips": 0,
-  "usd": 0,
+  "pips": 25,
+  "usd": 25,
   "trend": "1m:u 5m:u 15m:u 30m:f 1h:f",
   "conf": [
    "انبرک",
    "MA200"
   ],
   "pincer": true,
-  "note": ""
+  "note": "",
+  "closed": "2026-10-24"
  }
 ]
