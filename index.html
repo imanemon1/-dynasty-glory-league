@@ -462,7 +462,8 @@ button,.go{min-height:44px}
 </style>
 <style>.trok{margin:0 0 12px;padding:12px;border-radius:14px;border:1px solid #39C79A0;background:linear-gradient(160deg,rgba(57,199,149,.16),rgba(57,199,149,.04));display:grid;gap:10px}.trok-h{font-weight:800;color:#39C795}.trok-t{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:2px solid var(--c);background:rgba(57,199,149,.08)}.trok-t img{width:44px;height:44px;object-fit:contain}.trok-t b{display:block}.trok-t small{color:var(--mu)}.trok-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.trok-g div{padding:8px 4px;border-radius:10px;background:var(--card);border:1px solid var(--ln)}.trok-g small{display:block;font-size:11px;color:var(--mu)}.trok-g b{font-size:16px}.trok-g .pos{color:#39C795}.trok-g .neg{color:#EF7380}
 </style>
-<style>#p-tr [hidden]{display:none!important}</style>
+<style>#p-tr [hidden]{display:none!important}#trf.cl .ent{display:none!important}#trf:not(.cl) .rsl{display:none!important}.trc small{display:block;font-size:13px;color:#f6a944;margin-top:6px;font-weight:600}.trc small:empty{display:none}.tri.op{border-color:#f6a944}.tri .trr{color:var(--gold)}.trs{margin:16px 2px 2px;font-weight:700;font-size:14px}#trsum{font-size:13px;line-height:1.9}
+</style>
 </head>
 <body>
 
@@ -498,11 +499,11 @@ button,.go{min-height:44px}
 </section>
 </div>
 <div id="p-tr" class="tpanel" data-p="tr" hidden><section>
-<div id="trh" class="trh"><div class="trc" onclick="trGo('f')"><b>➕</b>ثبت ترید جدید</div><div class="trc" onclick="trGo('l')"><b>📋</b>فهرست ترید</div></div>
+<div id="trh" class="trh"><div class="trc" onclick="trGo('f')"><b>➕</b>ثبت ترید جدید</div><div class="trc" onclick="trGo('l')"><b>📋</b>فهرست ترید<small id="trob"></small></div></div>
 <div id="trok" class="trok" hidden></div>
 <div id="trf" class="tf" hidden>
-<div class="tfh"><button class="tfx" onclick="trGo('h')">→</button><div><small>ثبت ترید</small><b>ترید <span id="trno">#</span></b></div><span class="tfst" id="trst">پیش‌نویس</span></div>
-<div class="tfc"><div class="tft">🧾 مشخصات</div>
+<div class="tfh"><button class="tfx" onclick="trGo('h')">→</button><div><small id="trsm">ثبت ترید</small><b>ترید <span id="trno">#</span></b></div><span class="tfst" id="trst">پیش‌نویس</span></div>
+<div class="tfc ent"><div class="tft">🧾 مشخصات</div>
 <div class="tg2"><label>شماره<input id="trn" type="number" inputmode="numeric"></label><label>تاریخ<input id="trd" type="date"></label></div>
 <div class="tfa" id="trfa"></div>
 <div class="tg2"><label>ساعت ورود<input id="trtm" type="time"></label></div>
@@ -510,18 +511,21 @@ button,.go{min-height:44px}
 <label>لات (حجم ورود)<div class="tlot"><button type="button" data-l="-">−</button><input id="trlot" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" dir="ltr"><button type="button" data-l="+">+</button></div></label>
 <div class="tchips" id="trlq"><button type="button">0.01</button><button type="button">0.05</button><button type="button">0.1</button><button type="button">0.5</button><button type="button">1</button></div>
 </div>
-<div class="tfc"><div class="tft">🎯 جهت و نتیجه</div>
+<div class="tfc ent"><div class="tft">🎯 جهت</div>
 <div class="tseg"><button class="tk" data-g="dir" data-v="BUY" style="--k:#39C795">▲ Buy</button><button class="tk" data-g="dir" data-v="SELL" style="--k:#EF7380">▼ Sell</button></div>
+</div>
+<div class="tfc rsl" id="trsum"></div>
+<div class="tfc rsl"><div class="tft">🏁 نتیجه</div>
 <div class="tseg t4"><button class="tk" data-g="res" data-v="TP" style="--k:#3fbf7a">TP</button><button class="tk" data-g="res" data-v="CLOSE" style="--k:#4aa3ff">CLOSE</button><button class="tk" data-g="res" data-v="RISK" style="--k:#f6a944">RISK</button><button class="tk" data-g="res" data-v="SL" style="--k:#ef5b5b">SL</button></div>
 </div>
-<div class="tfc"><div class="tft">💵 سود و زیان</div>
+<div class="tfc rsl"><div class="tft">💵 سود و زیان</div>
 <div class="tpl"><span></span><span class="neg">زیان −</span><span class="pos">سود +</span>
 <span>پیپ</span><input id="trpn" class="neg" type="number" min="0" step="any" inputmode="decimal" placeholder="0" dir="ltr"><input id="trpp" class="pos" type="number" min="0" step="any" inputmode="decimal" placeholder="0" dir="ltr">
 <span>دلار</span><input id="trqn" class="neg" type="number" min="0" step="any" inputmode="decimal" placeholder="0" dir="ltr"><input id="trqp" class="pos" type="number" min="0" step="any" inputmode="decimal" placeholder="0" dir="ltr"></div>
 <div class="tnet"><div><small>خالص پیپ</small><b id="trnp" dir="ltr">0</b></div><div><small>خالص دلار</small><b id="trnq" dir="ltr">$0</b></div></div>
 </div>
-<div class="tfc"><div class="tft">📈 روند تایم‌فریم‌ها</div><div id="trtd"></div></div>
-<div class="tfc"><div class="tft">✅ تأیید ورود</div>
+<div class="tfc ent"><div class="tft">📈 روند تایم‌فریم‌ها</div><div id="trtd"></div></div>
+<div class="tfc ent"><div class="tft">✅ تأیید ورود</div>
 <div class="tseg t4"><button class="tk tcf" data-c="انبرک">انبرک</button><button class="tk tcf" data-c="MA50">MA 50</button><button class="tk tcf" data-c="MA100">MA 100</button><button class="tk tcf" data-c="MA200">MA 200</button></div>
 </div>
 <div class="tfc"><div class="tft">📝 یادداشت</div><textarea id="trnt" rows="2" placeholder="اختیاری…"></textarea></div>
@@ -582,7 +586,7 @@ var TR=[],CS=0,G={},tp=null;
 fetch("data/trades.json?v="+Date.now()).then(function(r){return r.ok?r.json():[]}).then(function(j){if(j&&j.length){TR=j;render()}}).catch(function(){});
 function dn(d){var m=/^(\d+)-(\d+)-(\d+)/.exec(d);return m?Math.floor(Date.UTC(+m[1],m[2]-1,+m[3])/864e5):NaN}
 function esc(x){return String(x).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-var SKIP={};function trades(){var sd=dn(LG.start),out=[],lc={};NAMES.forEach(function(n){lc[n.toLowerCase()]=n});TR.forEach(function(t){var d=dn(t.date),cn=lc[String(t.team||"").trim().toLowerCase()];if(cn)t.team=cn;if(cn){t._d=d;t._s=d>=sd?Math.floor((d-sd)/(LG.weeks*7)):0;out.push(t)}else{var sk=t.date+"#"+t.no;if(!SKIP[sk]){SKIP[sk]=1;console.info("trade skipped",t.date,t.no,t.team)}}});return out.sort(function(a,b){return a._d-b._d||a.no-b.no})}
+var SKIP={};function trades(){var sd=dn(LG.start),out=[],lc={};NAMES.forEach(function(n){lc[n.toLowerCase()]=n});TR.forEach(function(t){if(t.res=="OPEN")return;var d=dn(t.date),cn=lc[String(t.team||"").trim().toLowerCase()];if(cn)t.team=cn;if(cn){t._d=d;t._s=d>=sd?Math.floor((d-sd)/(LG.weeks*7)):0;out.push(t)}else{var sk=t.date+"#"+t.no;if(!SKIP[sk]){SKIP[sk]=1;console.info("trade skipped",t.date,t.no,t.team)}}});return out.sort(function(a,b){return a._d-b._d||a.no-b.no})}
 function agg(list){var m={};NAMES.forEach(function(n){m[n]={n:n,sl:0,risk:0,close:0,tp:0,pn:0,pp:0,qn:0,qp:0}});
 list.forEach(function(t){var x=m[t.team];if(!x)return;var k={TP:"tp",CLOSE:"close",RISK:"risk",SL:"sl"}[t.res];if(k)x[k]++;var p=+t.pips||0,q=+t.usd||0;if(p>0)x.pp+=p;else x.pn-=p;if(q>0)x.qp+=q;else x.qn-=q});
 return NAMES.map(function(n){return m[n]})}
@@ -819,26 +823,36 @@ function trJa(){var v=$("trd").value,el=$("trfa");if(!v){el.textContent="";retur
 function spPaint(n){var b=$("trtb"),im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="">':'<span class="spd" style="background:'+(COL[n]||"#888")+'"></span>';b.innerHTML=(n?im+'<span class="sn">'+esc(n)+'</span>':'<span class="sn">انتخاب کنید</span>')+'<span style="color:var(--gold)">▾</span>'}
 function spSet(n){$("trt").value=n;spPaint(n)}
 function spList(){var l=$("trtl");l.innerHTML=NAMES.map(function(n){var im=LOGO[n]?'<img src="'+LOGO[n]+'" alt="">':'<span class="spd" style="background:'+(COL[n]||"#888")+'"></span>';return'<div class="spi'+(n===$("trt").value?' on':'')+'" data-n="'+esc(n)+'">'+im+'<span>'+esc(n)+'</span><span class="ck">'+(n===$("trt").value?'✓':'')+'</span></div>'}).join("")}
-function reset(){$("trtm").value=new Date().toLocaleTimeString("en-GB",{timeZone:"Asia/Tehran",hour:"2-digit",minute:"2-digit",hour12:false});V={dir:"",res:""};TD={};document.querySelectorAll("#trf .tk.on").forEach(function(b){b.classList.remove("on")});["trpp","trpn","trqp","trqn","trnt"].forEach(function(i){$(i).value=""});$("trlot").value=localStorage.getItem("dgl_trlot")||"";$("trn").value=nxt();$("trno").textContent="#"+$("trn").value;$("trst").textContent="پیش‌نویس";$("trst").className="tfst";$("trd").value=new Date().toLocaleDateString("sv");spSet(NAMES[0]||"");trJa();net()}
+var CLN=0;function reset(){CLN=0;$("trf").classList.remove("cl");$("trsm").textContent="ثبت ورود";$("trsv").textContent="💾 ثبت ورود (ترید باز)";$("trtm").value=new Date().toLocaleTimeString("en-GB",{timeZone:"Asia/Tehran",hour:"2-digit",minute:"2-digit",hour12:false});V={dir:"",res:""};TD={};document.querySelectorAll("#trf .tk.on").forEach(function(b){b.classList.remove("on")});["trpp","trpn","trqp","trqn","trnt"].forEach(function(i){$(i).value=""});$("trlot").value=localStorage.getItem("dgl_trlot")||"";$("trn").value=nxt();$("trno").textContent="#"+$("trn").value;$("trst").textContent="پیش‌نویس";$("trst").className="tfst";$("trd").value=new Date().toLocaleDateString("sv");spSet(NAMES[0]||"");trJa();net()}
 document.getElementById("trf").addEventListener("click",function(e){var b=e.target.closest(".tk");if(!b)return;
 if(b.dataset.g){document.querySelectorAll('.tk[data-g="'+b.dataset.g+'"]').forEach(function(x){x.classList.remove("on")});b.classList.add("on");V[b.dataset.g]=b.dataset.v}
 else if(b.dataset.f){var f=b.dataset.f,on=b.classList.contains("on");document.querySelectorAll('.trt[data-f="'+f+'"]').forEach(function(x){x.classList.remove("on")});if(on)delete TD[f];else{b.classList.add("on");TD[f]=b.dataset.a}}
 else b.classList.toggle("on")});
-function list(){var L=(TR||[]).slice().sort(function(a,b){return (+b.no||0)-(+a.no||0)});$("trls").innerHTML=L.length?L.map(function(t){return'<div class="tri"><b>#'+esc(String(t.no||""))+" "+esc(t.team||"")+'</b><span>'+esc(t.dir||"")+'</span><span style="color:'+(RC[t.res]||"#888")+'">'+esc(t.res||"")+'</span><span dir="ltr">'+(+t.pips||0)+'p · '+(+t.usd||0)+'$'+(t.lot?' · '+t.lot+' lot':'')+'</span><span>'+esc(t.date||"")+'</span><button onclick="trDel('+(+t.no||0)+')">حذف</button></div>'}).join(""):'<div class="tri">هنوز ترید ثبت نشده.</div>'}
+function opn(){return (TR||[]).filter(function(t){return t.res=="OPEN"})}
+function ob(){var n=opn().length,e=$("trob");if(e)e.textContent=n?"⏳ "+pn(n)+" ترید باز":""}
+function list(){var L=(TR||[]).slice().sort(function(a,b){return (+b.no||0)-(+a.no||0)}),O=L.filter(function(t){return t.res=="OPEN"}),C=L.filter(function(t){return t.res!="OPEN"});
+function row(t){var o=t.res=="OPEN";return'<div class="tri'+(o?' op':'')+'"><b>#'+esc(String(t.no||""))+" "+esc(t.team||"")+'</b><span>'+esc(t.dir||"")+'</span>'+(o?'<span class="trr">⏳ باز</span>':'<span style="color:'+(RC[t.res]||"#888")+'">'+esc(t.res||"")+'</span><span dir="ltr">'+(+t.pips||0)+'p · '+(+t.usd||0)+'$</span>')+(t.lot?'<span dir="ltr">'+t.lot+' lot</span>':'')+'<span>'+esc(t.date||"")+(t.time?' '+esc(t.time):'')+'</span>'+(o?'<button style="color:var(--pos);font-weight:700" onclick="trCl('+(+t.no||0)+')">ثبت نتیجه</button>':'')+'<button onclick="trDel('+(+t.no||0)+')">حذف</button></div>'}
+$("trls").innerHTML=L.length?(O.length?'<div class="trs">⏳ تریدهای باز ('+pn(O.length)+')</div>'+O.map(row).join(""):'')+(C.length?'<div class="trs">✅ بسته‌شده</div>'+C.map(row).join(""):''):'<div class="tri">هنوز ترید ثبت نشده.</div>'}
+window.trCl=function(no){var t=(TR||[]).filter(function(x){return +x.no==no})[0];if(!t)return;trGo("f");CLN=no;$("trf").classList.add("cl");$("trsm").textContent="ثبت نتیجه";$("trno").textContent="#"+no;$("trsv").textContent="💾 ثبت نتیجه";$("trst").textContent="باز";$("trst").className="tfst";
+$("trsum").innerHTML='<div class="tft">⏳ ترید باز</div><b>'+esc(t.team||"")+'</b> · <span dir="ltr">'+esc(t.dir||"")+(t.lot?' · '+t.lot+' lot':'')+'</span><br><small>'+esc(t.date||"")+(t.time?' · '+esc(t.time):'')+'</small>'+(t.trend?'<br><small dir="ltr">'+esc(t.trend)+'</small>':'')+((t.conf||[]).length?'<br><small>'+t.conf.map(esc).join(" · ")+'</small>':'');
+$("trnt").value=t.note||"";$("trm").textContent="";scrollTo({top:0})};
 $("trn").oninput=function(){$("trno").textContent="#"+this.value};
 document.querySelector(".tlot").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;e.preventDefault();var v=+$("trlot").value||0;v=b.dataset.l=="+"?v+0.01:Math.max(0,v-0.01);$("trlot").value=v.toFixed(2)});
 $("trlq").addEventListener("click",function(e){var b=e.target.closest("button");if(b){e.preventDefault();$("trlot").value=b.textContent}});
-window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l";if(k=="f"){reset();$("trok").hidden=true}if(k=="l")list()};
+window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l";if(k=="f"){reset();$("trok").hidden=true;$("trm").textContent=""}if(k=="l")list();ob()};
 function put(mut,msg){var g=ghc(),m=$("trm");if(!g.token||!g.owner||!g.repo){m.textContent="اول در ⚙️ تنظیمات اتصال گیت‌هاب را انجام بده.";return Promise.reject()}
 var p=g.path||"data/trades.json";return ghApi(g,p).then(function(j){var a=[];if(j.content)a=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));a=mut(a);return ghApi(g,p,"PUT",{message:msg,branch:g.branch||"main",content:btoa(unescape(encodeURIComponent(JSON.stringify(a,null,1)+"\n"))),sha:j.sha||undefined}).then(function(){return a})})}
-function trOk(t){var el=$("trok");if(!el)return;var all=(TR||[]).filter(function(x){return x.team==t.team}),pp=0,uu=0;all.forEach(function(x){pp+=+x.pips||0;uu+=+x.usd||0});pp=rd(pp);uu=rd(uu);
+function trOk(t){var el=$("trok");if(!el)return;if(t.res=="OPEN"){el.innerHTML='<div class="trok-h">⏳ ورود ترید #'+esc(String(t.no))+' ثبت شد</div><div class="trok-t" style="--c:'+(COL[t.team]||"#39C795")+'">'+(LOGO[t.team]?'<img src="'+LOGO[t.team]+'" alt="">':'')+'<div><b>'+esc(t.team)+'</b><small dir="ltr">'+esc(t.dir)+' · '+esc(t.date)+'</small></div></div><div class="trs">بعد از بسته‌شدن، از «فهرست ترید» نتیجه را ثبت کن. تا آن موقع در جدول حساب نمی‌شود.</div>';el.hidden=false;return}var all=(TR||[]).filter(function(x){return x.team==t.team&&x.res!="OPEN"}),pp=0,uu=0;all.forEach(function(x){pp+=+x.pips||0;uu+=+x.usd||0});pp=rd(pp);uu=rd(uu);
 var cl=function(v){return v>0?"pos":v<0?"neg":""};el.innerHTML='<div class="trok-h">✅ ترید #'+esc(String(t.no))+' ثبت شد</div><div class="trok-t" style="--c:'+(COL[t.team]||"#39C795")+'">'+(LOGO[t.team]?'<img src="'+LOGO[t.team]+'" alt="">':'')+'<div><b>'+esc(t.team)+'</b><small dir="ltr">'+esc(t.dir)+' · '+esc(t.res)+' · '+esc(t.date)+'</small></div></div><div class="trok-g"><div><small>تعداد ترید</small><b>'+all.length+'</b></div><div><small>پیپ کل</small><b class="'+cl(pp)+'" dir="ltr">'+sg(pp)+'</b></div><div><small>دلار کل</small><b class="'+cl(uu)+'" dir="ltr">'+(uu<0?"-$":"$")+Math.abs(uu)+'</b></div></div>';el.hidden=false}
-window.trSave=function(){var m=$("trm");if(!V.dir||!V.res){m.textContent="⚠️ جهت و نتیجه را انتخاب کن.";return}if(!(+$("trlot").value>0)){m.textContent="⚠️ لات را وارد کن.";$("trlot").focus();return}
-var p=(+$("trpp").value||0)-(+$("trpn").value||0),q=(+$("trqp").value||0)-(+$("trqn").value||0),no=+$("trn").value;
-var t={date:$("trd").value,no:no,team:$("trt").value,time:$("trtm").value||"",dir:V.dir,res:V.res,lot:+$("trlot").value||0,pips:rd(p),usd:rd(q),trend:TF.map(function(f){return TD[f]?f+":"+TD[f]:""}).filter(Boolean).join(" "),conf:[].map.call(document.querySelectorAll("#trf .tcf.on"),function(b){return b.dataset.c}),pincer:!!document.querySelector('.tcf.on[data-c="انبرک"]'),note:$("trnt").value.trim()};
+window.trSave=function(){var m=$("trm"),cl=CLN,no=cl||+$("trn").value;
+if(cl){if(!V.res){m.textContent="⚠️ نتیجه را انتخاب کن.";return}}
+else{if(!V.dir){m.textContent="⚠️ جهت را انتخاب کن.";return}if(!(+$("trlot").value>0)){m.textContent="⚠️ لات را وارد کن.";$("trlot").focus();return}}
+var p=(+$("trpp").value||0)-(+$("trpn").value||0),q=(+$("trqp").value||0)-(+$("trqn").value||0),t;
+if(cl)t={res:V.res,pips:rd(p),usd:rd(q),note:$("trnt").value.trim(),closed:new Date().toLocaleDateString("sv")};
+else t={date:$("trd").value,no:no,team:$("trt").value,time:$("trtm").value||"",dir:V.dir,res:"OPEN",lot:+$("trlot").value||0,pips:0,usd:0,trend:TF.map(function(f){return TD[f]?f+":"+TD[f]:""}).filter(Boolean).join(" "),conf:[].map.call(document.querySelectorAll("#trf .tcf.on"),function(b){return b.dataset.c}),pincer:!!document.querySelector('.tcf.on[data-c="انبرک"]'),note:$("trnt").value.trim()};
 m.textContent="در حال ذخیره…";$("trsv").disabled=true;
-put(function(a){a.push(t);return a},"ترید #"+no).then(function(a){TR=a;localStorage.setItem("dgl_trno",no);if(t.lot)localStorage.setItem("dgl_trlot",t.lot);render();reset();trOk(t);m.textContent="✅ ترید #"+no+" ذخیره شد.";$("trst").textContent="ذخیره شد";$("trst").className="tfst ok";scrollTo({top:0,behavior:"smooth"})}).catch(function(e){if(e&&e.message)m.textContent="❌ "+e.message}).then(function(){$("trsv").disabled=false})};
-window.trDel=function(no){if(!confirm("ترید #"+no+" حذف شود؟"))return;put(function(a){return a.filter(function(t){return +t.no!=no})},"حذف ترید #"+no).then(function(a){TR=a;render();list()}).catch(function(e){alert(e&&e.message||"ناموفق")})};
+put(function(a){if(cl){var f=0;a.forEach(function(x){if(+x.no==no){for(var k in t)x[k]=t[k];f=1}});if(!f)throw new Error("ترید پیدا نشد");return a}a.push(t);return a},(cl?"نتیجه ترید #":"ترید #")+no).then(function(a){TR=a;var full=a.filter(function(x){return +x.no==no})[0]||t;if(!cl){localStorage.setItem("dgl_trno",no);if(t.lot)localStorage.setItem("dgl_trlot",t.lot)}render();reset();trOk(full);ob();m.textContent="✅ ترید #"+no+(cl?" بسته شد.":" ثبت شد (باز).");$("trst").textContent="ذخیره شد";$("trst").className="tfst ok";scrollTo({top:0,behavior:"smooth"})}).catch(function(e){if(e&&e.message)m.textContent="❌ "+e.message}).then(function(){$("trsv").disabled=false})};
+window.trDel=function(no){if(!confirm("ترید #"+no+" حذف شود؟"))return;put(function(a){return a.filter(function(t){return +t.no!=no})},"حذف ترید #"+no).then(function(a){TR=a;render();list();ob()}).catch(function(e){alert(e&&e.message||"ناموفق")})};
 document.querySelector('.tab[data-t="tr"]').addEventListener("click",function(){trGo("h")});
 $("trd").addEventListener("input",trJa);
 $("trtb").addEventListener("click",function(){var l=$("trtl");if(l.hidden){spList();l.hidden=false}else l.hidden=true});
