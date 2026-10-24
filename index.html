@@ -464,6 +464,7 @@ button,.go{min-height:44px}
 </style>
 <style>#p-tr [hidden]{display:none!important}#trf.cl .ent{display:none!important}#trf:not(.cl) .rsl{display:none!important}.trc small{display:block;font-size:13px;color:#f6a944;margin-top:6px;font-weight:600}.trc small:empty{display:none}.tri.op{border-color:#f6a944}.tri .trr{color:var(--gold)}.trs{margin:16px 2px 2px;font-weight:700;font-size:14px}#trsum{font-size:13px;line-height:1.9}
 </style>
+<style>.trop{display:grid;gap:8px;margin:0 0 12px;padding:12px;border-radius:16px;background:#FFFFFF;border:1px solid #E3E8F0}.trop-h{font-size:14px;font-weight:800;color:#0F172A}.trop-r{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px solid #E3E8F0;border-inline-start:4px solid var(--c)}.trop-r img{width:32px;height:32px;object-fit:contain}.trop-i{flex:1;min-width:0;display:grid;gap:2px}.trop-i b{font-size:14px;color:#0F172A}.trop-i small{font-size:12px;color:#5B6679}.trop-r button{min-height:36px;padding:0 12px;border-radius:10px;border:1px solid #14885C;background:#E8F6EF;color:#14885C;font-weight:700;font-size:13px;white-space:nowrap}</style>
 </head>
 <body>
 
@@ -499,8 +500,7 @@ button,.go{min-height:44px}
 </section>
 </div>
 <div id="p-tr" class="tpanel" data-p="tr" hidden><section>
-<div id="trh" class="trh"><div class="trc" onclick="trGo('f')"><b>➕</b>ثبت ترید جدید</div><div class="trc" onclick="trGo('o')"><b>⏳</b>ترید‌های باز<small id="trob"></small></div><div class="trc" onclick="trGo('l')"><b>📋</b>فهرست ترید</div></div>
-<div id="trok" class="trok" hidden></div>
+<div id="trop" class="trop" hidden></div><div id="trok" class="trok" hidden></div><div id="trh" class="trh"><div class="trc" onclick="trGo('f')"><b>➕</b>ثبت ترید جدید</div><div class="trc" onclick="trGo('o')"><b>⏳</b>ترید‌های باز<small id="trob"></small></div><div class="trc" onclick="trGo('l')"><b>📋</b>فهرست ترید</div></div>
 <div id="trf" class="tf" hidden>
 <div class="tfh"><button class="tfx" onclick="trGo('h')">→</button><div><small id="trsm">ثبت ترید</small><b>ترید <span id="trno">#</span></b></div><span class="tfst" id="trst">پیش‌نویس</span></div>
 <div class="tfc ent"><div class="tft">🧾 مشخصات</div>
@@ -829,7 +829,9 @@ if(b.dataset.g){document.querySelectorAll('.tk[data-g="'+b.dataset.g+'"]').forEa
 else if(b.dataset.f){var f=b.dataset.f,on=b.classList.contains("on");document.querySelectorAll('.trt[data-f="'+f+'"]').forEach(function(x){x.classList.remove("on")});if(on)delete TD[f];else{b.classList.add("on");TD[f]=b.dataset.a}}
 else b.classList.toggle("on")});
 function opn(){return (TR||[]).filter(function(t){return t.res=="OPEN"})}
-function ob(){var n=opn().length,e=$("trob");if(e)e.textContent=n?"⏳ "+pn(n)+" ترید باز":""}
+function ob(){var n=opn().length,e=$("trob");if(e)e.textContent=n?"⏳ "+pn(n)+" ترید باز":"";renderOpen()}
+function renderOpen(){var el=$("trop");if(!el)return;var O=opn().slice().sort(function(a,b){return (+b.no||0)-(+a.no||0)});
+el.hidden=!O.length;el.innerHTML=O.length?'<div class="trop-h">⏳ ترید‌های باز ('+pn(O.length)+')</div>'+O.map(function(t){return '<div class="trop-r" style="--c:'+(COL[t.team]||"#2F6FDB")+'">'+(LOGO[t.team]?'<img src="'+LOGO[t.team]+'" alt="">':'')+'<div class="trop-i"><b>#'+esc(String(t.no||""))+' '+esc(t.team||"")+'</b><small dir="ltr">'+esc(t.dir||"")+(t.lot?' · '+esc(String(t.lot))+' lot':'')+' · '+esc(t.date||"")+'</small></div><button type="button" onclick="trCl('+(+t.no||0)+')">ثبت نتیجه</button></div>'}).join(""):""}
 function list(f){var L=(TR||[]).slice().sort(function(a,b){return (+b.no||0)-(+a.no||0)}),O=L.filter(function(t){return t.res=="OPEN"}),C=f?[]:L.filter(function(t){return t.res!="OPEN"});if(f)L=O;
 function row(t){var o=t.res=="OPEN";return'<div class="tri'+(o?' op':'')+'"><b>#'+esc(String(t.no||""))+" "+esc(t.team||"")+'</b><span>'+esc(t.dir||"")+'</span>'+(o?'<span class="trr">⏳ باز</span>':'<span style="color:'+(RC[t.res]||"#888")+'">'+esc(t.res||"")+'</span><span dir="ltr">'+(+t.pips||0)+'p · '+(+t.usd||0)+'$</span>')+(t.lot?'<span dir="ltr">'+t.lot+' lot</span>':'')+'<span>'+esc(t.date||"")+(t.time?' '+esc(t.time):'')+'</span>'+(o?'<button style="color:var(--pos);font-weight:700" onclick="trCl('+(+t.no||0)+')">ثبت نتیجه</button>':'')+'<button onclick="trDel('+(+t.no||0)+')">حذف</button></div>'}
 $("trls").innerHTML=L.length?(O.length?'<div class="trs">⏳ تریدهای باز ('+pn(O.length)+')</div>'+O.map(row).join(""):'')+(C.length?'<div class="trs">✅ بسته‌شده</div>'+C.map(row).join(""):''):'<div class="tri">هنوز ترید ثبت نشده.</div>'}
@@ -839,7 +841,7 @@ $("trnt").value=t.note||"";$("trm").textContent="";scrollTo({top:0})};
 $("trn").oninput=function(){$("trno").textContent="#"+this.value};
 document.querySelector(".tlot").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;e.preventDefault();var v=+$("trlot").value||0;v=b.dataset.l=="+"?v+0.01:Math.max(0,v-0.01);$("trlot").value=v.toFixed(2)});
 $("trlq").addEventListener("click",function(e){var b=e.target.closest("button");if(b){e.preventDefault();$("trlot").value=b.textContent}});
-window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l"&&k!="o";if(k=="f"){reset();$("trok").hidden=true;$("trm").textContent=""}if(k=="l")list();if(k=="o")list(1);ob()};
+window.trGo=function(k){$("trh").hidden=k!="h";$("trf").hidden=k!="f";$("trl").hidden=k!="l"&&k!="o";if(k=="f"){reset();$("trok").hidden=true;$("trm").textContent=""}if(k=="l")list();if(k=="o")list(1);ob();$("trop").hidden=k!="h"||!opn().length};
 function put(mut,msg){var g=ghc(),m=$("trm");if(!g.token||!g.owner||!g.repo){m.textContent="اول در ⚙️ تنظیمات اتصال گیت‌هاب را انجام بده.";return Promise.reject()}
 var p=g.path||"data/trades.json";return ghApi(g,p).then(function(j){var a=[];if(j.content)a=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));a=mut(a);return ghApi(g,p,"PUT",{message:msg,branch:g.branch||"main",content:btoa(unescape(encodeURIComponent(JSON.stringify(a,null,1)+"\n"))),sha:j.sha||undefined}).then(function(){return a})})}
 function trOk(t){var el=$("trok");if(!el)return;if(t.res=="OPEN"){el.innerHTML='<div class="trok-h">⏳ ورود ترید #'+esc(String(t.no))+' ثبت شد</div><div class="trok-t" style="--c:'+(COL[t.team]||"#39C795")+'">'+(LOGO[t.team]?'<img src="'+LOGO[t.team]+'" alt="">':'')+'<div><b>'+esc(t.team)+'</b><small dir="ltr">'+esc(t.dir)+' · '+esc(t.date)+'</small></div></div><div class="trs">بعد از بسته‌شدن، از «فهرست ترید» نتیجه را ثبت کن. تا آن موقع در جدول حساب نمی‌شود.</div>';el.hidden=false;return}var all=(TR||[]).filter(function(x){return x.team==t.team&&x.res!="OPEN"}),pp=0,uu=0;all.forEach(function(x){pp+=+x.pips||0;uu+=+x.usd||0});pp=rd(pp);uu=rd(uu);
