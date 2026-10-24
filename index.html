@@ -464,23 +464,6 @@ button,.go{min-height:44px}
 </style>
 <style>#p-tr [hidden]{display:none!important}#trf.cl .ent{display:none!important}#trf:not(.cl) .rsl{display:none!important}.trc small{display:block;font-size:13px;color:#f6a944;margin-top:6px;font-weight:600}.trc small:empty{display:none}.tri.op{border-color:#f6a944}.tri .trr{color:var(--gold)}.trs{margin:16px 2px 2px;font-weight:700;font-size:14px}#trsum{font-size:13px;line-height:1.9}
 </style>
-<style id="dgl-shell">
-.ltt h2{color:var(--tx)}.ltt p{color:var(--mu)}
-.hdr .ban{width:100%;height:auto;border-radius:16px;display:block}
-.lvl,.tmf{box-shadow:none}
-.nvb{position:fixed;top:12px;inset-inline-start:auto;right:12px;z-index:30;width:44px;height:44px;border-radius:12px;background:var(--card);border:1px solid var(--ln);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0}
-.nvb span{width:20px;height:2px;background:var(--tx);border-radius:2px}
-.tabs{position:fixed;top:0;right:0;bottom:0;width:260px;max-width:82vw;z-index:25;margin:0;padding:68px 12px 16px;flex-direction:column;overflow-y:auto;background:var(--card);border-inline-start:1px solid var(--ln);transform:translateX(100%);transition:transform .2s}
-.tabs.open{transform:none}
-.tab{border-radius:12px;background:transparent;border-color:transparent;color:var(--mu);justify-content:flex-start;width:100%}
-.tab:hover{background:var(--hov);color:var(--tx)}
-.tab[aria-selected=true]{background:var(--hov);color:var(--tx);border-color:transparent;box-shadow:inset -3px 0 0 var(--info)}
-.tpanel>section{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:16px}
-@media (min-width:768px){body{padding-inline:20px}.wrap{max-width:none;padding-right:260px}.nvb{display:none}.tabs{transform:none;width:240px;max-width:none;padding-top:24px}}
-@media (min-width:1200px){.wrap{max-width:1280px;margin:0 auto;padding-right:0;display:grid;grid-template-columns:240px minmax(0,1fr);column-gap:24px;align-items:start}
-.wrap>*{grid-column:2}.wrap>.hdr{grid-column:1/-1}.wrap>.tabs{grid-column:1;grid-row:2/span 40;position:sticky;top:16px;bottom:auto;height:auto;max-height:calc(100vh - 32px);border:1px solid var(--ln);border-radius:16px;padding:12px}}
-@media (prefers-reduced-motion:reduce){.tabs{transition:none}}
-</style>
 </head>
 <body>
 
@@ -494,8 +477,7 @@ button,.go{min-height:44px}
 <div class="ov"><div class="ob" id="hwb">$0</div><div class="ob sm" id="htc">ترید: 0</div></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
-<button type="button" class="nvb" id="nvb" aria-controls="tabs" aria-expanded="false" aria-label="منو"><span></span><span></span><span></span></button>
-<nav class="tabs" id="tabs" role="tablist" aria-label="بخش‌ها">
+<nav class="tabs" role="tablist" aria-label="بخش‌ها">
 <button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr">📊 ترید</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
