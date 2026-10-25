@@ -1,1 +1,19 @@
-[]
+[
+ {
+  "date": "2026-10-26",
+  "no": 2,
+  "team": "A+",
+  "time": "00:52",
+  "dir": "BUY",
+  "res": "OPEN",
+  "lot": 0.1,
+  "pips": 0,
+  "usd": 0,
+  "trend": "30m:f 1h:d",
+  "conf": [
+   "MA100"
+  ],
+  "pincer": false,
+  "note": ""
+ }
+]
