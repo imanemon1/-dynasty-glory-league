@@ -17,23 +17,5 @@
   "pincer": false,
   "note": "",
   "closed": "2026-10-25"
- },
- {
-  "date": "2026-10-25",
-  "no": 4,
-  "team": "LASTKISS",
-  "time": "14:57",
-  "dir": "SELL",
-  "res": "SL",
-  "lot": 0.1,
-  "pips": -8,
-  "usd": -2,
-  "trend": "1m:d 5m:d 15m:d 30m:d 1h:d",
-  "conf": [
-   "MA50"
-  ],
-  "pincer": false,
-  "note": "",
-  "closed": "2026-10-25"
  }
 ]
