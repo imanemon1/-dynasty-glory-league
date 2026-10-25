@@ -17,5 +17,23 @@
   "pincer": true,
   "note": "Ghjv",
   "closed": "2026-10-24"
+ },
+ {
+  "date": "2026-10-25",
+  "no": 2,
+  "team": "LASTKISS",
+  "time": "08:19",
+  "dir": "BUY",
+  "res": "OPEN",
+  "lot": 0.1,
+  "pips": 0,
+  "usd": 0,
+  "trend": "1m:u 5m:u 15m:u 30m:d 1h:d",
+  "conf": [
+   "MA50",
+   "MA100"
+  ],
+  "pincer": false,
+  "note": ""
  }
 ]
