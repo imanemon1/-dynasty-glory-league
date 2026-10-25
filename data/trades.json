@@ -43,15 +43,16 @@
   "team": "HDMACD",
   "time": "09:46",
   "dir": "SELL",
-  "res": "OPEN",
+  "res": "SL",
   "lot": 0.1,
-  "pips": 0,
-  "usd": 0,
+  "pips": -10,
+  "usd": -5,
   "trend": "1m:d 5m:d 15m:d 30m:d 1h:d",
   "conf": [
    "MA50"
   ],
   "pincer": false,
-  "note": ""
+  "note": "",
+  "closed": "2026-10-25"
  }
 ]
