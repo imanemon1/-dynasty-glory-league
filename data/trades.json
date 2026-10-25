@@ -24,16 +24,17 @@
   "team": "LASTKISS",
   "time": "08:19",
   "dir": "BUY",
-  "res": "OPEN",
+  "res": "TP",
   "lot": 0.1,
-  "pips": 0,
-  "usd": 0,
+  "pips": 5,
+  "usd": 55,
   "trend": "1m:u 5m:u 15m:u 30m:d 1h:d",
   "conf": [
    "MA50",
    "MA100"
   ],
   "pincer": false,
-  "note": ""
+  "note": "",
+  "closed": "2026-10-25"
  }
 ]
