@@ -295,7 +295,7 @@ button,.go{min-height:44px}
 @media (min-width:768px){body{padding-left:24px;padding-right:24px}.wrap{max-width:960px}.stats{grid-template-columns:repeat(4,1fr)}}
 @media (min-width:1280px){.wrap{max-width:1080px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-.hdr{padding-top:0;position:relative}.hdr .hst{position:static;width:auto;margin:10px 0 0;display:grid;grid-template-columns:1fr;gap:6px;z-index:2}.hdr .hst .chip{text-align:center;font-size:12px;padding:7px 10px;border-radius:10px;margin:0}.hdr .hst .chip{font-size:11px;background:rgba(10,20,40,.82);padding:3px 8px}.ov{position:absolute;left:10px;top:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}.ob{background:rgba(10,20,40,.82);color:#ffd54a;border:1px solid #ffd54a;border-radius:8px;padding:4px 10px;font-weight:800;font-size:15px;direction:ltr}.ob.sm{font-size:12px;color:#f4ead0;border-color:#8fb3ff}.hdr{padding-top:0}.ban{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--ln)}.hdr .hact{justify-content:space-between;margin:12px 0}.hdr .hact .cta{flex:1}
+.hdr{padding-top:0;position:relative}.hdr .hst{position:static;width:auto;margin:10px 0 0;display:grid;grid-template-columns:1fr;gap:6px;z-index:2}.hdr .hst .chip{text-align:center;font-size:12px;padding:7px 10px;border-radius:10px;margin:0}.hdr .hst .chip{font-size:11px;background:rgba(10,20,40,.82);padding:3px 8px}.ov{position:absolute;left:10px;top:10px;z-index:2}.hdr{padding-top:0}.ban{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--ln)}.hdr .hact{justify-content:space-between;margin:12px 0}.hdr .hact .cta{flex:1}
 .hon .mu{color:var(--mu)}.hon td{text-align:center}.hon td.tm{text-align:right}
 .ltt{direction:ltr;text-align:center;margin:26px 0 14px;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif}
 .ltt h2{margin:0;font-size:18px;font-weight:600;letter-spacing:.32em;color:#fff}
@@ -465,6 +465,15 @@ button,.go{min-height:44px}
 <style>#p-tr [hidden]{display:none!important}#trf.cl .ent{display:none!important}#trf:not(.cl) .rsl{display:none!important}.trc small{display:block;font-size:13px;color:#f6a944;margin-top:6px;font-weight:600}.trc small:empty{display:none}.tri.op{border-color:#f6a944}.tri .trr{color:var(--gold)}.trs{margin:16px 2px 2px;font-weight:700;font-size:14px}#trsum{font-size:13px;line-height:1.9}
 </style>
 <style>.trop-b{margin-inline-start:auto;min-height:36px;padding:0 12px;border-radius:10px;border:1px solid #14885C;background:#E8F6EF;color:#14885C;font-weight:700;font-size:13px;white-space:nowrap}</style>
+<style>
+.hud{display:flex;align-items:stretch;background:rgba(9,15,28,.84);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:#F3F5F9;backdrop-filter:blur(6px)}
+.hud .hs{display:flex;align-items:center;gap:8px;padding:6px 12px}
+.hud .hs+.hs{border-inline-start:1px solid rgba(255,255,255,.14)}
+.hud svg{flex:none;color:#D6B56D}
+.hud small{display:block;font-size:11px;letter-spacing:.08em;color:#A7B3C7;line-height:1.2;font-weight:600}
+.hud b{display:block;font-size:16px;line-height:1.25;font-weight:800;direction:ltr;font-variant-numeric:tabular-nums}
+@media(max-width:767px){.hud .hs{padding:5px 9px;gap:6px}.hud svg{width:16px;height:16px}.hud b{font-size:15px}}
+</style>
 </head>
 <body>
 
@@ -475,7 +484,7 @@ button,.go{min-height:44px}
 <header class="hdr"><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
 
 <div class="hst"><span id="lgi" class="chip"></span><span id="nch" class="chip"></span></div>
-<div class="ov"><div class="ob" id="hwb">$0</div><div class="ob sm" id="htc">ترید: 0</div></div>
+<div class="ov hud" dir="ltr" role="group" aria-label="Player status"><div class="hs"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="13.5" r="1.1" fill="currentColor"/></svg><div><small>WALLET BALANCE</small><b id="hwb" class="tn">$0</b></div></div><div class="hs"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4"/></svg><div><small>TOTAL TRADES</small><b id="htc" class="tn">0</b></div></div></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
 <nav class="tabs" role="tablist" aria-label="بخش‌ها">
@@ -489,8 +498,7 @@ button,.go{min-height:44px}
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین و مرور</button>
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
 </nav>
-<div id="p-lg" class="tpanel" data-p="lg"><section><div class="sec">🏟 سه تیم برتر</div>
-<div id="podium"><div class="stage" id="stage"></div></div></section>
+<div id="p-lg" class="tpanel" data-p="lg"><div id="podium" hidden></div>
 <section><div class="ltt"><img class="ltl" src="assets/league/logo-2026.png" alt="Dynasty Glory League" width="400" height="430" loading="lazy"><h2>DYNASTY GLORY LEAGUE</h2><p>LEAGUE STANDINGS</p></div>
 <div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
 <div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
@@ -711,7 +719,7 @@ document.getElementById("tot").textContent=T.before?"":(CS?"فصل "+(CS+1)+" ·
 document.getElementById("fill").style.width=pc+"%";
 var bar=document.getElementById("bar");bar.querySelectorAll(".mk").forEach(function(e){e.remove()});
 CUPS.forEach(function(c){var e=document.createElement("div");e.className="mk"+(T.day>=c.d?" on":"");e.style.right=(c.d/T.total*100)+"%";e.textContent=c.d;bar.appendChild(e)});
-document.getElementById("lgi").innerHTML=T.msg;var hc=document.getElementById("htc");if(hc)hc.textContent="ترید: "+TS.length;
+document.getElementById("lgi").innerHTML=T.msg;var hc=document.getElementById("htc");if(hc)hc.textContent=TS.length;
 var cr=function(n,c){var k="cr"+(c?" "+c:"");if(LOGO[n])return'<span class="'+k+' lg" style="--c:'+(COL[n]||"#888")+'"><img src="'+LOGO[n]+'" alt="'+esc(n)+'" loading="lazy" decoding="async"></span>';return'<span class="'+k+'" style="--c:'+(COL[n]||"#888")+'">'+esc(n.replace("-",""))+'</span>'};
 var PL={};TS.forEach(function(t){PL[t.team]=1});var rv=r.filter(function(x){return PL[x.n]});
 try{document.getElementById("rows").innerHTML=rv.map(function(x,i){
