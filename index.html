@@ -502,6 +502,39 @@ button,.go{min-height:44px}
 .ltw:not(.gt) td{padding-top:12px;padding-bottom:12px}}
 @media(max-width:767px){.ltw:not(.gt) th,.ltw:not(.gt) td{font-size:11px}.ltw:not(.gt) .tn{font-size:12px}.ltw:not(.gt) td.tm .team .cr.lg{width:30px;height:30px;flex:0 0 30px}.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:27%;padding:6px 4px}.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:6.7%}}
 </style>
+<style id="hdr2">
+:root{--navy:#0B1F4B;--blue:#2F6FDB;--gold:#B8892B}
+body{background:#F7F9FC}
+.hdr .hcard{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--ln);border-radius:12px;padding:7px 14px;box-shadow:0 1px 2px rgba(11,31,75,.06),0 4px 10px rgba(11,31,75,.05);width:max-content;max-width:100%;margin:0 0 10px;color:var(--navy)}
+.hdr .hcard.ht{margin:10px 0 0}
+.hdr .hcard svg{color:var(--gold);flex:none}
+.hdr .hcard small{display:block;font-size:10.5px;letter-spacing:.08em;color:var(--mu);font-weight:700;line-height:1.2}
+.hdr .hcard b{display:block;font-size:17px;font-weight:800;line-height:1.25;color:var(--navy);direction:ltr}
+.hdr .ban{margin:0}
+.hdr .hst{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.hdr .hst .chip,.hdr .hst .chip{background:#fff;color:var(--navy);border:1px solid var(--ln);font-size:12.5px;padding:5px 12px;border-radius:999px;text-align:center;margin:0}
+.nys{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:10px 0 0;padding:7px 14px;background:#fff;border:1px solid var(--ln);border-inline-start:3px solid var(--gold);border-radius:10px;font-size:13px;color:var(--navy)}
+.nys .nyd{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none}
+.nys.live .nyd{background:#22A06B;box-shadow:0 0 0 3px rgba(34,160,107,.2)}
+.nys .nyl{font-weight:800;direction:ltr}
+.nys .nyt{color:var(--mu)}
+.nys .nyc{margin-inline-start:auto;font-weight:800;color:var(--blue)}
+.lvl{margin-top:10px}
+.tabs{gap:8px;padding:6px 4px 12px}
+.tab{gap:8px;min-height:44px;padding:0 16px;border-radius:12px;background:linear-gradient(#fff,#F1F4F9);color:var(--navy);border:1px solid var(--ln);box-shadow:0 1px 0 #fff inset,0 2px 4px rgba(11,31,75,.08);transition:transform .15s,box-shadow .15s}
+.tab svg{flex:none;color:var(--blue)}
+.tab:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 8px rgba(11,31,75,.12)}
+.tab[aria-selected=true]{background:linear-gradient(#17306B,var(--navy));color:#fff;border-color:var(--navy);box-shadow:0 3px 8px rgba(11,31,75,.3),inset 0 -3px 0 var(--gold)}
+.tab[aria-selected=true] svg{color:#E3C27A}
+.mk{font-weight:700}.mk.on{color:var(--gold)}
+.mk:first-of-type{}
+.cupt .lab{color:var(--gold);font-size:12px}
+.cupt tbody tr:nth-child(1) .lab{color:#8A6212;font-size:13.5px}
+.cupt tbody tr:nth-child(1){background:linear-gradient(90deg,rgba(184,137,43,.10),transparent)}
+.cupt tbody tr:nth-child(1) .cupimg{transform:scale(1.12)}
+.cupt tbody tr:nth-child(3) .lab{color:#6B7A99}
+.cupt td.ps{min-width:96px}
+</style>
 </head>
 <body>
 
@@ -509,22 +542,22 @@ button,.go{min-height:44px}
 <div id="rv"><div class="g"><h2>مرور قوانین</h2><div id="rvl"></div><button class="go" id="rvc" style="margin-top:16px">بستن</button></div></div>
 
 <div class="wrap">
-<header class="hdr"><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
-
+<header class="hdr"><div class="hcard hw" dir="ltr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="13.5" r="1.1" fill="currentColor"/></svg><div><small>WALLET BALANCE</small><b id="hwb" class="tn">$0</b></div></div><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
+<div class="hcard ht" dir="ltr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4"/></svg><div><small>TOTAL TRADES</small><b id="htc" class="tn">0</b></div></div>
 <div class="hst"><span id="lgi" class="chip"></span><span id="nch" class="chip"></span></div>
-<div class="ov hud" dir="ltr" role="group" aria-label="Player status"><div class="hs"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="13.5" r="1.1" fill="currentColor"/></svg><div><small>WALLET BALANCE</small><b id="hwb" class="tn">$0</b></div></div><div class="hs"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4"/></svg><div><small>TOTAL TRADES</small><b id="htc" class="tn">0</b></div></div></div>
+<div class="nys" id="nys" dir="rtl"><span class="nyd"></span><span class="nyl">New York Open</span><span class="nyt" id="nyt">—</span><span class="nyc" id="nyc"></span></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
 <nav class="tabs" role="tablist" aria-label="بخش‌ها">
-<button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg">🏆 لیگ</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr">📊 ترید</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl">💰 کیف پول</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm">👥 تیم‌ها</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld">🪜 نردبان</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn">🏅 افتخارات</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw">📰 اخبار</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru">📜 قوانین و مرور</button>
-<button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
+<button class="tab" role="tab" aria-selected="true" aria-controls="p-lg" data-t="lg"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg><span>لیگ</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tr" data-t="tr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4"/></svg><span>ترید</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-wl" data-t="wl"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="13.5" r="1"/></svg><span>کیف پول</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-tm" data-t="tm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 5a3 3 0 0 1 0 6M18 14.8c1.8.7 3 2.4 3 5.2"/></svg><span>تیم‌ها</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ld" data-t="ld"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v18M17 3v18M7 7h10M7 12h10M7 17h10"/></svg><span>نردبان</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-hn" data-t="hn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 7.5 21 12 18.5 16.5 21 15 13.5"/></svg><span>افتخارات</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-nw" data-t="nw"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v9a2 2 0 0 1-2 2M7.5 9h6M7.5 13h6M7.5 16h4"/></svg><span>اخبار</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-ru" data-t="ru"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7"/></svg><span>قوانین و مرور</span></button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg><span>تنظیمات</span></button>
 </nav>
 <div id="p-lg" class="tpanel" data-p="lg"><div id="podium" hidden></div>
 <section><div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
@@ -753,7 +786,7 @@ try{document.getElementById("rows").innerHTML=rv.map(function(x,i){
 var z=!tot?"":i==0?"z1":i==1?"z2":"";
 return'<tr class="'+z+'" data-team="'+encodeURIComponent(x.n)+'" style="--c:'+(COL[x.n]||"#888")+'"><td class="ps">'+(i+1)+'</td><td class="tm"><div class="team">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div>'+dots(x.n,TS)+'</div></div></td><td>'+x.play+'</td><td>'+x.tp+'</td><td>'+x.close+'</td><td>'+x.risk+'</td><td>'+x.sl+'</td><td>'+f(x.win,1)+'</td><td>'+f(x.rr,2)+'</td><td class="'+cls(x.pips)+'">'+f(x.pips)+'</td><td class="'+cls(x.usd)+'">'+f(x.usd)+'</td><td class="pt">'+f(x.pt)+'</td></tr>'}).join("")}catch(e){console.error(e)}
 var CL=CUPS.map(function(c){return T.day>=c.d||CS<Math.floor((TD-SD)/W7)?cupLeader(CS,c.d,TS):null});
-document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d,lead=CL[i],W=[],LAB=["Grand","Major","Minor"][i]||"";for(var se=0;se<=CS;se++){if(se==CS&&!on)continue;var w=cupLeader(se,c.d,TS);if(w)W.push({s:se,n:w})}return'<tr class="'+(on&&lead?"z1":"")+'"><td class="ps"><span class="lab">'+LAB+'</span></td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(W.length?W.slice().reverse().map(function(x){return'<div class="team wn">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div><div class="mu">فصل '+(x.s+1)+'</div></div></div>'}).join(""):'<span class="mu">·</span>')+'</td><td>'+(on?(lead?"قهرمان":"بدون قهرمان"):"قفل")+'</td></tr>'}).join("");
+document.getElementById("cups").innerHTML=CUPS.map(function(c,i){var on=T.day>=c.d,lead=CL[i],W=[],LAB=["★★★ ۱· Grand","★★ ۲· Major","★ ۳· Minor"][i]||"";for(var se=0;se<=CS;se++){if(se==CS&&!on)continue;var w=cupLeader(se,c.d,TS);if(w)W.push({s:se,n:w})}return'<tr class="'+(on&&lead?"z1":"")+'"><td class="ps"><span class="lab">'+LAB+'</span></td><td class="tm"><div class="team">'+(c.img?'<img class="cupimg" src="'+c.img+'" alt="'+c.n+'" loading="lazy" decoding="async">':'')+'<div><div class="tn">'+c.n+'</div></div></div></td><td>'+Math.min(T.day,c.d)+'/'+c.d+'</td><td class="tm">'+(W.length?W.slice().reverse().map(function(x){return'<div class="team wn">'+cr(x.n)+'<div><div class="tn">'+esc(x.n)+'</div><div class="mu">فصل '+(x.s+1)+'</div></div></div>'}).join(""):'<span class="mu">·</span>')+'</td><td>'+(on?(lead?"قهرمان":"بدون قهرمان"):"قفل")+'</td></tr>'}).join("");
 var AW=awards(r),w=AW[1],q=AW[3],p=AW[0],sl=AW[2];
 var A=[["🥇","توپ طلا","بیشترین امتیاز",p?f(p.pt):"—",p,"#f6c744"],["<img src=\"assets/awards/golden-boot.webp\" alt=\"کفش طلا\">","کفش طلا","بهترین وین‌ریت",w?f(w.win,1)+"%":"—",w,"#3fbf7a"],["<img src=\"assets/awards/golden-glove.webp\" alt=\"دستکش طلا\">","دستکش طلا","کمترین SL",sl?f(sl.sl):"—",sl,"#4aa3ff"],["<img src=\"assets/awards/reward.webp\" alt=\"جایزه‌ی ریوارد\">","جایزه‌ی ریوارد","بهترین R/R",q?f(q.rr,2):"—",q,"#c77dff"]];
 document.getElementById("stats").innerHTML=A.map(function(a,i){if(!i)return"";return'<div class="st" style="--ac:'+a[5]+'" onclick="awOpen('+i+')"><div class="ic">'+a[0]+'</div><span class="tt">'+a[1]+'</span><b>'+a[3]+'</b><span class="ds">'+a[2]+'</span>'+(a[4]?'<div class="who">'+cr(a[4].n,"sm")+esc(a[4].n)+'</div>':"")+'</div>'}).join("");
@@ -895,5 +928,12 @@ $("trd").addEventListener("input",trJa);
 $("trtb").addEventListener("click",function(){var l=$("trtl");if(l.hidden){spList();l.hidden=false}else l.hidden=true});
 $("trtl").addEventListener("click",function(e){var it=e.target.closest(".spi");if(!it)return;spSet(it.dataset.n);$("trtl").hidden=true});
 })();
+
+(function(){function fa(n){return String(n).replace(/\d/g,function(d){return"۰۱۲۳۴۵۶۷۸۹"[d]})}function nyOff(d){var f=new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(d),o={};f.forEach(function(p){o[p.type]=+p.value});return Date.UTC(o.year,o.month-1,o.day,o.hour,o.minute,o.second)-Math.floor(d.getTime()/1000)*1000}
+function nyOpen(now){for(var k=0;k<8;k++){var b=new Date(now+k*864e5),f=new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit",weekday:"short"}).formatToParts(b),o={};f.forEach(function(p){o[p.type]=p.value});if(o.weekday=="Sat"||o.weekday=="Sun")continue;var g=Date.UTC(+o.year,+o.month-1,+o.day,9,30),t=g-nyOff(new Date(g));t=g-nyOff(new Date(t));if(t>now-36e5)return t}return now}
+var tf2=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Tehran",hour:"2-digit",minute:"2-digit",hour12:false});
+function up(){var el=document.getElementById("nys");if(!el)return;var now=Date.now(),t=nyOpen(now),d=t-now,c=document.getElementById("nyc"),h=document.getElementById("nyt");h.textContent="ساعت "+fa(tf2.format(t))+" به وقت تهران";
+if(d<=0){c.textContent="باز است";el.classList.add("live")}else{el.classList.remove("live");var m=Math.floor(d/6e4),dd=Math.floor(m/1440),hh=Math.floor(m%1440/60),mm=m%60;c.textContent=(dd?fa(dd)+" روز و ":"")+fa(hh)+" ساعت و "+fa(mm)+" دقیقه مانده"}}
+up();setInterval(up,3e4)})();
 </script>
 </html>
