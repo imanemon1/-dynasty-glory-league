@@ -534,6 +534,18 @@ body{background:#F7F9FC}
 .cupt tbody tr:nth-child(1) .cupimg{transform:scale(1.12)}
 .cupt tbody tr:nth-child(3) .lab{color:#6B7A99}
 .cupt td.ps{min-width:96px}
+.hdr .bw{position:relative;border-radius:16px;overflow:hidden}
+.hdr .bw .ban{border-radius:16px;border:1px solid var(--ln)}
+.hcol{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;z-index:2}
+.hdr .hcard.gl{margin:0;padding:5px 10px 5px 8px;gap:7px;width:auto;border-radius:10px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(10px) saturate(1.4);-webkit-backdrop-filter:blur(10px) saturate(1.4);box-shadow:0 4px 14px rgba(0,0,0,.18);color:#fff}
+.hdr .hcard.gl svg{color:#E9C77F;width:15px;height:15px}
+.hdr .hcard.gl small{color:rgba(255,255,255,.85);font-size:9px}
+.hdr .hcard.gl b{color:#fff;font-size:13px}
+.hdr .hcard.ht{margin:0}
+.hbot{position:absolute;left:10px;right:10px;bottom:10px;display:flex;flex-wrap:wrap;gap:6px;z-index:2}
+.hdr .hst{display:none}
+.hdr .hbot .chip.gl{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(10px) saturate(1.4);-webkit-backdrop-filter:blur(10px) saturate(1.4);font-size:11px;padding:4px 10px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.18);text-shadow:0 1px 2px rgba(0,0,0,.4)}
+@media(max-width:767px){.hcol{top:8px;left:8px}.hbot{left:8px;right:8px;bottom:8px}.hdr .hbot .chip.gl{font-size:10px;padding:3px 8px}}
 </style>
 </head>
 <body>
@@ -542,9 +554,7 @@ body{background:#F7F9FC}
 <div id="rv"><div class="g"><h2>مرور قوانین</h2><div id="rvl"></div><button class="go" id="rvc" style="margin-top:16px">بستن</button></div></div>
 
 <div class="wrap">
-<header class="hdr"><div class="hcard hw" dir="ltr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="13.5" r="1.1" fill="currentColor"/></svg><div><small>WALLET BALANCE</small><b id="hwb" class="tn">$0</b></div></div><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941">
-<div class="hcard ht" dir="ltr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4"/></svg><div><small>TOTAL TRADES</small><b id="htc" class="tn">0</b></div></div>
-<div class="hst"><span id="lgi" class="chip"></span><span id="nch" class="chip"></span></div>
+<header class="hdr"><div class="bw"><img class="ban" src="assets/league/banner.webp" alt="Dynasty Glory League" width="1672" height="941"><div class="hcol"><div class="hcard hw gl" dir="ltr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="13.5" r="1.1" fill="currentColor"/></svg><div><small>WALLET BALANCE</small><b id="hwb" class="tn">$0</b></div></div><div class="hcard ht gl" dir="ltr"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4"/></svg><div><small>TOTAL TRADES</small><b id="htc" class="tn">0</b></div></div></div><div class="hbot"><span id="lgi" class="chip gl"></span><span id="nch" class="chip gl"></span></div></div>
 <div class="nys" id="nys" dir="rtl"><span class="nyd"></span><span class="nyl">New York Open</span><span class="nyt" id="nyt">—</span><span class="nyc" id="nyc"></span></div>
 <div class="lvl"><span id="tot"></span></div>
 <div class="bar" id="bar"><div class="fill" id="fill"></div></div></header>
