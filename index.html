@@ -474,6 +474,34 @@ button,.go{min-height:44px}
 .hud b{display:block;font-size:16px;line-height:1.25;font-weight:800;direction:ltr;font-variant-numeric:tabular-nums}
 @media(max-width:767px){.hud .hs{padding:5px 9px;gap:6px}.hud svg{width:16px;height:16px}.hud b{font-size:15px}}
 </style>
+<style>
+/* league table: final layout, fits its frame at every width */
+.ltw:not(.gt){overflow:hidden;border:1px solid #D5DCE8;border-radius:12px}
+.ltw:not(.gt) table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
+.ltw:not(.gt) th,.ltw:not(.gt) td{box-sizing:border-box;padding:10px 2px;text-align:center;border-left:1px solid #E9EDF4;vertical-align:middle}
+.ltw:not(.gt) th{border-bottom:1px solid #D5DCE8;font-size:11px;letter-spacing:.02em;line-height:1.2}
+.ltw:not(.gt) th:first-child,.ltw:not(.gt) td:first-child{border-left:0}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) td.ps{width:6%;position:static;box-shadow:none;padding:10px 0;font-size:14px}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:25%;position:static;box-shadow:none;text-align:left;padding:8px 8px}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:6.9%;font-size:13px}
+.ltw:not(.gt) th.pt,.ltw:not(.gt) td.pt{background:#FBF6EA}
+.ltw:not(.gt) th .lg{display:none}.ltw:not(.gt) th .sh{display:block}
+.ltw:not(.gt) .team{gap:8px}
+.ltw:not(.gt) td.tm .team .cr.lg{width:40px;height:40px;flex:0 0 40px;padding:3px}
+.ltw:not(.gt) .tn{font-size:14px;white-space:normal;overflow-wrap:anywhere}
+@media(min-width:768px){
+.ltw:not(.gt) th{font-size:12px}
+.ltw:not(.gt) td.tm .team .cr.lg{width:48px;height:48px;flex:0 0 48px}
+.ltw:not(.gt) .tn{font-size:16px}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){font-size:14px}}
+@media(min-width:1200px){
+.ltw:not(.gt) th .lg{display:block}.ltw:not(.gt) th .sh{display:none}
+.ltw:not(.gt) th.ps,.ltw:not(.gt) td.ps{width:5%}
+.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:27%}
+.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:6.8%}
+.ltw:not(.gt) td{padding-top:12px;padding-bottom:12px}}
+@media(max-width:767px){.ltw:not(.gt) th,.ltw:not(.gt) td{font-size:11px}.ltw:not(.gt) .tn{font-size:12px}.ltw:not(.gt) td.tm .team .cr.lg{width:30px;height:30px;flex:0 0 30px}.ltw:not(.gt) th.tm,.ltw:not(.gt) td.tm{width:27%;padding:6px 4px}.ltw:not(.gt) th:not(.ps):not(.tm),.ltw:not(.gt) td:not(.ps):not(.tm){width:6.7%}}
+</style>
 </head>
 <body>
 
@@ -499,8 +527,7 @@ button,.go{min-height:44px}
 <button class="tab" role="tab" aria-selected="false" aria-controls="p-st" data-t="st">⚙️ تنظیمات</button>
 </nav>
 <div id="p-lg" class="tpanel" data-p="lg"><div id="podium" hidden></div>
-<section><div class="ltt"><img class="ltl" src="assets/league/logo-2026.png" alt="Dynasty Glory League" width="400" height="430" loading="lazy"><h2>DYNASTY GLORY LEAGUE</h2><p>LEAGUE STANDINGS</p></div>
-<div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
+<section><div class="ltw"><table><thead><tr><th class="ps">#</th><th class="tm">TEAM</th><th><b class="lg">PLAYED</b><b class="sh">PL</b></th><th>TP</th><th><b class="lg">CLOSE</b><b class="sh">CL</b></th><th>RISK</th><th>SL</th><th>WIN%</th><th><b class="lg">REWARD (R/R)</b><b class="sh">R/R</b></th><th>PIPS</th><th>USD</th><th class="pt"><b class="lg">POINTS</b><b class="sh">PTS</b></th></tr></thead><tbody id="rows"></tbody><tfoot><tr><td colspan="12"></td></tr></tfoot></table></div>
 <div class="leg"><span style="--k:#D6B56D">قهرمان</span><span style="--k:#70A9F7">رده‌ی دوم</span><span style="--k:#EF7380">منطقه‌ی خطر</span><span style="--k:#39C795">TP</span><span style="--k:#70A9F7">CLOSE</span><span style="--k:#f0a030">RISK</span><span style="--k:#EF7380">SL</span></div></section><section><div class="sec">🏅 جوایز این لیگ تا امروز</div>
 <div class="stats" id="stats"></div><div class="awp" id="awp"></div></section>
 <section><div class="sec">🏆 جدول کاپ‌ها</div>
