@@ -568,6 +568,7 @@ body{background:#F7F9FC}
 .wal .gn{background:#eaf8f1!important}
 .wal .gn.n{background:#fdecea!important}
 </style>
+<style id="tcompact">.tf{gap:8px}.tfc{gap:6px;padding:10px 12px}.tfa{display:none}.tfa:not(:empty){display:block;margin:0 2px 4px}.tg2{gap:8px}.tlab{margin:0 2px 2px}.tchips{margin-top:-2px}.tlot input{min-height:44px}.tseg{gap:6px}.tfc textarea{min-height:0}.tf .tk{min-height:40px}</style>
 </head>
 <body>
 
@@ -609,8 +610,7 @@ body{background:#F7F9FC}
 <div class="tlab">استراتژی</div><div class="spk"><button type="button" id="trtb" class="spb"></button><div id="trtl" class="spl" hidden></div><input type="hidden" id="trt"></div>
 <label>لات (حجم ورود)<div class="tlot"><button type="button" data-l="-">−</button><input id="trlot" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" dir="ltr"><button type="button" data-l="+">+</button></div></label>
 <div class="tchips" id="trlq"><button type="button">0.01</button><button type="button">0.05</button><button type="button">0.1</button><button type="button">0.5</button><button type="button">1</button></div>
-</div>
-<div class="tfc ent"><div class="tft">🎯 جهت</div>
+<div class="tft" style="margin-top:6px">🎯 جهت</div>
 <div class="tseg"><button class="tk" data-g="dir" data-v="BUY" style="--k:#39C795">▲ Buy</button><button class="tk" data-g="dir" data-v="SELL" style="--k:#EF7380">▼ Sell</button></div>
 </div>
 <div class="tfc rsl" id="trsum"></div>
@@ -912,7 +912,7 @@ setInterval(show,6e4);
 var AR={u:"▲",d:"▼",f:"↔"};
 var AK={u:"#39C795",d:"#EF7380",f:"#A7B3C7"};$("trtd").innerHTML=TF.map(function(f){return'<div class="trw" dir="ltr"><span>'+f+'</span>'+["u","d","f"].map(function(a){return'<button class="tk trt" style="--k:'+AK[a]+'" data-f="'+f+'" data-a="'+a+'">'+AR[a]+'</button>'}).join("")+'</div>'}).join("");
 function ghc(){return typeof ghCfg=="function"?ghCfg():{}}
-function nxt(){var m=0;(TR||[]).forEach(function(t){if(+t.no>m)m=+t.no});var l=+localStorage.getItem("dgl_trno")||0;return Math.max(m,l)+1}
+function nxt(){var m=0;(TR||[]).forEach(function(t){if(+t.no>m)m=+t.no});return m+1}
 function rd(x){return Math.round(x*100)/100}function sg(x){return x>0?"+"+x:String(x)}function col(x){return x>0?"var(--pos)":x<0?"var(--neg)":"var(--tx)"}
 function net(){var p=rd((+$("trpp").value||0)-(+$("trpn").value||0)),q=rd((+$("trqp").value||0)-(+$("trqn").value||0));$("trnp").textContent=sg(p);$("trnq").textContent=(q<0?"-$":q>0?"+$":"$")+Math.abs(q);$("trnp").style.color=col(p);$("trnq").style.color=col(q)}
 ["trpp","trpn","trqp","trqn"].forEach(function(i){$(i).oninput=net});
