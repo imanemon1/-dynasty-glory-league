@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-30T13:27:52.135856Z",
+ "updated": "2026-10-30T18:50:02.005393Z",
  "events": [
   {
    "t": "ADP Weekly Employment Change",
@@ -179,6 +179,13 @@
   {
    "t": "FOMC Member Musalem Speaks",
    "d": "2026-10-30T12:30:00-04:00",
+   "i": "Low",
+   "f": "",
+   "p": ""
+  },
+  {
+   "t": "FOMC Member Logan Speaks",
+   "d": "2026-10-30T13:30:00-04:00",
    "i": "Low",
    "f": "",
    "p": ""
