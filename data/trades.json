@@ -5,16 +5,17 @@
   "team": "TREND LINES",
   "time": "17:52",
   "dir": "BUY",
-  "res": "OPEN",
+  "res": "TP",
   "lot": 0.1,
-  "pips": 0,
-  "usd": 0,
+  "pips": 28,
+  "usd": 3,
   "trend": "1m:u 5m:u 15m:d 30m:d 1h:u",
   "conf": [
    "انبرک",
    "MA50"
   ],
   "pincer": true,
-  "note": ""
+  "note": "",
+  "closed": "2026-10-31"
  }
 ]
