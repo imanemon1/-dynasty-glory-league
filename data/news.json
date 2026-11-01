@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-01T20:27:15.738144Z",
+ "updated": "2026-11-01T23:52:21.799732Z",
  "events": [
   {
    "t": "Daylight Saving Time Shift",
@@ -19,14 +19,14 @@
    "t": "ISM Manufacturing PMI",
    "d": "2026-11-02T10:00:00-05:00",
    "i": "Medium",
-   "f": "54.7",
+   "f": "54.5",
    "p": "54.5"
   },
   {
    "t": "Construction Spending m/m",
    "d": "2026-11-02T10:00:00-05:00",
    "i": "Low",
-   "f": "0.3%",
+   "f": "0.4%",
    "p": "0.9%"
   },
   {
